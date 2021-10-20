@@ -18,8 +18,8 @@
             echo '<select class="bg-primary fs-2 rounded" id="day" name="day">' . "\n";
             echo "<option class='bg-white' selected>Day</option>" . "\n";
 
-            for ($i_day = 1; $i_day <= 31; $i_day++) {
-                echo "<option class='bg-white'>" . $i_day . "</option>" . "\n";
+            for ($day = 1; $day <= 31; $day++) {
+                echo "<option class='bg-white'>" . $day . "</option>" . "\n";
             }
             echo '</select>' . "\n";
             ?>
@@ -29,8 +29,8 @@
             echo '<select class="bg-secondary fs-2 rounded" id="month" name="month">' . "\n";
             echo "<option class='bg-white' selected>Month</option>" . "\n";
 
-            for ($i_month = 1; $i_month <= 12; $i_month++) {
-                echo "<option class='bg-white'>" . $i_month . "</option>" . "\n";
+            for ($month = 1; $month <= 12; $month++) {
+                echo "<option class='bg-white'>" . $month . "</option>" . "\n";
             }
             echo '</select>' . "\n";
             ?>
