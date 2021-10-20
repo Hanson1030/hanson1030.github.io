@@ -33,7 +33,7 @@
 
             for ($x = 0; $x < 12; $x++) { 
                 //echo "<option class='bg-white'>". date('F', mktime(0,0,0,$month))."</option>"."\n";
-                //echo "<option class='bg-white'>" . $i_month . "</option>" . "\n";
+                //echo "<option class='bg-white'>" . $month . "</option>" . "\n";
                 echo "<option class='bg-white'>" . $month[$x] . "</option>" . "\n";
 
             }
