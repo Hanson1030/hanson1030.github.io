@@ -1,0 +1,232 @@
+/*------------------header------------------*/
+.header {
+  background-image: url(../a_img/carnivore/lion1.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center;
+  margin: 0;
+}
+
+.sloganbigdiv {
+  display: flex;
+}
+
+.slogan {
+  font-family: "Teko", sans-serif;
+  color: #fde8cd;
+  margin-top: -30px;
+  margin-left: 30px;
+  font-size: 80px;
+  text-align: center;
+  flex: 1;
+}
+
+.slogan p {
+  margin: 0;
+}
+
+.slogan h3 {
+  margin: -20px;
+}
+
+.sloganempty {
+  flex: 1;
+}
+
+/*------------------introducion------------------*/
+.introduction {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.introduction .seemorebtn {
+  border: 2px solid white;
+  background-color: #fde8cd;
+  border-radius: 10px;
+  font-size: 17px;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.introduction h1 {
+  font-family: "Teko", sans-serif;
+  font-size: 70px;
+  margin-bottom: 0;
+}
+
+.seemorebtn:hover {
+  cursor: pointer;
+  border: 2px solid black;
+}
+
+.carnivoreintro .mobilecarpic {
+  display: none;
+}
+
+.carnivoreintro {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.carintrotext {
+  padding-left: 50px;
+  width: 500px;
+}
+
+.carintrotext p {
+  font-size: larger;
+}
+
+.carnivoreintro .carpic {
+  padding-left: 50px;
+}
+
+.herbivoreintro {
+  display: flex;
+  justify-content: center;
+}
+
+.herintrotext {
+  width: 500px;
+}
+
+.herintrotext p {
+  font-size: larger;
+}
+
+/*------------------Small Picture------------------*/
+
+.smallpic img {
+  width: 300px;
+  height: auto;
+  margin-left: -2px;
+  margin-right: -2px;
+}
+
+.smallpicmobile {
+  display: none;
+}
+
+/*---------------------------Tablet VERSION------------------------*/
+@media screen and (max-width: 1080px) {
+  .blacktransparent {
+    background-color: rgba(0, 0, 0, 0.65);
+  }
+
+  .introductioncontainer {
+    display: flex;
+    justify-content: center;
+  }
+
+  .introduction {
+    flex-direction: column;
+  }
+
+  .carnivoreintro {
+    display: initial;
+    text-align: center;
+  }
+
+  .carnivoreintro .mobilecarpic {
+    display: initial;
+  }
+
+  .carnivoreintro .carpic {
+    display: none;
+  }
+
+  .carintrotextdiv {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .carintrotext {
+    text-align: left;
+    width: 70%;
+    padding: 0;
+  }
+
+  .herbivoreintro {
+    display: initial;
+    text-align: center;
+  }
+
+  .herintrotextdiv {
+    display: flex;
+    justify-content: center;
+  }
+
+  .herintrotext {
+    text-align: left;
+    width: 70%;
+  }
+
+  .smallpic img {
+    width: 150px;
+    height: auto;
+    margin-left: -2px;
+    margin-right: -2px;
+  }
+}
+
+/*---------------------------RESIZE VERSION------------------------*/
+@media screen and (max-width: 880px) {
+  .sloganbigdiv {
+    display: flex;
+    justify-content: center;
+  }
+
+  .slogan {
+    width: 30%;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .sloganempty {
+    display: none;
+  }
+}
+
+/*---------------------------Mobile VERSION------------------------*/
+@media screen and (max-width: 600px) {
+  .slogan {
+    font-size: 70px;
+  }
+
+  .carintrotext {
+    text-align: left;
+    width: 50%;
+  }
+
+  .herintrotext {
+    text-align: left;
+    width: 50%;
+  }
+
+  .smallpic {
+    display: none;
+  }
+
+  .firstrowpicmobile {
+    display: flex;
+    width: 97.1%;
+  }
+
+  .firstrowpicmobile img {
+    width: 25.7%;
+  }
+
+  .secrowpicmobile {
+    display: flex;
+    width: 97.1%;
+  }
+
+  .secrowpicmobile img {
+    width: 25.7%;
+  }
+}

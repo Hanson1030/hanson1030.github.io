@@ -1,0 +1,221 @@
+body {
+  color: white;
+  background-image: url(../a_img/wallpaper_new.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-attachment: fixed;
+}
+
+.body2 {
+  height: 100vh;
+  margin: 0;
+}
+
+/*----------Why I Like Animal----------*/
+.aboutme {
+  max-width: 1080px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: auto;
+}
+
+.aboutmetitle {
+  display: flex;
+  justify-content: center;
+  border-bottom: 8px solid #fde8cd;
+  font-family: "Signika", sans-serif;
+  font-size: 25px;
+  color: black;
+}
+
+.aboutmetitle h2 {
+  background-color: #fde8cd;
+  width: fit-content;
+  margin: 0;
+  padding: 15px;
+}
+
+.whyilikeanimal {
+  background-color: #005372;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.whyilikeanimal > div {
+  padding: 30px;
+}
+
+.whyilikeanimal h3 {
+  text-align: center;
+  font-size: xx-large;
+  margin: 0;
+  padding: 10px;
+  padding-top: 15px;
+}
+
+.whyilikeanimal .firstandsecondwhy {
+  padding: 0;
+}
+
+.firstandsecondwhy > div {
+  padding: 30px;
+}
+
+.firstwhy {
+  display: flex;
+}
+
+.secondwhy {
+  display: flex;
+  background-color: #008f9f;
+}
+
+.mobilesecondwhypic {
+  display: none;
+}
+
+.thirdwhyimg {
+  text-align: center;
+}
+
+.reason {
+  display: flex;
+  margin: 20px;
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.reason h4 {
+  font-size: x-large;
+  margin-top: 0;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+/*-----------Self Introduction-----------*/
+.selfintro-div {
+  max-width: 1080px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: auto;
+  margin-top: 80px;
+}
+
+.selfintro {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #008f9f;
+}
+
+.selfintro h3 {
+  text-align: center;
+  font-size: xx-large;
+  margin: 0;
+  padding-top: 15px;
+}
+
+.introduction {
+  font-size: 25px;
+  padding-left: 30px;
+  margin-bottom: 50px;
+}
+
+.favanimal {
+  background-color: #005372;
+}
+
+.favanimals-div {
+  display: flex;
+}
+
+.favanimals-div > div {
+  flex: 1;
+  padding: 30px;
+}
+
+.favanimalpic {
+  text-align: center;
+}
+
+.favanimalpic span {
+  font-family: "Black Han Sans", sans-serif;
+  color: #b7935c;
+}
+
+.favanimalpic h4 {
+  font-size: 30px;
+  margin: 10px;
+}
+
+.description {
+  display: flex;
+  font-size: 25px;
+}
+
+.description p {
+  margin: 0;
+  margin-left: 5px;
+}
+
+/*---------------------------Tablet VERSION------------------------*/
+@media screen and (max-width: 1080px) {
+  .whyilikeanimal {
+    background-color: #008f9f;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .firstandsecondwhy {
+    display: flex;
+  }
+
+  .firstandsecondwhy .whypic {
+    display: flex;
+    justify-content: center;
+  }
+
+  .firstandsecondwhy img {
+    width: 80%;
+    height: auto;
+  }
+
+  .firstandsecondwhy > div {
+    display: block;
+    flex: 1;
+  }
+
+  .secondwhy img {
+    display: none;
+  }
+
+  .secondwhy .mobilesecondwhypic {
+    display: block;
+  }
+
+  .thirdwhy {
+    background-color: #005372;
+  }
+}
+
+/*---------------------------Mobile VERSION------------------------*/
+@media screen and (max-width: 600px) {
+  .whyilikeanimal {
+    background-color: #005372;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .firstandsecondwhy {
+    display: block;
+  }
+
+  .thirdwhy img {
+    width: 80%;
+  }
+
+  .favanimals-div {
+    display: block;
+  }
+
+  .description {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

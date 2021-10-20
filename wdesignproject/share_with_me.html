@@ -1,0 +1,256 @@
+<!-- Assignment -->
+<!-- Mak Hon Sang (Hanson) -->
+<!-- 2050093-BSE -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Share With Me</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/share_with_me_css.css">
+    <link rel="stylesheet" href="css/footer_css.css">
+
+    <!----Navibation Bar/Menu materials---->
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika&display=swap" rel="stylesheet">
+
+    <!--Animal Name (Font)-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="body2">
+
+        <div class="navbar">
+            <div class="navlogo">
+                <a href="index.html">
+                    <img src="a_img/logo2.png" width="300px" height="auto">
+                </a>
+            </div>
+
+            <!------------------Navigation bar (MOBILE)------------------>
+            <div class="navbarmobile">
+                <a href="javascript:void(0);" class="menumobile" onclick="myFunction()">
+                    <i class="fa fa-bars icon"></i>
+                </a>
+
+                <div class="navlogomobile">
+                    <img src="a_img/logo2.png" width="300px" height="auto">
+                </div>
+            </div>
+
+            <div id="navtext">
+                <a href="index.html">
+                    <h3>HOME</h3>
+                </a>
+
+                <div class="dropdownWA">
+                    <a href="javascript:void(0);">
+                        <h3>WILD ANIMAL
+                            <i class="fa fa-caret-down"></i>
+                        </h3>
+                    </a>
+                    <div class="dropdowncontent">
+                        <a href="wildanimal_C.html">CARNIVORES</a>
+                        <a href="wildanimal_H.html">HERBIVORES</a>
+                    </div>
+                </div>
+
+                <a href="gallery.html">
+                    <h3>GALLERY</h3>
+                </a>
+                <a href="about_me.html">
+                    <h3>ABOUT ME</h3>
+                </a>
+                <a href="share_with_me.html">
+                    <h3 class="navselected">SHARE WITH ME</h3>
+                </a>
+            </div>
+        </div>
+
+        <div class="sharewithme-div">
+            <div class="sharewithmetitle">
+                <h2>SHARE WITH ME</h2>
+            </div>
+
+            <!------Share Your Interest------>
+            <div class="sharreyourinterest">
+                <h3>Share Your Interest</h3>
+
+                <div class="form-div">
+                    <form action="submitted_form.html">
+
+                        <!--Username and Email DIV-->
+                        <div class="username-email">
+                            <div class="form-username">
+                                <label for="uname">Nickname</label>
+                                <input type="text" id="uname" name="username" placeholder="Enter Your Username"
+                                    required>
+                            </div>
+
+                            <div class="form-email">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="e-mail" placeholder="Enter Your Email" required>
+                            </div>
+                        </div>
+
+                        <!--Select Your Type-->
+                        <div class="selectyourtype-div">
+                            <div class="selectyourtype">
+                                <div class="selectyourtype-title">
+                                    <h4>Select Your Type</h4>
+                                </div>
+                                <div class="choice">
+                                    <div class="car-div">
+                                        <input type="radio" id="wildcar" name="wildanimal" value="Carnivores" required>
+                                        <label for="wildcar">Carnivores</label>
+                                    </div>
+                                    <div class="her-div">
+                                        <input type="radio" id="wildher" name="wildanimal" value="Herbivores" required>
+                                        <label for="wildher">Herbivores</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Animal Name-->
+                        <div class="animalname">
+                            <label for="animal-name">Animal Name</label>
+                            <input type="text" id="animal-name" name="aniName" placeholder="Enter Your Favourite Animal"
+                                required>
+                        </div>
+
+                        <!--Reason-->
+                        <div class="reason">
+                            <label for="reason">Reason</label>
+                            <textarea type="text" id="reason" name="FavReason"
+                                placeholder="Why are you interest on your favourite wild animal?" required></textarea>
+                        </div>
+
+                        <!--Submit Button-->
+                        <div class="submitbtn-div">
+                            <div class="submitbtn">
+                                <button id="submitbtn-id" type="submit">Submit</button>
+                            </div>
+
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!------------------Footer------------------>
+        <div class="footer">
+            <div class="shortcut-div">
+                <div class=" shortcut">
+                    <div class="shourcutleft">
+                        <div class="shortcutfooter">
+                            <a href="index.html">
+                                <h1>Home</h1>
+                            </a>
+                        </div>
+                        <div class="shortcutfooter">
+                            <a href="wildanimal_C.html">
+                                <h1>Carnivores</h1>
+                            </a>
+                        </div>
+                        <div class="shortcutfooter">
+                            <a href="wildanimal_H.html">
+                                <h1>Herbivores</h1>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="shortcutright">
+                        <div class="shortcutfooter">
+                            <a href="gallery.html">
+                                <h1>Gallery</h1>
+                            </a>
+                        </div>
+                        <div class="shortcutfooter">
+                            <a href="about_me.html">
+                                <h1>About Me</h1>
+                            </a>
+                        </div>
+                        <div class="shortcutfooter">
+                            <a href="share_with_me.html">
+                                <h1>Share With Me</h1>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-div">
+                <div class="contact">
+                    <div class="facebook">
+                        <a href="https://web.facebook.com/profile.php?id=100007432062644" target="_new">
+                            <h3>麦瀚生</h3>
+                            <img src="a_img/fb_logo.png" width="80px">
+                        </a>
+                    </div>
+                    <div class="instagram">
+                        <a href="https://www.instagram.com/_mk_1051/" target="_new">
+                            <h3>_mk_1051</h3>
+                            <img src="a_img/ig_logo.jpg" width="80px">
+                        </a>
+                    </div>
+                    <div class="github">
+                        <a href="https://hanson1030.github.io/" target="_new">
+                            <h3>Hanson 2050093-BSE</h3>
+                            <img src="a_img/github_logo.png" width="75px">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="contactmobile">
+                <div class="facebook">
+                    <a href="https://web.facebook.com/profile.php?id=100007432062644" target="_new">
+                        <img src="a_img/fb_logo.png" width="80px">
+                        <h3>麦瀚生</h3>
+                    </a>
+                </div>
+                <div class="instagram">
+                    <a href="https://www.instagram.com/_mk_1051/" target="_new">
+                        <img src="a_img/ig_logo.jpg" width="80px">
+                        <h3>_mk_1051</h3>
+                    </a>
+                </div>
+                <div class="github">
+                    <a href="https://hanson1030.github.io/" target="_new">
+                        <img src="a_img/github_logo.png" width="75px">
+                        <h3>Hanson 2050093-BSE</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            function myFunction() {
+                var x = document.getElementById("navtext");
+                if (x.style.display === "block") {
+                    x.style.display = "none";
+                } else {
+                    x.style.display = "block";
+                }
+            }
+        </script>
+
+    </div>
+</body>
+
+</html>

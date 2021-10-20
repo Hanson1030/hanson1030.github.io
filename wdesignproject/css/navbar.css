@@ -1,0 +1,162 @@
+body {
+  margin: auto;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  width: 100%;
+  font-family: "Signika", sans-serif;
+  font-size: larger;
+  margin-bottom: 100px;
+
+  /* <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika&display=swap" rel="stylesheet">
+
+    */
+}
+
+.navbar #navtext {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
+
+#navtext a {
+  color: white;
+  text-decoration: none;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+#navtext h3 {
+  margin: 0;
+  padding: 5px;
+}
+
+#navtext h3:hover {
+  cursor: pointer;
+  color: black;
+  background-color: #fde8cd;
+}
+
+.navselected {
+  color: black;
+  background-color: #fde8cd;
+  padding: 5px;
+}
+
+.dropdowncontent {
+  background-color: rgba(85, 85, 85, 0.397);
+  display: none;
+  position: absolute;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+#navtext .dropdowncontent a {
+  font-size: 20px;
+  padding: 10px;
+}
+
+#navtext .dropdowncontent a:hover {
+  cursor: pointer;
+  color: black;
+  background-color: #fde8cd;
+}
+
+.dropdownWA:hover .dropdowncontent {
+  display: flex;
+  flex-direction: column;
+}
+
+#navtext .dropdownWA a {
+  margin: 0;
+}
+
+.dropdownWA h3 {
+  margin: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.navbarmobile {
+  display: none;
+}
+
+/*---------------------------Tablet VERSION------------------------*/
+@media screen and (max-width: 1080px) {
+  .navbar {
+    display: block;
+    text-align: center;
+  }
+
+  .navbar #navtext {
+    justify-content: center;
+  }
+}
+
+/*---------------------------Mobile VERSION------------------------*/
+@media screen and (max-width: 835px) {
+  .navlogo {
+    display: none;
+  }
+
+  .navbar {
+    margin-bottom: 80px;
+  }
+
+  .navbar #navtext {
+    display: none;
+  }
+
+  .navbarmobile {
+    display: flex;
+    justify-content: center;
+  }
+
+  .navbarmobile .menumobile {
+    color: #fde8cd;
+    font-size: 40px;
+    padding: 30px;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .menumobile:hover {
+    background-color: #fde8cd;
+    color: black;
+  }
+
+  #navtext a {
+    background-color: transparent;
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;
+    margin: 0;
+  }
+
+  #navtext h3 {
+    margin: 0;
+    padding: 15px;
+  }
+
+  #navtext h3:hover {
+    padding: 15px;
+  }
+
+  #navtext .navselected {
+    font-size: 30px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+  }
+
+  .dropdowncontent {
+    position: static;
+  }
+}

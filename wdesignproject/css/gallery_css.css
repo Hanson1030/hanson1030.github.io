@@ -1,0 +1,147 @@
+body {
+  color: white;
+  background-image: url(../a_img/wallpaper_new.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-attachment: fixed;
+}
+
+.body2 {
+  height: 100vh;
+  margin: 0;
+}
+
+.herbivore {
+  max-width: 1080px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: auto;
+  margin-bottom: 80px;
+}
+
+.carnivore {
+  max-width: 1080px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: auto;
+}
+
+.carnivore .animaltitle {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.animalpic img {
+  width: 95%;
+  height: auto;
+  margin: 15px;
+  margin-bottom: 0;
+}
+
+.animaltitle {
+  border-bottom: 8px solid #fde8cd;
+  font-family: "Signika", sans-serif;
+  font-size: 25px;
+  color: black;
+}
+
+.animaltitle h2 {
+  background-color: #fde8cd;
+  width: fit-content;
+  margin: 0;
+  padding: 15px;
+}
+
+.animalpic {
+  display: flex;
+  background-color: #433520;
+  padding: 10px;
+  padding-bottom: 20px;
+  padding-right: 20px;
+}
+
+.firstandsecondrowpic {
+  display: flex;
+  flex: 2;
+}
+
+.firstandsecondrowpic > div {
+  flex: 1;
+}
+
+.thirdrowpic {
+  flex: 1;
+}
+
+/*---------------------------Tablet VERSION------------------------*/
+@media screen and (max-width: 1080px) {
+  .herbivore {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .carnivore {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .animaltitle {
+    display: flex;
+    justify-content: center;
+  }
+
+  .carnivore .animaltitle {
+    display: flex;
+    justify-content: center;
+  }
+
+  .animalpic {
+    display: block;
+  }
+
+  .thirdrowpic {
+    display: flex;
+  }
+
+  .herbivore .thirdrowpicright {
+    margin-top: 0;
+  }
+
+  .thirdrowpic > div {
+    flex: 1;
+  }
+}
+
+/*---------------------------Mobile VERSION------------------------*/
+@media screen and (max-width: 600px) {
+  .herbivore {
+    padding-left: 55px;
+    padding-right: 55px;
+  }
+
+  .carnivore {
+    padding-left: 55px;
+    padding-right: 55px;
+  }
+
+  .animalpic img {
+    margin-bottom: 5px;
+  }
+
+  .animaltitle {
+    font-size: 20px;
+  }
+
+  .firstandsecondrowpic {
+    display: block;
+  }
+
+  .herbivore .thirdrowpicright {
+    margin-bottom: 0px;
+  }
+
+  .thirdrowpic {
+    display: block;
+  }
+}

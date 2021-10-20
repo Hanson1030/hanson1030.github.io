@@ -1,0 +1,148 @@
+.footer {
+  width: auto;
+  display: flex;
+  margin-top: 50px;
+  padding: 30px;
+  background-color: #fde8cd;
+}
+
+.contact-div {
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.contact img {
+  margin-left: 20px;
+}
+
+.contact > div {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.contact > div a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  text-decoration: none;
+  color: black;
+  width: fit-content;
+  border-radius: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.contact > div a:hover {
+  background-color: white;
+}
+
+.contactmobile {
+  display: none;
+}
+
+.shortcut-div {
+  flex: 1;
+}
+
+.shortcut {
+  display: flex;
+  font-family: "Signika", sans-serif;
+  text-align: center;
+}
+
+.shortcut a {
+  text-decoration: none;
+  color: black;
+  width: fit-content;
+}
+
+.shortcut h1 {
+  width: fit-content;
+  border-radius: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 25px;
+  text-align: center;
+}
+
+.shortcut h1:hover {
+  background-color: white;
+}
+
+.shortcut h1 {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.shortcut > div {
+  flex: 1;
+  text-align: center;
+}
+
+.shourcutleft a {
+  display: flex;
+}
+
+.shortcutright a {
+  display: flex;
+  align-items: baseline;
+}
+
+/*---------------------------Tablet VERSION------------------------*/
+@media screen and (max-width: 782px) {
+  .footer {
+    display: block;
+  }
+
+  .shortcut > div a {
+    justify-content: center;
+  }
+
+  .contact-div {
+    display: none;
+  }
+
+  .contactmobile {
+    display: flex;
+    margin-top: 30px;
+  }
+
+  .contactmobile {
+    display: flex;
+  }
+
+  .contactmobile > div {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+  }
+
+  .contactmobile > div a {
+    text-decoration: none;
+    color: black;
+    border-radius: 20px;
+    text-align: center;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 10px;
+  }
+
+  .contactmobile > div a:hover {
+    background-color: white;
+  }
+
+  .shortcutfooter {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+/*---------------------------Mobile VERSION------------------------*/
+@media screen and (max-width: 600px) {
+  .contactmobile h3 {
+    display: none;
+  }
+}
