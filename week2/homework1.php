@@ -14,7 +14,7 @@
             <h1>What is your birthday? Please fill in !</h1>
 
             <?php
-
+            //Day
             echo '<select class="bg-primary fs-2 rounded" id="day" name="day">' . "\n";
             echo "<option class='bg-white' selected>Day</option>" . "\n";
 
@@ -25,7 +25,7 @@
             ?>
 
             <?php
-
+            //Month
             echo '<select class="bg-secondary fs-2 rounded" id="month" name="month">' . "\n";
             echo "<option class='bg-white' selected>Month</option>" . "\n";
 
@@ -36,6 +36,7 @@
             ?>
 
             <?php
+            //Year
             $staring_year  = 1900;
             $curr_year = date('Y');
 
