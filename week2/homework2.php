@@ -34,12 +34,22 @@
             echo '<select class="bg-secondary fs-2 rounded" id="month" name="month">';
             echo "<option class='bg-white' selected>Month</option>";
 
+            /*foreach loop*/
+            foreach ($month as $x => $value) {
+                //echo "$value <br>";
+                //echo "<option class='bg-white' value=''>  $value  </option>";
+                echo "<option class='bg-white' value='" . ($x + 1) . "'>  $value  </option>";
+            }
+
+            /*
+            /*for loop
             for ($x = 0; $x < 12; $x++) { 
                 //echo "<option class='bg-white'>". date('F', mktime(0,0,0,$month))."</option>"."\n";
                 //echo "<option class='bg-white'>" . $month . "</option>" . "\n";
-                echo "<option class='bg-white' value='$month[$x]'>  $month[$x]  </option>";
+                echo "<option class='bg-white' value='".($x+1)."'>  $month[$x]  </option>";
 
             }
+            */
             echo '</select>';
             ?>
 
