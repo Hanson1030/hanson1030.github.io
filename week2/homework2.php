@@ -1,3 +1,6 @@
+<!--Student ID: 2050093-BSE-->
+<!--Name: Mak Hon Sang (Hanson)-->
+<!--Topic:  W2-Homework 2 (Using php to select menu - Day, Month[Array], Year)-->
 <!DOCTYPE html>
 <html>
 
@@ -19,7 +22,7 @@
             echo "<option class='bg-white' selected>Day</option>" . "\n";
 
             for ($day = 1; $day <= 31; $day++) {
-                echo "<option class='bg-white'>" . $day . "</option>" . "\n";
+                echo "<option class='bg-white' value='$day'>" . $day . "</option>" . "\n";
             }
             echo '</select>' . "\n";
             ?>
@@ -34,7 +37,7 @@
             for ($x = 0; $x < 12; $x++) { 
                 //echo "<option class='bg-white'>". date('F', mktime(0,0,0,$month))."</option>"."\n";
                 //echo "<option class='bg-white'>" . $month . "</option>" . "\n";
-                echo "<option class='bg-white'>" . $month[$x] . "</option>" . "\n";
+                echo "<option class='bg-white' value='$month[$x]'>" . $month[$x] . "</option>" . "\n";
 
             }
             echo '</select>' . "\n";
@@ -49,7 +52,7 @@
             echo "<option class='bg-white' selected>Year</option>" . "\n";
 
             for ($year = $staring_year; $year <= $curr_year; $year++) {
-                echo "<option class='bg-white'>" . $year . "</option>" . "\n";
+                echo "<option class='bg-white' value='$year'>" . $year . "</option>" . "\n";
             }
             echo '</select>' . "\n";
             ?>
