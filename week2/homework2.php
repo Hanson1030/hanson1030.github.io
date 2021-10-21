@@ -24,7 +24,7 @@
             for ($day = 1; $day <= 31; $day++) {
                 echo "<option class='bg-white' value='$day'>  $day  </option>";
             }
-            echo '</select>' . "\n";
+            echo '</select>';
             ?>
 
             <?php
@@ -40,7 +40,7 @@
                 echo "<option class='bg-white' value='$month[$x]'>  $month[$x]  </option>";
 
             }
-            echo '</select>' . "\n";
+            echo '</select>';
             ?>
 
             <?php
@@ -54,7 +54,7 @@
             for ($year = $staring_year; $year <= $curr_year; $year++) {
                 echo "<option class='bg-white' value='$year'>  $year  </option>";
             }
-            echo '</select>' . "\n";
+            echo '</select>';
             ?>
 
 
