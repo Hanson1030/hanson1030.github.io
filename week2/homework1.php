@@ -22,7 +22,7 @@
             echo "<option class='bg-white' selected>Day</option>" . "\n";
 
             for ($day = 1; $day <= 31; $day++) {
-                echo "<option class='bg-white'>" . $day . "</option>" . "\n";
+                echo "<option class='bg-white' value='$day'>" . $day . "</option>" . "\n";
             }
             echo '</select>' . "\n";
             ?>
@@ -33,7 +33,7 @@
             echo "<option class='bg-white' selected>Month</option>" . "\n";
 
             for ($month = 1; $month <= 12; $month++) {
-                echo "<option class='bg-white'>" . $month . "</option>" . "\n";
+                echo "<option class='bg-white' value='$month'>" . $month . "</option>" . "\n";
             }
             echo '</select>' . "\n";
             ?>
@@ -47,7 +47,7 @@
             echo "<option class='bg-white' selected>Year</option>" . "\n";
 
             for ($year = $staring_year; $year <= $curr_year; $year++) {
-                echo "<option class='bg-white'>" . $year . "</option>" . "\n";
+                echo "<option class='bg-white' value='$year'>" . $year . "</option>" . "\n";
             }
             echo '</select>' . "\n";
             ?>
