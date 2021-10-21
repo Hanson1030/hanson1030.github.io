@@ -18,22 +18,22 @@
 
             <?php
             //Day
-            echo '<select class="bg-primary fs-2 rounded" id="day" name="day">' . "\n";
+            echo '<select class="bg-primary fs-2 rounded" id="day" name="day">';
             echo "<option class='bg-white' selected>Day</option>" . "\n";
 
             for ($day = 1; $day <= 31; $day++) {
-                echo "<option class='bg-white' value='$day'>  $day  </option>" . "\n";
+                echo "<option class='bg-white' value='$day'>  $day  </option>";
             }
             echo '</select>' . "\n";
             ?>
 
             <?php
             //Month
-            echo '<select class="bg-secondary fs-2 rounded" id="month" name="month">' . "\n";
+            echo '<select class="bg-secondary fs-2 rounded" id="month" name="month">';
             echo "<option class='bg-white' selected>Month</option>" . "\n";
 
             for ($month = 1; $month <= 12; $month++) {
-                echo "<option class='bg-white' value='$month'>  $month  </option>" . "\n";
+                echo "<option class='bg-white' value='$month'>  $month  </option>";
             }
             echo '</select>' . "\n";
             ?>
@@ -43,11 +43,11 @@
             $staring_year  = 1900;
             $curr_year = date('Y');
 
-            echo '<select class="bg-warning fs-2 rounded" id="year" name="year">' . "\n";
+            echo '<select class="bg-warning fs-2 rounded" id="year" name="year">';
             echo "<option class='bg-white' selected>Year</option>" . "\n";
 
             for ($year = $staring_year; $year <= $curr_year; $year++) {
-                echo "<option class='bg-white' value='$year'>  $year  </option>" . "\n";
+                echo "<option class='bg-white' value='$year'>  $year  </option>";
             }
             echo '</select>' . "\n";
             ?>

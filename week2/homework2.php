@@ -18,11 +18,11 @@
 
             <?php
             //Day
-            echo '<select class="bg-primary fs-2 rounded" id="day" name="day">' . "\n";
-            echo "<option class='bg-white' selected>Day</option>" . "\n";
+            echo '<select class="bg-primary fs-2 rounded" id="day" name="day">';
+            echo "<option class='bg-white' selected>Day</option>";
 
             for ($day = 1; $day <= 31; $day++) {
-                echo "<option class='bg-white' value='$day'>  $day  </option>" . "\n";
+                echo "<option class='bg-white' value='$day'>  $day  </option>";
             }
             echo '</select>' . "\n";
             ?>
@@ -31,13 +31,13 @@
             //Month
             $month = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 
-            echo '<select class="bg-secondary fs-2 rounded" id="month" name="month">' . "\n";
-            echo "<option class='bg-white' selected>Month</option>" . "\n";
+            echo '<select class="bg-secondary fs-2 rounded" id="month" name="month">';
+            echo "<option class='bg-white' selected>Month</option>";
 
             for ($x = 0; $x < 12; $x++) { 
                 //echo "<option class='bg-white'>". date('F', mktime(0,0,0,$month))."</option>"."\n";
                 //echo "<option class='bg-white'>" . $month . "</option>" . "\n";
-                echo "<option class='bg-white' value='$month[$x]'>  $month[$x]  </option>" . "\n";
+                echo "<option class='bg-white' value='$month[$x]'>  $month[$x]  </option>";
 
             }
             echo '</select>' . "\n";
@@ -48,11 +48,11 @@
             $staring_year  = 1900;
             $curr_year = date('Y');
 
-            echo '<select class="bg-warning fs-2 rounded" id="year" name="year">' . "\n";
-            echo "<option class='bg-white' selected>Year</option>" . "\n";
+            echo '<select class="bg-warning fs-2 rounded" id="year" name="year">';
+            echo "<option class='bg-white' selected>Year</option>";
 
             for ($year = $staring_year; $year <= $curr_year; $year++) {
-                echo "<option class='bg-white' value='$year'>  $year  </option>" . "\n";
+                echo "<option class='bg-white' value='$year'>  $year  </option>";
             }
             echo '</select>' . "\n";
             ?>
