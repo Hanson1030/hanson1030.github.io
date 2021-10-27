@@ -55,7 +55,7 @@
                 $last_name = $_POST['last_name'];
                 $gender = $_POST['gender'];
                 $date_of_birth = $_POST['date_of_birth'];
-                $reg_date = $_POST['reg_date'];
+                //$reg_date = $_POST['reg_date'];
                 $acc_status = $_POST['acc_status'];
                 // bind the parameters
                 $stmt->bindParam(':username', $username);
@@ -64,6 +64,7 @@
                 $stmt->bindParam(':last_name', $last_name);
                 $stmt->bindParam(':gender', $gender);
                 $stmt->bindParam(':date_of_birth', $date_of_birth);
+                $reg_date = date('Y-m-d H:i:s'); // get the current date and time
                 $stmt->bindParam(':reg_date', $reg_date);
                 $stmt->bindParam(':acc_status', $acc_status);
                 //$created = date('Y-m-d H:i:s'); // get the current date and time
@@ -108,11 +109,11 @@
                     <td>Gender</td>
                     <td>
                         <div class="form-check form-check-inline">
-                            <input type="radio" id="male" name='gender' value="male" class="form-check-input">
+                            <input type="radio" id="male" name='gender' value="Male" class="form-check-input">
                             <label class="form-check-label" for="male">Male</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" id="female" name='gender' value="female" class="form-check-input">
+                            <input type="radio" id="female" name='gender' value="Female" class="form-check-input">
                             <label class="form-check-label" for="female">Female</label>
                         </div>
                     </td>
@@ -121,19 +122,16 @@
                     <td>Date of birth</td>
                     <td><input type='date' name='date_of_birth' class='form-control' /></td>
                 </tr>
-                <tr>
-                    <td>Registration Date & Time</td>
-                    <td><input type="datetime-local" name='reg_date' class='form-control' /></td>
-                </tr>
+                
                 <tr>
                     <td>Account Status</td>
                     <td>
                         <div class="form-check form-check-inline">
-                            <input type="radio" id="active" name='acc_status' value="active" class="form-check-input">
+                            <input type="radio" id="active" name='acc_status' value="Active" class="form-check-input">
                             <label class="form-check-label" for="active">Active</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" id="inactive" name='acc_status' value="inactive" class="form-check-input">
+                            <input type="radio" id="inactive" name='acc_status' value="Inactive" class="form-check-input">
                             <label class="form-check-label" for="inactive">Inactive</label>
                         </div>
                         
