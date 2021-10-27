@@ -8,11 +8,37 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-md-light bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-light" href="#">Hanson1030</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary" href="#">Create Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary" href="#">Create Customer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary" href="#">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <!-- container -->
     <div class="container">
         <div class="page-header">
             <h1>Create Product</h1>
         </div>
+
+
 
         <?php
         if ($_POST) {
@@ -54,7 +80,6 @@
 
         ?>
 
-
         <!-- html form here where the product information will be entered -->
         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
             <table class='table table-hover table-responsive table-bordered'>
@@ -64,7 +89,7 @@
                 </tr>
                 <tr>
                     <td>Description</td>
-                    <td><input type='text' name='description' class='form-control' /></td>
+                    <td><textarea name='description' class='form-control' ></textarea></td>
                 </tr>
                 <tr>
                     <td>Price</td>
