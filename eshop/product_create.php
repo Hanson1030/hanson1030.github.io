@@ -17,16 +17,16 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active text-light" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active text-light" aria-current="page" href="home.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-secondary" href="#">Create Product</a>
+                        <a class="nav-link text-secondary" href="product_create.php">Create Product</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-secondary" href="#">Create Customer</a>
+                        <a class="nav-link text-secondary" href="customer_create.php">Create Customer</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-secondary" href="#">Contact Us</a>
+                        <a class="nav-link text-secondary" href="contact_us.php">Contact Us</a>
                     </li>
                 </ul>
             </div>
