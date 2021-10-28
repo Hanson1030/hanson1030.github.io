@@ -46,27 +46,30 @@
             include 'config/database.php';
             try {
                 // insert query
-                $query = "INSERT INTO customers SET username=:username, password=:password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, registration_date=:reg_date, account_status=:acc_status";
+                $query = "INSERT INTO customers SET username=:username, email=:email, password=:password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth";
+                // registration_date=:reg_date, account_status=:acc_status;
                 // prepare query for execution
                 $stmt = $con->prepare($query);
                 $username = $_POST['username'];
-                $password = $_POST['password'];
+                $email = $_POST['email'];
+                $password = md5($_POST['password']);
                 $first_name = $_POST['first_name'];
                 $last_name = $_POST['last_name'];
                 $gender = $_POST['gender'];
                 $date_of_birth = $_POST['date_of_birth'];
                 //$reg_date = $_POST['reg_date'];
-                $acc_status = $_POST['acc_status'];
+                //$acc_status = $_POST['acc_status'];
                 // bind the parameters
                 $stmt->bindParam(':username', $username);
+                $stmt->bindParam(':email', $email);
                 $stmt->bindParam(':password', $password);
                 $stmt->bindParam(':first_name', $first_name);
                 $stmt->bindParam(':last_name', $last_name);
                 $stmt->bindParam(':gender', $gender);
                 $stmt->bindParam(':date_of_birth', $date_of_birth);
-                $reg_date = date('Y-m-d H:i:s'); // get the current date and time
-                $stmt->bindParam(':reg_date', $reg_date);
-                $stmt->bindParam(':acc_status', $acc_status);
+                //$reg_date = date('Y-m-d H:i:s'); // get the current date and time
+                //$stmt->bindParam(':reg_date', $reg_date);
+                //$stmt->bindParam(':acc_status', $acc_status);
                 //$created = date('Y-m-d H:i:s'); // get the current date and time
                 //$stmt->bindParam(':created', $created);
                 // Execute the query
@@ -92,6 +95,10 @@
                 <tr>
                     <td>Username</td>
                     <td><input type='text' name='username' class='form-control' /></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><input type='email' name='email' class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>Password</td>
@@ -121,21 +128,6 @@
                 <tr>
                     <td>Date of birth</td>
                     <td><input type='date' name='date_of_birth' class='form-control' /></td>
-                </tr>
-
-                <tr>
-                    <td>Account Status</td>
-                    <td>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="active" name='acc_status' value="Active" class="form-check-input">
-                            <label class="form-check-label" for="active">Active</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="inactive" name='acc_status' value="Inactive" class="form-check-input">
-                            <label class="form-check-label" for="inactive">Inactive</label>
-                        </div>
-
-                    </td>
                 </tr>
                 <tr>
                     <td></td>
