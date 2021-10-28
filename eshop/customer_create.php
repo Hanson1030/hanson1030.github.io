@@ -46,13 +46,14 @@
             include 'config/database.php';
             try {
                 // insert query
-                $query = "INSERT INTO customers SET username=:username, email=:email, password=:password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth";
+                $query = "INSERT INTO customers SET username=:username, email=:email, password=:password, confirm_password=:confirm_password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth";
                 // registration_date=:reg_date, account_status=:acc_status;
                 // prepare query for execution
                 $stmt = $con->prepare($query);
                 $username = $_POST['username'];
                 $email = $_POST['email'];
-                $password = md5($_POST['password']);
+                $password = $_POST['password'];
+                $confirm_password = $_POST['confirm_password'];
                 $first_name = $_POST['first_name'];
                 $last_name = $_POST['last_name'];
                 $gender = $_POST['gender'];
@@ -63,6 +64,7 @@
                 $stmt->bindParam(':username', $username);
                 $stmt->bindParam(':email', $email);
                 $stmt->bindParam(':password', $password);
+                $stmt->bindParam(':confirm_password', $confirm_password);
                 $stmt->bindParam(':first_name', $first_name);
                 $stmt->bindParam(':last_name', $last_name);
                 $stmt->bindParam(':gender', $gender);
@@ -72,11 +74,39 @@
                 //$stmt->bindParam(':acc_status', $acc_status);
                 //$created = date('Y-m-d H:i:s'); // get the current date and time
                 //$stmt->bindParam(':created', $created);
+
                 // Execute the query
-                if ($stmt->execute()) {
-                    echo "<div class='alert alert-success'>Record was saved.</div>";
+                // echo $password . "\n";
+                // $check = !preg_match( "/[a-z]/", $password) && !preg_match( "/[A-Z]/", $password) || !preg_match( "/[0-9]/", $password);
+                // echo $check;
+
+                $flag = 0;
+                $message = "";
+                $cur_date = date('Y');
+                $cust_age = ((int)$cur_date - (int)$date_of_birth);
+
+                if (!preg_match("/[a-z]/", $password) && !preg_match("/[A-Z]/", $password) || !preg_match("/[0-9]/", $password)) {
+                    $flag = 1;
+                    $message = "Password must at least 8 character and must contain number and alphabets.";
+                } elseif ($password !== $confirm_password) {
+                    $flag = 1;
+                    $message = "Please make sure Password and Confirm Password are same.";
+                } elseif ($cust_age < 18) {
+                    $flag = 1;
+                    $message = "Customer must be age of 18 or above.";
+                }
+                
+
+                if ($flag == 0) {
+                    if ($stmt->execute()) {
+                        echo "<div class='alert alert-success'>Record was saved.</div>";
+                    } else {
+                        echo "Unable to save record.";
+                    }
                 } else {
-                    echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                    echo "<div class='alert alert-danger'>";
+                    echo $message;
+                    echo "</div>";
                 }
             }
             // show error
@@ -103,6 +133,10 @@
                 <tr>
                     <td>Password</td>
                     <td><input type="password" name='password' class='form-control' /></td>
+                </tr>
+                <tr>
+                    <td>Confirm Password</td>
+                    <td><input type="password" name='confirm_password' class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>First Name</td>
