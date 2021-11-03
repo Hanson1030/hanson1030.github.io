@@ -57,11 +57,11 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT id, name, description, price FROM products WHERE id = :id ";
+            $query = "SELECT username, email, first_name, last_name, registration_date FROM customers WHERE username = :username";
             $stmt = $con->prepare($query);
 
             // Bind the parameter
-            $stmt->bindParam(":id", $id);
+            $stmt->bindParam(":username", $id);
 
             // execute our query
             $stmt->execute();
@@ -70,9 +70,11 @@
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // values to fill up our form
-            $name = $row['name'];
-            $description = $row['description'];
-            $price = $row['price'];
+            $username = $row['username'];
+            $email = $row['email'];
+            $first_name = $row['first_name'];
+            $last_name = $row['last_name'];
+            $registration_date = $row['registration_date'];
             // shorter way to do that is extract($row)
         }
 
@@ -87,16 +89,24 @@
         <!--we have our html table here where the record will be displayed-->
         <table class='table table-hover table-responsive table-bordered'>
             <tr>
-                <td>Name</td>
-                <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
+                <td>Username</td>
+                <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
-                <td>Description</td>
-                <td><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></td>
+                <td>Email</td>
+                <td><?php echo htmlspecialchars($email, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
-                <td>Price</td>
-                <td><?php echo htmlspecialchars($price, ENT_QUOTES);  ?></td>
+                <td>First Name</td>
+                <td><?php echo htmlspecialchars($first_name, ENT_QUOTES);  ?></td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td><?php echo htmlspecialchars($last_name, ENT_QUOTES);  ?></td>
+            </tr>
+            <tr>
+                <td>Registration Date & Time</td>
+                <td><?php echo htmlspecialchars($registration_date, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
                 <td></td>

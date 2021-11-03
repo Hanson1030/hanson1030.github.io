@@ -20,7 +20,13 @@
                         <a class="nav-link active text-light" aria-current="page" href="home.php">Home</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link text-secondary" href="product_read.php">Read Product</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link text-secondary" href="product_create.php">Create Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary" href="customer_read.php">Read Customer</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-secondary" href="customer_create.php">Create Customer</a>
