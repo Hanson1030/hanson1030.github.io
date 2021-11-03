@@ -38,8 +38,6 @@
             <h1>Create Customer</h1>
         </div>
 
-
-
         <?php
         if ($_POST) {
             // include database connection
@@ -47,7 +45,6 @@
             try {
                 // insert query
                 $query = "INSERT INTO customers SET username=:username, email=:email, password=:password, confirm_password=:confirm_password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth";
-                // registration_date=:reg_date, account_status=:acc_status;
                 // prepare query for execution
                 $stmt = $con->prepare($query);
                 $username = $_POST['username'];
@@ -85,7 +82,7 @@
                 $cur_date = date('Y');
                 $cust_age = ((int)$cur_date - (int)$date_of_birth);
 
-                if (!preg_match("/[a-z]/", $password) && !preg_match("/[A-Z]/", $password) || !preg_match("/[0-9]/", $password)) {
+                if (!preg_match("/[a-zA-Z]/", $password) || !preg_match("/[0-9]/", $password) || !preg_match("/[a-zA-Z0-9]{6,}/", $password)) {
                     $flag = 1;
                     $message = "Password must at least 8 character and must contain number and alphabets.";
                 } elseif ($password !== $confirm_password) {
@@ -94,8 +91,71 @@
                 } elseif ($cust_age < 18) {
                     $flag = 1;
                     $message = "Customer must be age of 18 or above.";
+                } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    if (empty($_POST["name"])) {
+                        $flag = 1;
+                        $message = "Please fill in every field.";
+                        $usernameErr = "Name is required";
+                    } else {
+                        $username = trim(htmlspecialchars($_POST["name"]));
+                    }
+
+                    if (empty($_POST["email"])) {
+                        $flag = 1;
+                        $message = "Please fill in every field.";
+                        $emailErr = "Email is required";
+                    } else {
+                        $email = trim(htmlspecialchars($_POST["email"]));
+                    }
+
+                    if (empty($_POST["password"])) {
+                        $flag = 1;
+                        $message = "Please fill in every field.";
+                        $passwordErr = "Password is required";
+                    } else {
+                        $password = trim(htmlspecialchars($_POST["password"]));
+                    }
+
+                    if (empty($_POST["confirm_password"])) {
+                        $flag = 1;
+                        $message = "Please fill in every field.";
+                        $confirm_passwordErr = "Confirm Password is required";
+                    } else {
+                        $confirm_password = trim(htmlspecialchars($_POST["confirm_password"]));
+                    }
+
+                    if (empty($_POST["first_name"])) {
+                        $flag = 1;
+                        $message = "Please fill in every field.";
+                        $first_nameErr = "First Name is required";
+                    } else {
+                        $first_name = trim(htmlspecialchars($_POST["first_name"]));
+                    }
+
+                    if (empty($_POST["last_name"])) {
+                        $flag = 1;
+                        $message = "Please fill in every field.";
+                        $last_nameErr = "Last Name is required";
+                    } else {
+                        $last_name = trim(htmlspecialchars($_POST["last_name"]));
+                    }
+
+                    if (empty($_POST["gender"])) {
+                        $flag = 1;
+                        $message = "Please fill in every field.";
+                        $genderErr = "Gender is required";
+                    } else {
+                        $gender = trim(htmlspecialchars($_POST["gender"]));
+                    }
+
+                    if (empty($_POST["date_of_birth"])) {
+                        $flag = 1;
+                        $message = "Please fill in every field.";
+                        $date_of_birthErr = "Date of Birth is required";
+                    } else {
+                        $date_of_birth = trim(htmlspecialchars($_POST["date_of_birth"]));
+                    }
                 }
-                
 
                 if ($flag == 0) {
                     if ($stmt->execute()) {
@@ -124,27 +184,51 @@
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td>Username</td>
-                    <td><input type='text' name='username' class='form-control' /></td>
+                    <td><input type='text' name='username' class='form-control' />
+                        <span>
+                            <?php if (isset($usernameErr)) echo "<div class='text-danger'>*$usernameErr</div>  "; ?>
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td>Email</td>
-                    <td><input type='email' name='email' class='form-control' /></td>
+                    <td><input type='email' name='email' class='form-control' />
+                        <span>
+                            <?php if (isset($emailErr)) echo "<div class='text-danger'>*$emailErr</div>  "; ?>
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td>Password</td>
-                    <td><input type="password" name='password' class='form-control' /></td>
+                    <td><input type="password" name='password' class='form-control' />
+                        <span>
+                            <?php if (isset($passwordErr)) echo "<div class='text-danger'>*$passwordErr</div>  "; ?>
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td>Confirm Password</td>
-                    <td><input type="password" name='confirm_password' class='form-control' /></td>
+                    <td><input type="password" name='confirm_password' class='form-control' />
+                        <span>
+                            <?php if (isset($confirm_passwordErr)) echo "<div class='text-danger'>*$confirm_passwordErr</div>  "; ?>
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td>First Name</td>
-                    <td><input type="text" name='first_name' class='form-control' /></td>
+                    <td><input type="text" name='first_name' class='form-control' />
+                        <span>
+                            <?php if (isset($first_nameErr)) echo "<div class='text-danger'>*$first_nameErr</div>  "; ?>
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td>Last Name</td>
-                    <td><input type="text" name='last_name' class='form-control' /></td>
+                    <td><input type="text" name='last_name' class='form-control' />
+                        <span>
+                            <?php if (isset($last_nameErr)) echo "<div class='text-danger'>*$last_nameErr</div>  "; ?>
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td>Gender</td>
@@ -157,17 +241,24 @@
                             <input type="radio" id="female" name='gender' value="Female" class="form-check-input">
                             <label class="form-check-label" for="female">Female</label>
                         </div>
+                        <span>
+                            <?php if (isset($genderErr)) echo "<div class='text-danger'>*$genderErr</div>  "; ?>
+                        </span>
                     </td>
                 </tr>
                 <tr>
                     <td>Date of birth</td>
-                    <td><input type='date' name='date_of_birth' class='form-control' /></td>
+                    <td><input type='date' name='date_of_birth' class='form-control' />
+                        <span>
+                            <?php if (isset($date_of_birthErr)) echo "<div class='text-danger'>*$date_of_birthErr</div>  "; ?>
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>
                         <input type='submit' value='Save' class='btn btn-primary' />
-                        <a href='index.php' class='btn btn-danger'>Back to read products</a>
+                        <a href="product_read.php" class='btn btn-danger'>Back to read products</a>
                     </td>
                 </tr>
             </table>
