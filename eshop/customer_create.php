@@ -82,7 +82,7 @@
                 $cur_date = date('Y');
                 $cust_age = ((int)$cur_date - (int)$date_of_birth);
 
-                if (!preg_match("/[a-zA-Z]/", $password) || !preg_match("/[0-9]/", $password) || !preg_match("/[a-zA-Z0-9]{6,}/", $password)) {
+                if (!preg_match("/[a-zA-Z]/", $password) || !preg_match("/[0-9]/", $password) || !preg_match("/[a-zA-Z0-9]{8,}/", $password)) {
                     $flag = 1;
                     $message = "Password must at least 8 character and must contain number and alphabets.";
                 } elseif ($password !== $confirm_password) {
@@ -91,6 +91,9 @@
                 } elseif ($cust_age < 18) {
                     $flag = 1;
                     $message = "Customer must be age of 18 or above.";
+                } elseif (!preg_match("/[a-zA-Z0-9]{6,}/", $username)) {
+                    $flag = 1;
+                    $message = "Username must be at least 6 characters";
                 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if (empty($_POST["name"])) {
                         $flag = 1;
