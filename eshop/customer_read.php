@@ -45,7 +45,7 @@
     <!-- container -->
     <div class="container">
         <div class="page-header">
-            <h1>Read Products</h1>
+            <h1>Read Customers</h1>
         </div>
 
         <?php
