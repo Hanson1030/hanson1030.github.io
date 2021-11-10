@@ -8,6 +8,39 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-md-light bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-light" href="home.php">Hanson1030</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" aria-current="page" href="home.php">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary" href="product_read.php">Read Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary" href="product_create.php">Create Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary" href="customer_read.php">Read Customer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary" href="customer_create.php">Create Customer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary" href="contact_us.php">Contact Us</a>
+                    </li>
+                </ul>
+                <span class="navbar-text">
+                    <a class="nav-link text-secondary" href="order_create.php">Create Order</a>
+                </span>
+            </div>
+        </div>
+    </nav>
     <!-- container -->
     <div class="container">
 
@@ -66,38 +99,36 @@
                 $stmt->bindParam(':price1', $price1);
                 //$stmt->bindParam(':product2', $product2);
                 //$stmt->bindParam(':quantity2', $quantity2);
-                
+
 
                 if ($stmt->execute()) {
                     echo "<div class='alert alert-success'>Record was saved.</div>";
                 } else {
                     echo "<div class='alert alert-danger'>Unable to save record.</div>";
                 }
-            }
-            catch (PDOException $exception) {
+            } catch (PDOException $exception) {
                 die('ERROR: ' . $exception->getMessage());
             }
 
             try {
-                 // insert query
-                 $query = "INSERT INTO order_summary SET username=:cus_username, total=:total, purchase_date=:purchase_date";
-                 // prepare query for execution
-                 $stmt = $con->prepare($query);
-                 $cus_username = $_POST['cus_username'];
-                 // bind the parameters
-                 $stmt->bindParam(':cus_username', $cus_username);
-                 $total = $price1;
-                 $stmt->bindParam(':total', $total);
-                 $purchase_date = date('Y-m-d H:i:s'); // get the current date and time
-                 $stmt->bindParam(':purchase_date', $purchase_date);
+                // insert query
+                $query = "INSERT INTO order_summary SET username=:cus_username, total=:total, purchase_date=:purchase_date";
+                // prepare query for execution
+                $stmt = $con->prepare($query);
+                $cus_username = $_POST['cus_username'];
+                // bind the parameters
+                $stmt->bindParam(':cus_username', $cus_username);
+                $total = $price1;
+                $stmt->bindParam(':total', $total);
+                $purchase_date = date('Y-m-d H:i:s'); // get the current date and time
+                $stmt->bindParam(':purchase_date', $purchase_date);
 
-                 if ($stmt->execute()) {
+                if ($stmt->execute()) {
                     echo "<div class='alert alert-success'>Record was saved.</div>";
                 } else {
                     echo "<div class='alert alert-danger'>Unable to save record.</div>";
                 }
-            }
-            catch (PDOException $exception) {
+            } catch (PDOException $exception) {
                 die('ERROR: ' . $exception->getMessage());
             }
         }
@@ -153,12 +184,12 @@
                     <th>Quantity</th>
                 </tr>
                 <?php
-                /*
+
                 $quantity = 0;
 
                 echo "<tr>";
                 echo '<td>
-                       <select class="fs-4 rounded" id="" name="product2">';
+                       <select class="fs-4 rounded" id="" name="product1">';
                 echo  '<option class="bg-white" selected>--Select--</option>';
                 while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
                     extract($row2);
@@ -167,14 +198,14 @@
                 echo "</select>";
                 echo '</td>';
                 echo "<td>";
-                echo '<select class="w-100 fs-4 rounded" name="quantity2" class="form-control">';
+                echo '<select class="w-100 fs-4 rounded" name="quantity1" class="form-control">';
                 echo "<option class='bg-white' selected>Please Select Your Quantity</option>";
                 for ($quantity = 0; $quantity <= 5; $quantity++) {
                     echo "<option value='$quantity'>$quantity</option>";
                 }
                 echo '</td>';
                 echo "</tr>";
-                */
+
                 ?>
                 <tr>
                     <th>Products 3<span class="fw-light">(Optional)</span></th>
@@ -182,10 +213,10 @@
                 </tr>
                 <?php
                 $quantity = 0;
-                /*
+
                 echo "<tr>";
                 echo '<td>
-                       <select class="fs-4 rounded" id="" name="name">';
+                       <select class="fs-4 rounded" id="" name="product1">';
                 echo  '<option class="bg-white" selected>--Select--</option>';
                 while ($row3 = $stmt3->fetch(PDO::FETCH_ASSOC)) {
                     extract($row3);
@@ -194,14 +225,14 @@
                 echo "</select>";
                 echo '</td>';
                 echo "<td>";
-                echo '<select class="w-100 fs-4 rounded" name="quantity" class="form-control">';
+                echo '<select class="w-100 fs-4 rounded" name="quantity1" class="form-control">';
                 echo "<option class='bg-white' selected>Please Select Your Quantity</option>";
                 for ($quantity = 0; $quantity <= 5; $quantity++) {
                     echo "<option value='$quantity'>$quantity</option>";
                 }
                 echo '</td>';
                 echo "</tr>";
-                */
+
                 ?>
 
                 <tr>
