@@ -34,10 +34,10 @@
                     <li class="nav-item">
                         <a class="nav-link text-secondary" href="contact_us.php">Contact Us</a>
                     </li>
-                    <span class="navbar-text">
-                        <a class="nav-link text-secondary" href="order_create.php">Create Order</a>
-                    </span>
                 </ul>
+                <span class="navbar-text">
+                    <a class="nav-link text-secondary" href="order_create.php">Create Order</a>
+                </span>
             </div>
         </div>
     </nav>
