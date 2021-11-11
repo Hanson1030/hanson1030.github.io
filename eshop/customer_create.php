@@ -104,12 +104,13 @@
                     $flag = 1;
                     $message = "Username must be at least 6 characters";
                 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    if (empty($_POST["name"])) {
+
+                    if (empty($_POST["username"])) {
                         $flag = 1;
                         $message = "Please fill in every field.";
                         $usernameErr = "Name is required";
                     } else {
-                        $username = trim(htmlspecialchars($_POST["name"]));
+                        $username = trim(htmlspecialchars($_POST["username"]));
                     }
 
                     if (empty($_POST["email"])) {
