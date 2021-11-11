@@ -60,11 +60,11 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT id, name, description, price FROM products WHERE id = :id ";
+            $query = "SELECT product_id, name, description, price FROM products WHERE product_id = :product_id ";
             $stmt = $con->prepare($query);
 
             // Bind the parameter
-            $stmt->bindParam(":id", $id);
+            $stmt->bindParam(":product_id", $id);
 
             // execute our query
             $stmt->execute();
