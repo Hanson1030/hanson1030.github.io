@@ -65,10 +65,21 @@
 
 
         if ($_POST) {
-            // include database connection
-            include 'config/database.php';
-
             //var_dump($_POST);
+
+            $flag = 0;
+            $message = '';
+
+            if (empty($_POST['cus_username'])) {
+                $flag = 1;
+                $message = 'Please select Username.';
+            } elseif (empty($_POST['product'][0])) {
+                $flag = 1;
+                $message = 'Please select at least 1 product.';
+            } elseif (empty($_POST['quantity'][0])) {
+                $flag = 1;
+                $message = 'Please enter the quantity.';
+            }
 
             try {
                 // insert query
@@ -81,25 +92,27 @@
                 $purchase_date = date('Y-m-d H:i:s'); // get the current date and time
                 $stmt->bindParam(':purchase_date', $purchase_date);
 
-                if ($stmt->execute()) {
-                    $last_id = $con->lastInsertId();
-                    $query2 = "INSERT INTO order_details SET order_id=:order_id, product_id=:product_id, quantity=:quantity";
-                    $stmt = $con->prepare($query2);
-                    $stmt->bindParam(':order_id', $last_id);
-                    $stmt->bindParam(':product_id', $_POST['product'][0]);
-                    $stmt->bindParam(':quantity', $_POST['quantity'][0]);
-                    $stmt->execute();
-                    for ($count = 1; $count < 3; $count++) {
-                        $query2 = "INSERT INTO order_details SET order_id=:order_id, product_id=:product_id, quantity=:quantity";
-                        $stmt = $con->prepare($query2);
-                        $stmt->bindParam(':order_id', $last_id);
-                        $stmt->bindParam(':product_id', $_POST['product'][$count]);
-                        $stmt->bindParam(':quantity', $_POST['quantity'][$count]);
-                        $stmt->execute();
+                if ($flag == 0) {
+                    if ($stmt->execute()) {
+                        $last_id = $con->lastInsertId();
+                        for ($count = 0; $count < 3; $count++) {
+                            $query2 = "INSERT INTO order_details SET order_id=:order_id, product_id=:product_id, quantity=:quantity";
+                            $stmt = $con->prepare($query2);
+                            $stmt->bindParam(':order_id', $last_id);
+                            $stmt->bindParam(':product_id', $_POST['product'][$count]);
+                            $stmt->bindParam(':quantity', $_POST['quantity'][$count]);
+                            if (!empty($_POST['product'][$count]) && !empty($_POST['quantity'][$count])){
+                                $stmt->execute();  
+                            } 
+                        }
+                        echo "<div class='alert alert-success'>Record was saved.Last inserted ID is: $last_id</div>";
+                    } else {
+                        echo "<div class='alert alert-danger'>Unable to save record.</div>";
                     }
-                    echo "<div class='alert alert-success'>Record was saved. Your Order ID is: $last_id</div>";
                 } else {
-                    echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                    echo "<div class='alert alert-danger'>";
+                    echo $message;
+                    echo "</div>";
                 }
             } catch (PDOException $exception) {
                 die('ERROR: ' . $exception->getMessage());
@@ -116,18 +129,14 @@
                     <th>Customer Name<span class="text-danger">*</span>:</th>
                     <?php
                     echo "<td>";
-                    echo '<select class="w-100 fs-4 rounded" id="" name="cus_username">';
-                    echo  '<option class="bg-white" disable selected value>Select Your Username</option>';
+                    echo '<select class="w-100 fs-4 rounded" name="cus_username">';
+                    echo  "<option value=''>Select Your Username</option>";
                     while ($row = $cu->fetch(PDO::FETCH_ASSOC)) {
                         extract($row);
                         echo "<option class='bg-white' value='" . $row['username'] . "'>" . $row['username'] . "</option>";
                     }
                     echo "</td>";
                     ?>
-                </tr>
-                <tr>
-                    <th>Product 1<span class="text-danger">*</span></th>
-                    <th>Quantity<span class="text-danger">*</span></th>
                 </tr>
                 <?php
                 $quantity = 1;
@@ -140,34 +149,21 @@
                 }
                 //print_r($product_arr);
 
-                echo "<tr>";
-                echo '<td>
-                       <select class="fs-4 rounded" name="product[]">';
-                echo  "<option>--Select--</option>";
-                for ($product_count = 0; $product_count < count($product_arrName); $product_count++) {
-                    echo  "<option value='" . $product_arrID[$product_count] . "'>" . $product_arrName[$product_count] . "</option>";
-                }
-                echo "</select>";
-                echo '</td>';
-                echo "<td>";
-                echo '<select class="w-100 fs-4 rounded" name="quantity[]" class="form-control">';
-                echo "<option class='bg-white' disable selected value>Please Select Your Quantity</option>";
-                for ($quantity = 1; $quantity <= 5; $quantity++) {
-                    echo "<option value='$quantity'>$quantity</option>";
-                }
-                echo '</td>';
-                echo "</tr>";
-
-                for ($x = 2; $x <= 3; $x++) {
+                for ($x = 1; $x <= 3; $x++) {
                     echo "<tr>";
-                    echo "<th>Product $x<span class='fw-light'>(Optional)</span></th>";
-                    echo "<th>Quantity <span class='fw-light'>(Optional)</span></th>";
+                    if ($x == 1) {
+                        echo "<th>Product $x<span class='fw-light text-danger'>*</span></th>";
+                        echo "<th>Quantity <span class='fw-light text-danger'>*</span></th>";
+                   } else {
+                        echo "<th>Product $x<span class='fw-light'>(Optional)</span></th>";
+                        echo "<th>Quantity <span class='fw-light'>(Optional)</span></th>";
+                    }
                     echo "</tr>";
 
                     echo "<tr>";
                     echo '<td>
                        <select class="fs-4 rounded" name="product[]">';
-                    echo  "<option>--Select--</option>";
+                    echo  "<option value=''>--Select--</option>";
                     for ($product_count = 0; $product_count < count($product_arrName); $product_count++) {
                         echo  "<option value='" . $product_arrID[$product_count] . "'>" . $product_arrName[$product_count] . "</option>";
                     }
@@ -175,7 +171,7 @@
                     echo '</td>';
                     echo "<td>";
                     echo '<select class="w-100 fs-4 rounded" name="quantity[]" class="form-control">';
-                    echo "<option class='bg-white' disable selected value>Please Select Your Quantity</option>";
+                    echo "<option value=''>Please Select Your Quantity</option>";
                     for ($quantity = 1; $quantity <= 5; $quantity++) {
                         echo "<option value='$quantity'>$quantity</option>";
                     }
