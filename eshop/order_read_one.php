@@ -60,13 +60,13 @@
         // read current record's data
         try {
             // prepare select query
-            //$query = "SELECT order_details.orderdetail_id, order_details.order_id, order_details.product_id, order_details.quantity FROM order_details INNER JOIN order_summary ON order_details.order_id = order_summary.order_id";
-            $query = "SELECT orderdetail_id, order_id, product_id, quantity FROM order_details WHERE orderdetail_id = :orderdetail_id";
+            $query = "SELECT orderdetail_id, order_id, product_id, quantity FROM order_details WHERE order_id = :order_id";
+            //$query = "SELECT order_details.orderdetail_id, order_details.order_id, order_details.product_id, products.name, order_details.quantity FROM order_details INNER JOIN products ON order_details.product_id = products.product_id WHERE orderdetail_id = :orderdetail_id";
 
             $stmt = $con->prepare($query);
 
             // Bind the parameter
-            $stmt->bindParam(":orderdetail_id", $id);
+            $stmt->bindParam(":order_id", $id);
 
             // execute our query
             $stmt->execute();
@@ -77,7 +77,7 @@
             // values to fill up our form
             //$username = $row['username'];
             $orderdetail_id = $row['orderdetail_id'];
-            $order_id = $row['order_id,'];
+            $order_id = $row['order_id'];
             $product_id = $row['product_id'];
             $quantity = $row['quantity'];
             // shorter way to do that is extract($row)
@@ -93,21 +93,17 @@
 
         <!--we have our html table here where the record will be displayed-->
         <table class='table table-hover table-responsive table-bordered'>
-            
+
             <tr>
                 <td>Order Detail ID</td>
-                <td><?php echo htmlspecialchars($orderdetail_id, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
                 <td>Order ID</td>
-                <td><?php echo htmlspecialchars($order_id, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
                 <td>Product ID</td>
-                <td><?php echo htmlspecialchars($product_id, ENT_QUOTES);  ?></td>
+                <td>Quantity</td>
             </tr>
             <tr>
-                <td>Quantity</td>
+                <td><?php echo htmlspecialchars($orderdetail_id, ENT_QUOTES);  ?></td>
+                <td><?php echo htmlspecialchars($order_id, ENT_QUOTES);  ?></td>
+                <td><?php echo htmlspecialchars($product_id, ENT_QUOTES);  ?></td>
                 <td><?php echo htmlspecialchars($quantity, ENT_QUOTES);  ?></td>
             </tr>
             <tr>

@@ -85,18 +85,18 @@
                 extract($row);
                 // creating new table row per record
                 echo "<tr>";
-                echo "<td>{$order_id}</td>";
-                echo "<td>{$username}</td>";
-                echo "<td>{$purchase_date}</td>";
+                echo "<td>".$row['order_id']."</td>";
+                echo "<td>".$row['username']."</td>";
+                echo "<td>".$row['purchase_date']."</td>";
                 echo "<td>";
                 // read one record
-                echo "<a href='order_read_one.php?id={$order_id}' class='btn btn-info m-r-1em'>Read</a>";
+                echo "<a href='order_read_one.php?id=".$row['order_id']."' class='btn btn-info m-r-1em'>Read</a>";
 
                 // we will use this links on next part of this post
-                echo "<a href='order_update.php?id={$order_id}' class='btn btn-primary m-r-1em'>Edit</a>";
+                echo "<a href='order_update.php?id=".$row['order_id']."' class='btn btn-primary m-r-1em'>Edit</a>";
 
                 // we will use this links on next part of this post
-                echo "<a href='#' onclick='delete_order({$order_id});'  class='btn btn-danger'>Delete</a>";
+                echo "<a href='#' onclick='delete_order(".$row['order_id'].");'  class='btn btn-danger'>Delete</a>";
                 echo "</td>";
                 echo "</tr>";
             }
