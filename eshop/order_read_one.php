@@ -60,8 +60,8 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT orderdetail_id, order_id, product_id, quantity FROM order_details WHERE order_id = :order_id";
-            //$query = "SELECT order_details.orderdetail_id, order_details.order_id, order_details.product_id, products.name, order_details.quantity FROM order_details INNER JOIN products ON order_details.product_id = products.product_id WHERE orderdetail_id = :orderdetail_id";
+            //$query = "SELECT orderdetail_id, order_id, product_id, quantity FROM order_details WHERE order_id = :order_id";
+            $query = "SELECT order_details.orderdetail_id, order_details.order_id, order_details.product_id, products.name, order_details.quantity FROM order_details INNER JOIN products ON order_details.product_id = products.product_id WHERE order_id = :order_id";
 
             $stmt = $con->prepare($query);
 
@@ -71,16 +71,57 @@
             // execute our query
             $stmt->execute();
 
+            // this is how to get number of rows returned
+            $num = $stmt->rowCount();
+
             // store retrieved row to a variable
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            //$row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // values to fill up our form
             //$username = $row['username'];
-            $orderdetail_id = $row['orderdetail_id'];
-            $order_id = $row['order_id'];
-            $product_id = $row['product_id'];
-            $quantity = $row['quantity'];
+            //$orderdetail_id = $row['orderdetail_id'];
+            //$order_id = $row['order_id'];
+            //$product_id = $row['product_id'];
+            //$quantity = $row['quantity'];
             // shorter way to do that is extract($row)
+            if ($num > 0) {
+
+                echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
+    
+                //creating our table heading
+                echo "<tr>";
+                echo "<th>Order Detail ID </th>";
+                echo "<th>Order ID</th>";
+                echo "<th>Product ID</th>";
+                echo "<th>Name</th>";
+                echo "<th>Quantity</th>";
+                echo "</tr>";
+    
+                // retrieve our table contents
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    // extract row
+                    // this will make $row['firstname'] to just $firstname only
+                    extract($row);
+                    // creating new table row per record
+                    echo "<tr>";
+                    echo "<td>{$orderdetail_id}</td>";
+                    echo "<td>{$order_id}</td>";
+                    echo "<td>{$product_id}</td>";
+                    echo "<td>{$name}</td>";
+                    echo "<td>{$quantity}</td>";
+                    echo "</tr>";
+                }
+                
+                echo "<tr>";
+                echo "<td></td>";
+                echo "<td></td>";
+                echo "<td></td>";
+                echo "<td></td>";
+                echo "<td> <a href='order_read.php' class='btn btn-danger'>Back to read Order</a></td>";
+                echo "</tr>";
+                // end table
+                echo "</table>";
+            } 
         }
 
         // show error
@@ -88,32 +129,6 @@
             die('ERROR: ' . $exception->getMessage());
         }
         ?>
-
-
-
-        <!--we have our html table here where the record will be displayed-->
-        <table class='table table-hover table-responsive table-bordered'>
-
-            <tr>
-                <td>Order Detail ID</td>
-                <td>Order ID</td>
-                <td>Product ID</td>
-                <td>Quantity</td>
-            </tr>
-            <tr>
-                <td><?php echo htmlspecialchars($orderdetail_id, ENT_QUOTES);  ?></td>
-                <td><?php echo htmlspecialchars($order_id, ENT_QUOTES);  ?></td>
-                <td><?php echo htmlspecialchars($product_id, ENT_QUOTES);  ?></td>
-                <td><?php echo htmlspecialchars($quantity, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
-                </td>
-            </tr>
-        </table>
-
 
     </div> <!-- end .container -->
 
