@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark navbar-md-light bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-md-light bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand text-light" href="home.php">Hanson1030</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

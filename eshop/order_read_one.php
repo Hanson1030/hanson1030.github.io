@@ -46,7 +46,7 @@
     <!-- container -->
     <div class="container">
         <div class="page-header">
-            <h1>Read Product</h1>
+            <h1>Read Order</h1>
         </div>
 
         <?php
@@ -60,11 +60,13 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT username, email, first_name, last_name, registration_date FROM customers WHERE username = :username";
+            //$query = "SELECT order_details.orderdetail_id, order_details.order_id, order_details.product_id, order_details.quantity FROM order_details INNER JOIN order_summary ON order_details.order_id = order_summary.order_id";
+            $query = "SELECT orderdetail_id, order_id, product_id, quantity FROM order_details WHERE orderdetail_id = :orderdetail_id";
+
             $stmt = $con->prepare($query);
 
             // Bind the parameter
-            $stmt->bindParam(":username", $id);
+            $stmt->bindParam(":orderdetail_id", $id);
 
             // execute our query
             $stmt->execute();
@@ -73,11 +75,11 @@
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // values to fill up our form
-            $username = $row['username'];
-            $email = $row['email'];
-            $first_name = $row['first_name'];
-            $last_name = $row['last_name'];
-            $registration_date = $row['registration_date'];
+            //$username = $row['username'];
+            $orderdetail_id = $row['orderdetail_id'];
+            $order_id = $row['order_id,'];
+            $product_id = $row['product_id'];
+            $quantity = $row['quantity'];
             // shorter way to do that is extract($row)
         }
 
@@ -91,25 +93,22 @@
 
         <!--we have our html table here where the record will be displayed-->
         <table class='table table-hover table-responsive table-bordered'>
+            
             <tr>
-                <td>Username</td>
-                <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
+                <td>Order Detail ID</td>
+                <td><?php echo htmlspecialchars($orderdetail_id, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
-                <td>Email</td>
-                <td><?php echo htmlspecialchars($email, ENT_QUOTES);  ?></td>
+                <td>Order ID</td>
+                <td><?php echo htmlspecialchars($order_id, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
-                <td>First Name</td>
-                <td><?php echo htmlspecialchars($first_name, ENT_QUOTES);  ?></td>
+                <td>Product ID</td>
+                <td><?php echo htmlspecialchars($product_id, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
-                <td>Last Name</td>
-                <td><?php echo htmlspecialchars($last_name, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Registration Date & Time</td>
-                <td><?php echo htmlspecialchars($registration_date, ENT_QUOTES);  ?></td>
+                <td>Quantity</td>
+                <td><?php echo htmlspecialchars($quantity, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
                 <td></td>
