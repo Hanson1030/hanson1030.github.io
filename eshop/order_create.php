@@ -35,7 +35,8 @@
                         <a class="nav-link text-secondary" href="contact_us.php">Contact Us</a>
                     </li>
                 </ul>
-                <span class="navbar-text">
+                <span class="navbar-text d-flex">
+                    <a class="nav-link text-secondary" href="order_read.php">Read Order</a>
                     <a class="nav-link text-secondary" href="order_create.php">Create Order</a>
                 </span>
             </div>
@@ -71,16 +72,16 @@
             $product_flag = 0;
             $message = '';
 
-            
+
             for ($count1 = 0; $count1 < 3; $count1++) {
                 if (!empty($_POST['product'][$count1]) && !empty($_POST['quantity'][$count1])) {
                     $product_flag++;
-                } 
+                }
             }
             if (empty($_POST['cus_username'])) {
                 $flag = 1;
                 $message = 'Please select Username.';
-            } elseif ($product_flag < 1){
+            } elseif ($product_flag < 1) {
                 $flag = 1;
                 $message = 'Please select the at least one prouct and the associated quantity';
             }

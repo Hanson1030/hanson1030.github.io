@@ -36,7 +36,8 @@
                         <a class="nav-link text-secondary" href="contact_us.php">Contact Us</a>
                     </li>
                 </ul>
-                <span class="navbar-text">
+                <span class="navbar-text d-flex">
+                    <a class="nav-link text-secondary" href="order_read.php">Read Order</a>
                     <a class="nav-link text-secondary" href="order_create.php">Create Order</a>
                 </span>
             </div>

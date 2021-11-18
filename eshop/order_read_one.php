@@ -36,7 +36,8 @@
                         <a class="nav-link text-secondary" href="contact_us.php">Contact Us</a>
                     </li>
                 </ul>
-                <span class="navbar-text">
+                <span class="navbar-text d-flex">
+                    <a class="nav-link text-secondary" href="order_read.php">Read Order</a>
                     <a class="nav-link text-secondary" href="order_create.php">Create Order</a>
                 </span>
             </div>
@@ -87,7 +88,7 @@
             if ($num > 0) {
 
                 echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
-    
+
                 //creating our table heading
                 echo "<tr>";
                 echo "<th>Order Detail ID </th>";
@@ -96,7 +97,7 @@
                 echo "<th>Name</th>";
                 echo "<th>Quantity</th>";
                 echo "</tr>";
-    
+
                 // retrieve our table contents
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     // extract row
@@ -111,7 +112,7 @@
                     echo "<td>{$quantity}</td>";
                     echo "</tr>";
                 }
-                
+
                 echo "<tr>";
                 echo "<td></td>";
                 echo "<td></td>";
@@ -121,7 +122,7 @@
                 echo "</tr>";
                 // end table
                 echo "</table>";
-            } 
+            }
         }
 
         // show error
