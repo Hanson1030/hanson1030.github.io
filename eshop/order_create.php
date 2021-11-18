@@ -68,17 +68,21 @@
             //var_dump($_POST);
 
             $flag = 0;
+            $product_flag = 0;
             $message = '';
 
+            
+            for ($count1 = 0; $count1 < 3; $count1++) {
+                if (!empty($_POST['product'][$count1]) && !empty($_POST['quantity'][$count1])) {
+                    $product_flag++;
+                } 
+            }
             if (empty($_POST['cus_username'])) {
                 $flag = 1;
                 $message = 'Please select Username.';
-            } elseif (empty($_POST['product'][0])) {
+            } elseif ($product_flag < 1){
                 $flag = 1;
-                $message = 'Please select at least 1 product.';
-            } elseif (empty($_POST['quantity'][0])) {
-                $flag = 1;
-                $message = 'Please enter the quantity.';
+                $message = 'Please select the at least one prouct and the associated quantity';
             }
 
             try {
@@ -101,9 +105,9 @@
                             $stmt->bindParam(':order_id', $last_id);
                             $stmt->bindParam(':product_id', $_POST['product'][$count]);
                             $stmt->bindParam(':quantity', $_POST['quantity'][$count]);
-                            if (!empty($_POST['product'][$count]) && !empty($_POST['quantity'][$count])){
-                                $stmt->execute();  
-                            } 
+                            if (!empty($_POST['product'][$count]) && !empty($_POST['quantity'][$count])) {
+                                $stmt->execute();
+                            }
                         }
                         echo "<div class='alert alert-success'>Record was saved.Last inserted ID is: $last_id</div>";
                     } else {
@@ -154,7 +158,7 @@
                     if ($x == 1) {
                         echo "<th>Product $x<span class='fw-light text-danger'>*</span></th>";
                         echo "<th>Quantity <span class='fw-light text-danger'>*</span></th>";
-                   } else {
+                    } else {
                         echo "<th>Product $x<span class='fw-light'>(Optional)</span></th>";
                         echo "<th>Quantity <span class='fw-light'>(Optional)</span></th>";
                     }
