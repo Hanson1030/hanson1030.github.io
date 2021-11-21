@@ -92,19 +92,7 @@
                 $cur_date = date('Y');
                 $cust_age = ((int)$cur_date - (int)$date_of_birth);
 
-                if (!preg_match("/[a-zA-Z]/", $password) || !preg_match("/[0-9]/", $password) || !preg_match("/[a-zA-Z0-9]{8,}/", $password)) {
-                    $flag = 1;
-                    $message = "Password must at least 8 character and must contain number and alphabets.";
-                } elseif ($password !== $confirm_password) {
-                    $flag = 1;
-                    $message = "Please make sure Password and Confirm Password are same.";
-                } elseif ($cust_age < 18) {
-                    $flag = 1;
-                    $message = "Customer must be age of 18 or above.";
-                } elseif (!preg_match("/[a-zA-Z0-9]{6,}/", $username)) {
-                    $flag = 1;
-                    $message = "Username must be at least 6 characters";
-                } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     if (empty($_POST["username"])) {
                         $flag = 1;
@@ -169,7 +157,19 @@
                     } else {
                         $date_of_birth = trim(htmlspecialchars($_POST["date_of_birth"]));
                     }
-                }
+                } elseif (!preg_match("/[a-zA-Z]/", $password) || !preg_match("/[0-9]/", $password) || !preg_match("/[a-zA-Z0-9]{8,}/", $password)) {
+                    $flag = 1;
+                    $message = "Password must at least 8 character and must contain number and alphabets.";
+                } elseif ($password !== $confirm_password) {
+                    $flag = 1;
+                    $message = "Please make sure Password and Confirm Password are same.";
+                } elseif ($cust_age < 18) {
+                    $flag = 1;
+                    $message = "Customer must be age of 18 or above.";
+                } elseif (!preg_match("/[a-zA-Z0-9]{6,}/", $username)) {
+                    $flag = 1;
+                    $message = "Username must be at least 6 characters";
+                } 
 
                 if ($flag == 0) {
                     if ($stmt->execute()) {
