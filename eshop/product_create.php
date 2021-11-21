@@ -80,19 +80,7 @@
                 $flag = 0;
                 $message = "";
 
-                if (!is_numeric($price) || !is_numeric($promo_price)) {
-                    $flag = 1;
-                    $message = "Price must be numerical.";
-                } elseif ($price < 0 || $promo_price < 0) {
-                    $flag = 1;
-                    $message = "Price cannot be negative.";
-                } elseif ($promo_price > $price) {
-                    $flag = 1;
-                    $message = "Error: Promo Price cannot bigger than Normal Price";
-                } elseif ($manu_date > $exp_date) {
-                    $flag = 1;
-                    $message = "Error: Expired date must be after Manufacture date";
-                } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if (empty($_POST["name"])) {
                         $flag = 1;
                         $message = "Please fill in every field.";
@@ -140,6 +128,18 @@
                     } else {
                         $exp_date = trim(htmlspecialchars($_POST["exp_date"]));
                     }
+                } elseif (!is_numeric($price) || !is_numeric($promo_price)) {
+                    $flag = 1;
+                    $message = "Price must be numerical.";
+                } elseif ($price < 0 || $promo_price < 0) {
+                    $flag = 1;
+                    $message = "Price cannot be negative.";
+                } elseif ($promo_price > $price) {
+                    $flag = 1;
+                    $message = "Error: Promo Price cannot bigger than Normal Price";
+                } elseif ($manu_date > $exp_date) {
+                    $flag = 1;
+                    $message = "Error: Expired date must be after Manufacture date";
                 }
 
                 if ($flag == 0) {
