@@ -33,16 +33,12 @@
                     $flag = 1;
                     $message = "Please fill in every field.";
                     $usernameErr = "Name is required";
-                } else {
-                    $username = trim(htmlspecialchars($_POST["username"]));
                 }
 
                 if (empty($_POST["password"])) {
                     $flag = 1;
                     $message = "Please fill in every field.";
                     $passwordErr = "Password is required";
-                } else {
-                    $password = trim(htmlspecialchars($_POST["password"]));
                 }
             }
 
@@ -54,9 +50,10 @@
                     header("Location:home.php");
                 } else {
                     echo "<div class='alert alert-danger'>";
-                    echo "Username or Password is INCORRECT!";
+                    echo "Incorrect Password!";
                     echo "</div>";
                 }
+
             } else {
                 echo "<div class='alert alert-danger'>";
                 echo $message;
@@ -78,7 +75,7 @@
 
         <div class="text-center  d-flex align-items-center h-100">
 
-            <div class="container w-50 w-md-25">
+        <div class="container w-50 w-md-25">
                 <h2>Login</h2>
 
                 <form action="" method="post">
