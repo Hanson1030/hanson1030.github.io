@@ -139,7 +139,7 @@
                 die('ERROR: ' . $exception->getMessage());
             }
         }
-        
+
         ?>
 
         <!-- html form here where the product information will be entered -->
@@ -149,11 +149,11 @@
                 <tr>
                     <th>Customer Name<span class="text-danger">*</span>:</th>
                     <?php
-                    
+
                     echo "<td>";
                     echo '<select class="w-100 fs-4 rounded" name="cus_username">';
                     echo  "<option value=''>Select Your Username</option>";
-                   
+
                     while ($row = $cu->fetch(PDO::FETCH_ASSOC)) {
                         extract($row);
                         //$selected_username = $username == $_POST['cus_username'] ? 'selected' : '';
@@ -178,35 +178,46 @@
 
                 //echo $_POST['product'];
                 //print_r($product_arrID);
-                echo '<br>';
-                echo "<tr class='productRow'>";
-                echo '<td>
-                       <select class="fs-4 rounded" name="product[]">';
-                echo  "<option value=''>--Select--</option>";
-                for ($product_count = 0; $product_count < count($product_arrName); $product_count++) {
-                    $selected_product = $product_arrID[$product_count] == $_POST['product'][0] ? 'selected' : '';
-                    echo  "<option value='" . $product_arrID[$product_count] . "' $selected_product>" . $product_arrName[$product_count] . "</option>";
-                }
-                
+
                 /*
+                if($_POST) {
+                    $post_product = count($_POST['product']);
+                }else{
+                    $post_product = 1;
+                }
+                */
+                
+                $post_product = $_POST ? count($_POST['product']) : 1 ;
+                for ($product_row = 0; $product_row < $post_product; $product_row++) {
+                    echo "<tr class='productRow'>";
+                    echo '<td>
+                       <select class="fs-4 rounded" name="product[]">';
+                    echo  "<option value=''>--Select--</option>";
+                    for ($product_count = 0; $product_count < count($product_arrName); $product_count++) {
+                        $selected_product = $product_arrID[$product_count] == $_POST['product'][$product_row] ? 'selected' : '';
+                        echo  "<option value='" . $product_arrID[$product_count] . "' $selected_product>" . $product_arrName[$product_count] . "</option>";
+                    }
+
+                    /*
                 if ($product_arrID[$product_count] == $_POST['product'][$product_arrID]) {
                     $selected_product = 'selected';
                     } else{
                         $selected_product = '';
                     }
                     */
-                    
-                echo "</select>";
-                echo '</td>';
-                echo "<td>";
-                echo '<select class="w-100 fs-4 rounded" name="quantity[]" >';
-                echo "<option value=''>Please Select Your Quantity</option>";
-                for ($quantity = 1; $quantity <= 5; $quantity++) {
-                    $selected_quantity = $quantity == $_POST['quantity'][0] ? 'selected' : '123';
-                    echo "<option value='$quantity' $selected_quantity>$quantity</option>";
+
+                    echo "</select>";
+                    echo '</td>';
+                    echo "<td>";
+                    echo '<select class="w-100 fs-4 rounded" name="quantity[]" >';
+                    echo "<option value=''>Please Select Your Quantity</option>";
+                    for ($quantity = 1; $quantity <= 5; $quantity++) {
+                        $selected_quantity = $quantity == $_POST['quantity'][$product_row] ? 'selected' : '123';
+                        echo "<option value='$quantity' $selected_quantity>$quantity</option>";
+                    }
+                    echo '</td>';
+                    echo "</tr>";
                 }
-                echo '</td>';
-                echo "</tr>";
                 ?>
 
 

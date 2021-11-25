@@ -32,17 +32,11 @@
                 if (empty($_POST["username"])) {
                     $flag = 1;
                     $message = "Please fill in every field.";
-                    $usernameErr = "Name is required";
-                } else {
-                    $username = trim(htmlspecialchars($_POST["username"]));
                 }
 
                 if (empty($_POST["password"])) {
                     $flag = 1;
                     $message = "Please fill in every field.";
-                    $passwordErr = "Password is required";
-                } else {
-                    $password = trim(htmlspecialchars($_POST["password"]));
                 }
             }
 
