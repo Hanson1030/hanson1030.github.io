@@ -25,36 +25,36 @@
             $sql = "SELECT * FROM customers WHERE username = '$username' AND password = '$password'";
             $result = $con->query($sql);
 
-
             $flag = 0;
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
-                if (empty($_POST["username"])) {
-                    $flag = 1;
-                    $message = "Please fill in every field.";
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+                    if (empty($_POST["username"])) {
+                        $flag = 1;
+                        $message = "Please fill in every field.";
+                    }
+
+                    if (empty($_POST["password"])) {
+                        $flag = 1;
+                        $message = "Please fill in every field.";
+                    }
                 }
 
-                if (empty($_POST["password"])) {
-                    $flag = 1;
-                    $message = "Please fill in every field.";
-                }
-            }
-
-
-            if ($flag == 0) {
-                if ($result->rowCount() > 0) {
-                    $row = $result->fetch(PDO::FETCH_ASSOC);
-                    $_SESSION['username'] = $row['username'];
-                    header("Location:home.php");
+                if ($flag == 0) {
+                    if ($result->rowCount() > 0) {
+                        $_SESSION['username'] == $row['username'];
+                        header("Location:home.php");
+                    } else {
+                        echo "<div class='alert alert-danger'>";
+                        echo "Username or Password is INCORRECT!";
+                        echo "</div>";
+                    }
                 } else {
                     echo "<div class='alert alert-danger'>";
-                    echo "Username or Password is INCORRECT!";
+                    echo $message;
                     echo "</div>";
                 }
-            } else {
-                echo "<div class='alert alert-danger'>";
-                echo $message;
-                echo "</div>";
             }
         }
 
@@ -79,7 +79,7 @@
                     <div class="form-group">
                         <label>Username</label>
                         <input type="text" name="username" class="form-control">
-                        
+
                     </div>
                     <div class="form-group">
                         <label>Password</label>

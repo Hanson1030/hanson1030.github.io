@@ -66,7 +66,7 @@
             array_push($product_arrName, $row['name']);
         }
 
-        
+
 
 
         $cus_username = "SELECT username FROM customers";
@@ -189,50 +189,53 @@
                     $post_product = 1;
                 }
                 */
-                
-
 
                 $post_product = $_POST ? count($_POST['product']) : 1;
-                $array = array('');
+                $arrayPost_product = array('');
                 if ($_POST) {
-                    $array = $_POST['product'];
+                    for ($y = 0; $y <= count($_POST['product']); $y++) {
+                        if (empty($_POST['product'][$y])  && empty($_POST['quantity'][$y])) {
+
+                            unset($_POST['product'][$y]);
+                            unset($_POST['quantity'][$y]);
+                        }
+                    }
+                    $arrayPost_product = $_POST['product'];
                 }
+                echo '<pre>';
+                var_dump($_POST);
+                echo '<pre>';
+
                 //for ($product_row = 0; $product_row < $post_product; $product_row++) {
-                foreach ($array as $product_row => $product_ID) {
+                foreach ($arrayPost_product as $product_row => $product_ID) {
                     echo "<tr class='productRow'>";
                     echo '<td>
                        <select class="fs-4 rounded" name="product[]">';
                     echo  "<option value=''>--Select--</option>";
-                    $product_list = $_POST ? $_POST['product'] : '[]';
+                    $product_list = $_POST ? $_POST['product'] : ' ';
                     for ($product_count = 0; $product_count < count($product_arrName); $product_count++) {
                         $selected_product = $product_arrID[$product_count] == $product_list[$product_row] ? 'selected' : '';
                         echo  "<option value='" . $product_arrID[$product_count] . "' $selected_product>" . $product_arrName[$product_count] . "</option>";
                     }
-
                     /*
-                if ($product_arrID[$product_count] == $_POST['product'][$product_arrID]) {
-                    $selected_product = 'selected';
-                    } else{
-                        $selected_product = '';
-                    }
+                    if ($product_arrID[$product_count] == $_POST['product'][$product_arrID]) {
+                        $selected_product = 'selected';
+                        } else {
+                            $selected_product = '';
+                        }
                 */
                     echo "</select>";
                     echo '</td>';
                     echo "<td>";
                     echo '<select class="w-100 fs-4 rounded" name="quantity[]" >';
                     echo "<option value=''>Please Select Your Quantity</option>";
+                    $quantity_list = $_POST ? $_POST['quantity'] : ' ';
                     for ($quantity = 1; $quantity <= 5; $quantity++) {
-                        $selected_quantity = $quantity == $_POST['quantity'][$product_row] ? 'selected' : '';
+                        $selected_quantity = $quantity == $quantity_list[$product_row] ? 'selected' : '';
                         echo "<option value='$quantity' $selected_quantity>$quantity</option>";
                     }
                     echo '</td>';
                     echo "</tr>";
-
-                   /*  if (empty($_POST['product'][$product_row]) && empty($_POST['quantity'][$product_row])) {
-                        unset($_POST['product'][$product_row]);
-                        unset($_POST['quantity'][$product_row]);
-                        
-                    } */
                 }
                 //var_dump($_POST['product']);
                 ?>
