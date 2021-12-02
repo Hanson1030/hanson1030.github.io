@@ -194,10 +194,12 @@
                 $arrayPost_product = array('');
                 if ($_POST) {
                     for ($y = 0; $y <= count($_POST['product']); $y++) {
-                        if (empty($_POST['product'][$y])  && empty($_POST['quantity'][$y])) {
+                        if (count($_POST['product']) !== 1) {
+                            if (empty($_POST['product'][$y])  && empty($_POST['quantity'][$y])) {
 
-                            unset($_POST['product'][$y]);
-                            unset($_POST['quantity'][$y]);
+                                unset($_POST['product'][$y]);
+                                unset($_POST['quantity'][$y]);
+                            }
                         }
                     }
                     $arrayPost_product = $_POST['product'];

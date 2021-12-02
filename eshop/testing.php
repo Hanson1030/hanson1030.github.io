@@ -45,7 +45,7 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT username, email, first_name, last_name, gender, password FROM customers WHERE username = ? LIMIT 0,1";
+            $query = "SELECT username, email, first_name, last_name, gender, account_status, date_of_birth, password FROM customers WHERE username = ? LIMIT 0,1";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
@@ -63,6 +63,8 @@
             $first_name = $row['first_name'];
             $last_name = $row['last_name'];
             $gender = $row['gender'];
+            $date_of_birth = $row['date_of_birth'];
+            $account_status = $row['account_status'];
             $password = $row['password'];
         }
 
@@ -79,7 +81,7 @@
                 // write update query
                 // in this case, it seemed like we have so many fields to pass and
                 // it is better to label them and not use question marks
-                $query = "UPDATE customers SET username=:username, email=:email, first_name=:first_name, last_name=:last_name, gender=:gender, password=:new_password WHERE username = :username";
+                $query = "UPDATE customers SET username=:username, email=:email, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status, password=:new_password WHERE username = :username";
                 // prepare query for excecution
                 $stmt = $con->prepare($query);
                 // posted values
@@ -88,15 +90,20 @@
                 $first_name = htmlspecialchars(strip_tags($_POST['first_name']));
                 $last_name = htmlspecialchars(strip_tags($_POST['last_name']));
                 $gender = htmlspecialchars(strip_tags($_POST['gender']));
-                $old_password = htmlspecialchars(strip_tags($_POST['old_password']));
-                $new_password = htmlspecialchars(strip_tags($_POST['new_password']));
-                $confirm_new_password = htmlspecialchars(strip_tags($_POST['confirm_new_password']));
+                $date_of_birth = htmlspecialchars(strip_tags($_POST['date_of_birth']));
+                $account_status = htmlspecialchars(strip_tags($_POST['account_status']));
+                //passwords
+                $old_password = md5(htmlspecialchars(strip_tags($_POST['old_password'])));
+                $new_password = md5(htmlspecialchars(strip_tags($_POST['new_password'])));
+                $confirm_new_password = md5(htmlspecialchars(strip_tags($_POST['confirm_new_password'])));
                 // bind the parameters
                 $stmt->bindParam(':username', $id);
                 $stmt->bindParam(':email', $email);
                 $stmt->bindParam(':first_name', $first_name);
                 $stmt->bindParam(':last_name', $last_name);
                 $stmt->bindParam(':gender', $gender);
+                $stmt->bindParam(':date_of_birth', $date_of_birth);
+                $stmt->bindParam(':account_status', $account_status);
                 $stmt->bindParam(':new_password', $new_password);
                 //$stmt->bindParam(':product_id', $product_id);
                 // Execute the query
@@ -132,15 +139,12 @@
                     if (empty($old_password)) {
                         $flag = 1;
                         $message = "Old Password CANNOT be empty if user want to change password";
-                        $usernameErr = "Name is required";
                     } elseif (empty($new_password)) {
                         $flag = 1;
                         $message = "New Password CANNOT be empty if user want to change password";
-                        $emailErr = "Email is required";
                     } elseif (empty($confirm_new_password)) {
                         $flag = 1;
                         $message = "Confirm New Password CANNOT be empty if user want to change password";
-                        $passwordErr = "Password is required";
                     } elseif ($old_password !== $password) {
                         $flag = 1;
                         $message = 'Your Old Password is Incorrect!';
@@ -160,12 +164,26 @@
                 if ($flag == 0) {
                     if ($stmt->execute()) {
                         echo "<div class='alert alert-success'>Record was saved.</div>";
+                        echo $password;
+                        echo $old_password;
+                        echo $new_password;
+                        echo $confirn_new_password;
                     } else {
                         echo "Unable to save record.";
                     }
                 } else {
                     echo "<div class='alert alert-danger'>";
                     echo $message;
+                    echo "<br>";
+                    echo $password;
+                    echo "<br>";
+                    echo $old_password;
+                    echo "<br>";
+                    echo $new_password;
+                    echo "<br>";
+                    echo $confirm_new_password;
+                    echo "<br>";
+                    echo md5(empty($old_password));
                     echo "</div>";
                 }
             }
@@ -211,16 +229,38 @@
                         </span>
                     </td>
                 </tr>
-                <td>Gender</td>
-                <td>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" id="male" name='gender' value="Male" class="form-check-input" <?php if ($gender == "Male") echo 'checked' ?>> <label class="form-check-label" for="male">Male</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" id="female" name='gender' value="Female" class="form-check-input" <?php if ($gender == "Female") echo 'checked'  ?>>
-                        <label class="form-check-label" for="female">Female</label>
-                    </div>
-                </td>
+                <tr>
+                    <td>Gender</td>
+                    <td>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="male" name='gender' value="Male" class="form-check-input" <?php if ($gender == "Male") echo 'checked' ?>>
+                            <label class="form-check-label" for="male">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="female" name='gender' value="Female" class="form-check-input" <?php if ($gender == "Female") echo 'checked'  ?>>
+                            <label class="form-check-label" for="female">Female</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date of birth</td>
+                    <td>
+                        <input type='date' name='date_of_birth' class='form-control' value="<?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?>" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Account Status</td>
+                    <td>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="active" name='account_status' value="Active" class="form-check-input" <?php if ($account_status == "Active") echo 'checked' ?>>
+                            <label class="form-check-label" for="male">Active</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="inactive" name='account_status' value="Inactive" class="form-check-input" <?php if ($account_status == "Inactive") echo 'checked'  ?>>
+                            <label class="form-check-label" for="female">Inactive</label>
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <td>Old Password</td>
                     <td><input type='text' name='old_password' class='form-control' /></td>
