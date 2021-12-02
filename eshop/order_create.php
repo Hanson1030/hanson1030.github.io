@@ -157,10 +157,11 @@
                     echo '<select class="w-100 fs-4 rounded" name="cus_username">';
                     echo  "<option value=''>Select Your Username</option>";
 
+                    $customer_list = $_POST ? $_POST['cus_username'] : ' ';
                     while ($row = $cu->fetch(PDO::FETCH_ASSOC)) {
                         extract($row);
                         //$selected_username = $username == $_POST['cus_username'] ? 'selected' : '';
-                        $selected_username = $row['username'] == $_POST['cus_username'] ? 'selected' : '';
+                        $selected_username = $row['username'] == $customer_list ? 'selected' : '';
                         echo "<option class='bg-white' value='" . $username . "' $selected_username>" . $username . "</option>";
                     }
                     //if ($row['username'] == $_POST['cus_username']) {
