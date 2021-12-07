@@ -1,34 +1,6 @@
-<!DOCTYPE HTML>
-<html>
-
-<head>
-    <title>PDO - Read Records - PHP CRUD Tutorial</title>
-    <!-- Latest compiled and minified Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- custom css -->
-    <style>
-        .m-r-1em {
-            margin-right: 1em;
-        }
-
-        .m-b-1em {
-            margin-bottom: 1em;
-        }
-
-        .m-l-1em {
-            margin-left: 1em;
-        }
-
-        .mt0 {
-            margin-top: 0;
-        }
-    </style>
-</head>
-
-<body>
+<?php
+include 'config/navbar.php';
+?>
     <!-- container -->
     <div class="container">
         <div class="page-header">
@@ -86,16 +58,16 @@
                 $stmt = $con->prepare($query);
                 // posted values
                 $username = htmlspecialchars(strip_tags($_POST['username']));
-                $email = htmlspecialchars(strip_tags($_POST['email']));
+                $email = $_POST['email'];
                 $first_name = htmlspecialchars(strip_tags($_POST['first_name']));
                 $last_name = htmlspecialchars(strip_tags($_POST['last_name']));
                 $gender = htmlspecialchars(strip_tags($_POST['gender']));
                 $date_of_birth = htmlspecialchars(strip_tags($_POST['date_of_birth']));
-                $account_status = htmlspecialchars(strip_tags($_POST['account_status']));
+                $account_status = $_POST['account_status'];
                 //passwords
-                $old_password = htmlspecialchars(strip_tags($_POST['old_password']));
-                $new_password = htmlspecialchars(strip_tags($_POST['new_password']));
-                $confirm_new_password = htmlspecialchars(strip_tags($_POST['confirm_new_password']));
+                $old_password = $_POST['old_password'];
+                $new_password = $_POST['new_password'];
+                $confirm_new_password = $_POST['confirm_new_password'];
                 // bind the parameters
                 $stmt->bindParam(':username', $id);
                 $stmt->bindParam(':email', $email);
@@ -113,8 +85,8 @@
 
                 if (empty($old_password) && empty($new_password) && empty($confirm_new_password)) {
                     $flag = 0;
-                    $unchange_new_password = htmlspecialchars(strip_tags($row['password']));
-                    $unchange_confirm_new_password = htmlspecialchars(strip_tags($row['password']));
+                    $unchange_new_password = $row['password'];
+                    $unchange_confirm_new_password = $row['password'];
                     $stmt->bindParam(':new_password', $unchange_new_password);
                     $stmt->bindParam(':comfirm_new_password', $unchange_confirm_new_password);
                 }
@@ -135,6 +107,10 @@
 
 
                 if (!empty($old_password) || !empty($new_password) || !empty($confirm_new_password)) {
+
+                    $old_password = md5($_POST['old_password']);
+                    $new_password = md5($_POST['new_password']);
+                    $confirm_new_password = md5($_POST['confirm_new_password']);
 
                     if (empty($old_password)) {
                         $flag = 1;
@@ -158,6 +134,7 @@
                         $flag = 1;
                         $message = "New password and Confirm Password is NOT match.";
                     }
+
                 }
 
 

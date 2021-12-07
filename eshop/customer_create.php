@@ -1,47 +1,6 @@
-<!DOCTYPE HTML>
-<html>
-
-<head>
-    <title>PDO - Create a Record - PHP CRUD Tutorial</title>
-    <!-- Latest compiled and minified Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-</head>
-
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-md-light bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand text-light" href="home.php">Hanson1030</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active text-light" aria-current="page" href="home.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-secondary" href="product_read.php">Read Product</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-secondary" href="product_create.php">Create Product</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-secondary" href="customer_read.php">Read Customer</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-secondary" href="customer_create.php">Create Customer</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-secondary" href="contact_us.php">Contact Us</a>
-                    </li>
-                </ul>
-                <span class="navbar-text d-flex">
-                    <a class="nav-link text-secondary" href="order_read.php">Read Order</a>
-                    <a class="nav-link text-secondary" href="order_create.php">Create Order</a>
-                </span>
-            </div>
-        </div>
-    </nav>
+<?php
+include 'config/navbar.php';
+?>
     <!-- container -->
     <div class="container">
         <div class="page-header">
@@ -54,7 +13,7 @@
             include 'config/database.php';
             try {
                 // insert query
-                $query = "INSERT INTO customers SET username=:username, email=:email, password=:password, confirm_password=:confirm_password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth";
+                $query = "INSERT INTO customers SET username=:username, email=:email, password=:password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth";
                 // prepare query for execution
                 $stmt = $con->prepare($query);
                 $username = $_POST['username'];
@@ -71,7 +30,6 @@
                 $stmt->bindParam(':username', $username);
                 $stmt->bindParam(':email', $email);
                 $stmt->bindParam(':password', $password);
-                $stmt->bindParam(':confirm_password', $confirm_password);
                 $stmt->bindParam(':first_name', $first_name);
                 $stmt->bindParam(':last_name', $last_name);
                 $stmt->bindParam(':gender', $gender);
@@ -112,11 +70,13 @@
                         $passwordErr = "Password is required";
                     }
 
+                    /*
                     if (empty($_POST["confirm_password"])) {
                         $flag = 1;
                         $message = "Please fill in every field.";
                         $confirm_passwordErr = "Confirm Password is required";
                     }
+                    */
 
                     if (empty($_POST["first_name"])) {
                         $flag = 1;

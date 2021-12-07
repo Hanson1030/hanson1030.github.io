@@ -1,34 +1,6 @@
-<!DOCTYPE HTML>
-<html>
-
-<head>
-    <title>PDO - Read Records - PHP CRUD Tutorial</title>
-    <!-- Latest compiled and minified Bootstrap CSS -->
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">  
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- custom css -->
-    <style>
-        .m-r-1em {
-            margin-right: 1em;
-        }
-
-        .m-b-1em {
-            margin-bottom: 1em;
-        }
-
-        .m-l-1em {
-            margin-left: 1em;
-        }
-
-        .mt0 {
-            margin-top: 0;
-        }
-    </style>
-</head>
-
-<body>
+<?php
+include 'config/navbar.php';
+?>
     <!-- container -->
     <div class="container">
         <div class="page-header">
@@ -89,10 +61,33 @@
                 $stmt->bindParam(':price', $price);
                 $stmt->bindParam(':product_id', $id);
                 // Execute the query
-                if ($stmt->execute()) {
-                    echo "<div class='alert alert-success'>Record was updated.</div>";
+
+                $flag = 0;
+                $message = '';
+
+                if (empty($name)) {
+                    $flag = 1;
+                    $message = "Please fill in every field.";
+                    $nameErr = "Name is required";
+                } elseif (empty($description)) {
+                    $flag = 1;
+                    $message = "Please fill in every field.";
+                    $descriptionErr = "First Name is required";
+                } elseif (empty($price)) {
+                    $flag = 1;
+                    $message = "Please fill in every field.";
+                    $priceErr = "Last Name is required";
+                }
+                if ($flag == 0) {
+                    if ($stmt->execute()) {
+                        echo "<div class='alert alert-success'>Record was saved.</div>";
+                    } else {
+                        echo "Unable to save record.";
+                    }
                 } else {
-                    echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                    echo "<div class='alert alert-danger'>";
+                    echo $message;
+                    echo "</div>";
                 }
             }
             // show errors
@@ -107,15 +102,27 @@
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td>Name</td>
-                    <td><input type='text' name='name' value="<?php echo htmlspecialchars($name, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td><input type='text' name='name' value="<?php echo htmlspecialchars($name, ENT_QUOTES);  ?>" class='form-control' />
+                        <span>
+                            <?php if (isset($nameErr)) echo "<div class='text-danger'>*$nameErr</div>  "; ?>
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td>Description</td>
-                    <td><textarea name='description' class='form-control'><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></textarea></td>
+                    <td><textarea name='description' class='form-control'><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></textarea>
+                        <span>
+                            <?php if (isset($descriptionErr)) echo "<div class='text-danger'>*$descriptionErr</div>  "; ?>
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td>Price</td>
-                    <td><input type='text' name='price' value="<?php echo htmlspecialchars($price, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td><input type='text' name='price' value="<?php echo htmlspecialchars($price, ENT_QUOTES);  ?>" class='form-control' />
+                        <span>
+                            <?php if (isset($priceErr)) echo "<div class='text-danger'>*$priceErr</div>  "; ?>
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td></td>
