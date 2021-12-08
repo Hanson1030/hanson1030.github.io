@@ -240,7 +240,7 @@ include 'config/navbar.php';
                     <td></td>
                     <td>
                         <input type='submit' value='Save Changes' class='btn btn-primary' />
-                        <a href='customer_read.php' class='btn btn-danger'>Back to read products</a>
+                        <a href='customer_read.php' class='btn btn-danger'>Back to read Customer</a>
                     </td>
                 </tr>
             </table>

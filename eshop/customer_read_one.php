@@ -73,7 +73,7 @@ include 'config/navbar.php';
             <tr>
                 <td></td>
                 <td>
-                    <a href='product_read.php' class='btn btn-danger'>Back to read Customer</a>
+                    <a href='customer_read.php' class='btn btn-danger'>Back to read Customer</a>
                 </td>
             </tr>
         </table>

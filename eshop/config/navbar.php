@@ -26,14 +26,19 @@
                             <li><a class="dropdown-item" href="product_create.php">Create Product</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-secondary" href="product_create.php">Create Product</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false">Customer</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                            <li><a class="dropdown-item" href="customer_read.php">Read Customer</a></li>
+                            <li><a class="dropdown-item" href="customer_create.php">Create Customer</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-secondary" href="customer_read.php">Read Customer</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-secondary" href="customer_create.php">Create Customer</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Order</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                            <li><a class="dropdown-item" href="order_read.php">Read Order</a></li>
+                            <li><a class="dropdown-item" href="order_create.php">Create Order</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-secondary" href="contact_us.php">Contact Us</a>
