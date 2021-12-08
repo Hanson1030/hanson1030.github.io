@@ -1,281 +1,163 @@
-<!DOCTYPE HTML>
-<html>
+<?php
+include 'config/navbar.php';
+?>
+<!-- container -->
+<div class="container">
+    <div class="page-header">
+        <h1>Update Order</h1>
+    </div>
+    <?php
+    // get passed parameter value, in this case, the record ID
+    // isset() is a PHP function used to verify if a value is there or not
+    $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
 
-<head>
-    <title>PDO - Read Records - PHP CRUD Tutorial</title>
-    <!-- Latest compiled and minified Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- custom css -->
-    <style>
-        .m-r-1em {
-            margin-right: 1em;
+    //include database connection
+    include 'config/database.php';
+
+    // read current record's data
+    try {
+
+        $query = "SELECT order_details.orderdetail_id, order_details.order_id, order_details.product_id, order_details.quantity, products.name 
+        FROM order_details 
+        INNER JOIN products 
+        ON order_details.product_id = products.product_id 
+        WHERE order_id = :order_id ";
+
+        $stmt = $con->prepare($query);
+        $stmt->bindParam(":order_id", $id);
+        $stmt->execute();
+        $num = $stmt->rowCount();
+
+        $query2 = "SELECT order_summary.order_id, customers.first_name, customers.last_name,customers.username 
+        FROM order_summary 
+        INNER JOIN customers 
+        ON order_summary.username = customers.username 
+        WHERE order_id=$id";
+
+        $stmt2 = $con->prepare($query2);
+        $stmt2->execute();
+
+        // store retrieved row to a variable
+        $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+        $username = $row2['username'];
+        $order_id = $row2['order_id'];
+        $first_name = $row2['first_name'];
+        $last_name = $row2['last_name'];
+
+        $query3 = "SELECT * FROM products ORDER BY product_id DESC";
+        $stmt3 = $con->prepare($query3);
+        $stmt3->execute();
+
+        $product_arrID = array();
+        $product_arrName = array();
+
+        while ($row = $stmt3->fetch(PDO::FETCH_ASSOC)) {
+
+            extract($row);
+            array_push($product_arrID, $row['product_id']);
+            array_push($product_arrName, $row['name']);
         }
+    }
+    // show error
+    catch (PDOException $exception) {
+        die('ERROR: ' . $exception->getMessage());
+    }
+    ?>
 
-        .m-b-1em {
-            margin-bottom: 1em;
-        }
+    <?php
+    // check if form was submitted
+    if ($_POST) {
 
-        .m-l-1em {
-            margin-left: 1em;
-        }
-
-        .mt0 {
-            margin-top: 0;
-        }
-    </style>
-</head>
-
-<body>
-    <!-- container -->
-    <div class="container">
-        <div class="page-header">
-            <h1>Update Customer</h1>
-        </div>
-        <?php
-        // get passed parameter value, in this case, the record ID
-        // isset() is a PHP function used to verify if a value is there or not
-        $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
-
-        //include database connection
-        include 'config/database.php';
-
-        // read current record's data
         try {
-            // prepare select query
-            $query = "SELECT username, email, first_name, last_name, gender, account_status, date_of_birth, password FROM customers WHERE username = ? LIMIT 0,1";
-            $stmt = $con->prepare($query);
+            // write update query
+            // in this case, it seemed like we have so many fields to pass and
+            // it is better to label them and not use question marks
 
-            // this is the first question mark
-            $stmt->bindParam(1, $id);
+            $query_OD = "UPDATE order_details
+            SET product_id=:product_id, quantity=:quantity 
+            WHERE order_id = :order_id";
 
-            // execute our query
-            $stmt->execute();
+            $stmt_OD = $con->prepare($query_OD);
+            //$username = $_POST['username'];
+            $product_id = $_POST['product_id'];
+            $quantity = $_POST['quantity'];
 
-            // store retrieved row to a variable
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt_OD->bindParam(':product_id', $product_id);
+            $stmt_OD->bindParam(':quantity', $quantity);
+            $stmt_OD->bindParam(':order_id', $id);
 
-            // values to fill up our form
-            $username = $row['username'];
-            $email = $row['email'];
-            $first_name = $row['first_name'];
-            $last_name = $row['last_name'];
-            $gender = $row['gender'];
-            $date_of_birth = $row['date_of_birth'];
-            $account_status = $row['account_status'];
-            $password = $row['password'];
+            if ($stmt3->execute()) {
+                if ($stmt2->execute()) {
+                    echo "<div class='alert alert-success'>Record was saved.</div>";
+                }
+            } else {
+                echo "<div class='alert alert-danger'>";
+                echo $message;
+                echo "</div>";
+            }
         }
-
-        // show error
+        // show errors
         catch (PDOException $exception) {
             die('ERROR: ' . $exception->getMessage());
         }
-        ?>
-
-        <?php
-        // check if form was submitted
-        if ($_POST) {
-            try {
-                // write update query
-                // in this case, it seemed like we have so many fields to pass and
-                // it is better to label them and not use question marks
-                $query = "UPDATE customers SET username=:username, email=:email, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status, password=:new_password WHERE username = :username";
-                // prepare query for excecution
-                $stmt = $con->prepare($query);
-                // posted values
-                $username = htmlspecialchars(strip_tags($_POST['username']));
-                $email = $_POST['email'];
-                $first_name = htmlspecialchars(strip_tags($_POST['first_name']));
-                $last_name = htmlspecialchars(strip_tags($_POST['last_name']));
-                $gender = htmlspecialchars(strip_tags($_POST['gender']));
-                $date_of_birth = htmlspecialchars(strip_tags($_POST['date_of_birth']));
-                $account_status = $_POST['account_status'];
-                //passwords
-                $old_password = $_POST['old_password'];
-                $new_password = $_POST['new_password'];
-                $confirm_new_password = $_POST['confirm_new_password'];
-                // bind the parameters
-                $stmt->bindParam(':username', $id);
-                $stmt->bindParam(':email', $email);
-                $stmt->bindParam(':first_name', $first_name);
-                $stmt->bindParam(':last_name', $last_name);
-                $stmt->bindParam(':gender', $gender);
-                $stmt->bindParam(':date_of_birth', $date_of_birth);
-                $stmt->bindParam(':account_status', $account_status);
-                $stmt->bindParam(':new_password', $new_password);
-                //$stmt->bindParam(':product_id', $product_id);
-                // Execute the query
-
-                $flag = 0;
-                $message = ' ';
-
-                if (empty($old_password) && empty($new_password) && empty($confirm_new_password)) {
-                    $flag = 0;
-                    $unchange_new_password = $row['password'];
-                    $unchange_confirm_new_password = $row['password'];
-                    $stmt->bindParam(':new_password', $unchange_new_password);
-                    $stmt->bindParam(':comfirm_new_password', $unchange_confirm_new_password);
-                }
-
-                if (empty($email)) {
-                    $flag = 1;
-                    $message = "Please fill in every field.";
-                    $emailErr = "Name is required";
-                } elseif (empty($first_name)) {
-                    $flag = 1;
-                    $message = "Please fill in every field.";
-                    $first_nameErr = "First Name is required";
-                } elseif (empty($last_name)) {
-                    $flag = 1;
-                    $message = "Please fill in every field.";
-                    $last_nameErr = "Last Name is required";
-                }
+    }
+    ?>
 
 
-                if (!empty($old_password) || !empty($new_password) || !empty($confirm_new_password)) {
+    <!--we have our html form here where new record information can be updated-->
+    <?php
+    echo "Order ID : $order_id <br>";
+    echo "Username : $username <br>";
+    echo "Customer Name : $first_name  $last_name <br>";
+    ?>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post">
+        <table class='table table-hover table-responsive table-bordered'>
+            <tr>
+                <th>Product Name</th>
+                <th>Product Name</th>
+            </tr>
 
-                    $old_password = md5($_POST['old_password']);
-                    $new_password = md5($_POST['new_password']);
-                    $confirm_new_password = md5($_POST['confirm_new_password']);
+            <?php
+            if ($num > 0) {
 
-                    if (empty($old_password)) {
-                        $flag = 1;
-                        $message = "Old Password CANNOT be empty if user want to change password";
-                    } elseif (empty($new_password)) {
-                        $flag = 1;
-                        $message = "New Password CANNOT be empty if user want to change password";
-                    } elseif (empty($confirm_new_password)) {
-                        $flag = 1;
-                        $message = "Confirm New Password CANNOT be empty if user want to change password";
-                    } elseif ($old_password !== $password) {
-                        $flag = 1;
-                        $message = 'Your Old Password is Incorrect!';
-                    } elseif ($old_password == $new_password) {
-                        $flag = 1;
-                        $message = 'New Password cannot be same as your Old Password.';
-                    } elseif (!preg_match("/[a-zA-Z]/", $new_password) || !preg_match("/[0-9]/", $new_password) || !preg_match("/[a-zA-Z0-9]{8,}/", $new_password)) {
-                        $flag = 1;
-                        $message = "Password must at least 8 character and must contain number and alphabets.";
-                    } elseif ($new_password !== $confirm_new_password) {
-                        $flag = 1;
-                        $message = "New password and Confirm Password is NOT match.";
+                // creating new table row per record
+
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    extract($row);
+                    echo "<tr>";
+                    echo "<td><select class='form-control' name='product_id'>";
+                    for ($pcount = 0; $pcount < count($product_arrName); $pcount++) {
+                        $product_selected = $product_arrName[$pcount] == $name ? 'selected' : '';
+                        echo "<option value='" . $product_arrID[$pcount] . "'$product_selected>" . $product_arrName[$pcount] . "</option>";
                     }
-
-                }
-
-
-                if ($flag == 0) {
-                    if ($stmt->execute()) {
-                        echo "<div class='alert alert-success'>Record was saved.</div>";
-                    } else {
-                        echo "Unable to save record.";
+                    echo "</select></td>";
+                    echo "<td><select class='form-select' name='quantity'>";
+                    for ($quantity = 1; $quantity <= 5; $quantity++) {
+                        $quantity_selected = $row['quantity'] == $quantity ? 'selected' : '';
+                        echo "<option value='$quantity'$quantity_selected>$quantity</option>";
                     }
-                } else {
-                    echo "<div class='alert alert-danger'>";
-                    echo $message;
-                    echo "</div>";
+                    echo "</select></td>";
+                    echo "</tr>";
                 }
+                echo "</table>";
+                echo "<div class='d-flex justify-content-center'>";
+                echo "<input type='submit' value='Save Changes' class='btn btn-primary me-2'/>";
+                echo "<a href='neworder_read.php' class='btn btn-danger'>Back to read Order</a>";
+                echo "</div>";
             }
-            // show errors
-            catch (PDOException $exception) {
-                die('ERROR: ' . $exception->getMessage());
-            }
-        } ?>
+            ?>
+            <tr>
+                <td></td>
+                <td>
+                    <input type='submit' value='Save Changes' class='btn btn-primary' />
+                    <a href='order_read.php' class='btn btn-danger'>Back to read Order</a>
+                </td>
+            </tr>
+        </table>
+    </form>
 
-
-        <!--we have our html form here where new record information can be updated-->
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post">
-            <table class='table table-hover table-responsive table-bordered'>
-                <tr>
-                    <td>Current Password</td>
-                    <td><input type='text' name='current_pass' value="<?php echo htmlspecialchars($password, ENT_QUOTES);  ?>" class='form-control' readonly /></td>
-                </tr>
-                <tr>
-                    <td>Username</td>
-                    <td><input type='text' name='username' value="<?php echo htmlspecialchars($username, ENT_QUOTES);  ?>" class='form-control' readonly /></td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td><input type='text' name='email' value="<?php echo htmlspecialchars($email, ENT_QUOTES);  ?>" class='form-control' />
-                        <span>
-                            <?php if (isset($emailErr)) echo "<div class='text-danger'>*$emailErr</div>  "; ?>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>First Name</td>
-                    <td><input type='text' name='first_name' value="<?php echo htmlspecialchars($first_name, ENT_QUOTES);  ?>" class='form-control' />
-                        <span>
-                            <?php if (isset($first_nameErr)) echo "<div class='text-danger'>*$first_nameErr</div>  "; ?>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Last Name</td>
-                    <td><input type='text' name='last_name' value="<?php echo htmlspecialchars($last_name, ENT_QUOTES);  ?>" class='form-control' />
-                        <span>
-                            <?php if (isset($last_nameErr)) echo "<div class='text-danger'>*$last_nameErr</div>  "; ?>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Gender</td>
-                    <td>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="male" name='gender' value="Male" class="form-check-input" <?php if ($gender == "Male") echo 'checked' ?>>
-                            <label class="form-check-label" for="male">Male</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="female" name='gender' value="Female" class="form-check-input" <?php if ($gender == "Female") echo 'checked'  ?>>
-                            <label class="form-check-label" for="female">Female</label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Date of birth</td>
-                    <td>
-                        <input type='date' name='date_of_birth' class='form-control' value="<?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?>" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Account Status</td>
-                    <td>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="active" name='account_status' value="Active" class="form-check-input" <?php if ($account_status == "Active") echo 'checked' ?>>
-                            <label class="form-check-label" for="male">Active</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="inactive" name='account_status' value="Inactive" class="form-check-input" <?php if ($account_status == "Inactive") echo 'checked'  ?>>
-                            <label class="form-check-label" for="female">Inactive</label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Old Password</td>
-                    <td><input type='text' name='old_password' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>New Password</td>
-                    <td><input type='text' name='new_password' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>Confirm New Password</td>
-                    <td><input type='text' name='confirm_new_password' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type='submit' value='Save Changes' class='btn btn-primary' />
-                        <a href='customer_read.php' class='btn btn-danger'>Back to read products</a>
-                    </td>
-                </tr>
-            </table>
-        </form>
-
-    </div>
-    <!-- end .container -->
+</div>
+<!-- end .container -->
 </body>
 
 </html>

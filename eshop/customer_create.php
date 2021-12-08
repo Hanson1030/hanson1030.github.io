@@ -22,7 +22,7 @@ include 'config/navbar.php';
                 $confirm_password = $_POST['confirm_password'];
                 $first_name = $_POST['first_name'];
                 $last_name = $_POST['last_name'];
-                $gender = $_POST['gender'];
+                //$gender = $_POST['gender'];
                 $date_of_birth = $_POST['date_of_birth'];
                 //$reg_date = $_POST['reg_date'];
                 //$acc_status = $_POST['acc_status'];
@@ -32,7 +32,7 @@ include 'config/navbar.php';
                 $stmt->bindParam(':password', $password);
                 $stmt->bindParam(':first_name', $first_name);
                 $stmt->bindParam(':last_name', $last_name);
-                $stmt->bindParam(':gender', $gender);
+                $stmt->bindParam(':gender', $_POST['gender']);
                 $stmt->bindParam(':date_of_birth', $date_of_birth);
                 //$reg_date = date('Y-m-d H:i:s'); // get the current date and time
                 //$stmt->bindParam(':reg_date', $reg_date);

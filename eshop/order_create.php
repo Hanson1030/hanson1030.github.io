@@ -160,6 +160,12 @@ include 'config/navbar.php';
                                 unset($_POST['product'][$y]);
                                 unset($_POST['quantity'][$y]);
                             }
+
+                            if (count($_POST['product']) != count(array_unique($_POST['product']))) {
+                    
+                                unset($_POST['product'][$y]);
+                                unset($_POST['quantity'][$y]);
+                            }
                         }
                     }
                     //if(count($_POST['product'] == 0)) {

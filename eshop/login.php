@@ -20,8 +20,10 @@
       // include database connection
       include 'config/database.php';
 
-      $q = 'SELECT username, password, account_status from customers';
-      $stmt = $con->prepare($q);
+      session_start();
+
+      $query = 'SELECT username, password, account_status from customers';
+      $stmt = $con->prepare($query);
       $stmt->execute();
 
       $flag = 0;
@@ -32,17 +34,19 @@
         if ($_POST['username'] !== $row['username']) {
           $flag = 1;
           $message = 'Your username not valid!';
+        } elseif ($_POST['username'] !== $row['username'] && $_POST['password'] == $row['password']) {
+          $flag = 1;
+          $message = 'Your username not valid!';
         } elseif (md5($_POST['password']) == $row['password']) {
-
           if ($row['account_status'] == 'Active') {
             header("Location:home.php");
           } else {
             $flag = 1;
             $message = 'Please tell admin to activate your account.';
           }
-        } else {
+        } elseif ($_POST['username'] == $row['username'] && $_POST['password'] != $row['password']) {
           $flag = 1;
-          $message = 'Your username or password is incorrect';
+          $message = 'Your password is incorrect';
         }
 
         /* if ($_POST['username'] !== $row['username']) {

@@ -28,15 +28,10 @@ include 'config/navbar.php';
 
             // Bind the parameter
             $stmt->bindParam(":order_id", $id);
-
             // execute our query
             $stmt->execute();
-
             // this is how to get number of rows returned
             $num = $stmt->rowCount();
-
-
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             $query2 = "SELECT order_summary.order_id, customers.first_name, customers.last_name, customers.username
             FROM order_summary
