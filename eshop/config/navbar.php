@@ -45,8 +45,7 @@
                     </li>
                 </ul>
                 <span class="navbar-text d-flex">
-                    <a class="nav-link text-secondary" href="order_read.php">Read Order</a>
-                    <a class="nav-link text-secondary" href="order_create.php">Create Order</a>
+                    <a class="nav-link text-secondary" href="logout.php">Log out</a>
                 </span>
             </div>
         </div>

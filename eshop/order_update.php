@@ -52,7 +52,6 @@ include 'config/navbar.php';
         $product_arrName = array();
 
         while ($row = $stmt3->fetch(PDO::FETCH_ASSOC)) {
-
             extract($row);
             array_push($product_arrID, $row['product_id']);
             array_push($product_arrName, $row['name']);
@@ -126,9 +125,9 @@ include 'config/navbar.php';
                     extract($row);
                     echo "<tr>";
                     echo "<td><select class='form-control' name='product_id'>";
-                    for ($pcount = 0; $pcount < count($product_arrName); $pcount++) {
-                        $product_selected = $product_arrName[$pcount] == $name ? 'selected' : '';
-                        echo "<option value='" . $product_arrID[$pcount] . "'$product_selected>" . $product_arrName[$pcount] . "</option>";
+                    for ($product_count = 0; $product_count < count($product_arrName); $product_count++) {
+                        $product_selected = $product_arrName[$product_count] == $name ? 'selected' : '';
+                        echo "<option value='" . $product_arrID[$product_count] . "'$product_selected>" . $product_arrName[$product_count] . "</option>";
                     }
                     echo "</select></td>";
                     echo "<td><select class='form-select' name='quantity'>";

@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE HTML>
 <html>
 
@@ -14,72 +18,75 @@
   <div class="container vh-100">
 
     <?php
-
     if ($_POST) {
 
       // include database connection
       include 'config/database.php';
 
-      session_start();
-
-      $query = 'SELECT username, password, account_status from customers';
-      $stmt = $con->prepare($query);
-      $stmt->execute();
-
       $flag = 0;
       $message = '';
 
-      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
-        if ($_POST['username'] !== $row['username']) {
-          $flag = 1;
-          $message = 'Your username not valid!';
-        } elseif ($_POST['username'] !== $row['username'] && $_POST['password'] == $row['password']) {
-          $flag = 1;
-          $message = 'Your username not valid!';
-        } elseif (md5($_POST['password']) == $row['password']) {
-          if ($row['account_status'] == 'Active') {
-            header("Location:home.php");
-          } else {
-            $flag = 1;
-            $message = 'Please tell admin to activate your account.';
-          }
-        } elseif ($_POST['username'] == $row['username'] && $_POST['password'] != $row['password']) {
-          $flag = 1;
-          $message = 'Your password is incorrect';
-        }
-
-        /* if ($_POST['username'] !== $row['username']) {
-          $flag = 1;
-          $message = 'Username is not exists.';
-        } */
-      }
-
-
       if (empty($_POST['username'])) {
         $flag = 1;
-        $message = "Please insert your username.";
+        $message = "Please insert your username. <br>";
       }
-
       if (empty($_POST['password'])) {
         $flag = 1;
-        $message = "Please insert your password.";
+        $message = $message . "Please insert your password.";
+        //$message .= "Please insert your password.";
       }
 
-      if ($flag == 1) {
-        echo "<div class='alert alert-danger'>$message</div>";
+      if ($flag == 0) {
+        $username = $_POST['username'];
+        if (filter_var("$username", FILTER_VALIDATE_EMAIL)) {
+          $query = 'SELECT username, email, password, account_status from customers WHERE email=?';
+        } else {
+          $query = 'SELECT username, email, password, account_status from customers WHERE username=?';
+        }
+        $stmt = $con->prepare($query);
+        $stmt->bindParam(1, $username);
+        $stmt->execute();
+        $num = $stmt->rowCount();
+
+        if ($num > 0) {
+          $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+          if (md5($_POST['password']) == $row['password']) {
+            if ($row['account_status'] == 'Active') {
+              $_SESSION['username'] = $username;
+              header("Location:home.php");
+            } else {
+              $flag = 1;
+              $message = 'Please tell admin to activate your account.';
+            }
+          } else {
+            $flag = 1;
+            $message = 'Your password is incorrect';
+          }
+        } else {
+          $flag = 1;
+          $message = 'Username is not exists.';
+        }
       }
     }
     ?>
-    <div class="wrapper">
-
-    </div>
 
     <div class="text-center  d-flex align-items-center h-100">
 
       <div class="container w-50 w-md-25">
         <h2>Login</h2>
+        <?php
+        if (isset($flag) && $flag == 1) {
+          echo "<div class='alert alert-danger'>$message</div>";
+        }
 
+        if (isset($_GET['msg']) && $_GET['msg'] == 'logout') {
+          echo "<div class='alert alert-success'>Logout Successful</div>";
+        }
+        if (isset($_GET['msg']) && $_GET['msg'] == 'loginerr') {
+          echo "<div class='alert alert-danger'>Unable to access. Please Login.</div>";
+        }
+        ?>
         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
           <div class="form-group">
             <label>Username</label>
