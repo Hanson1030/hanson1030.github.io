@@ -8,12 +8,10 @@ include 'config/navbar.php';
             <h1>Create New Order</h1>
         </div>
 
-
         <?php
         include 'config/database.php';
 
         $q = "SELECT product_id, name, price FROM products";
-
 
         $stmt = $con->prepare($q);
         $stmt->execute();
@@ -25,14 +23,10 @@ include 'config/navbar.php';
             array_push($product_arrName, $row['name']);
         }
 
-
-
-
         $cus_username = "SELECT username FROM customers";
 
         $cu = $con->prepare($cus_username);
         $cu->execute();
-
 
         if ($_POST) {
             //var_dump($_POST);
@@ -40,7 +34,6 @@ include 'config/navbar.php';
             $product_flag = 0;
             $fail_flag = 0;
             $message = '';
-
 
             for ($count1 = 0; $count1 < count($_POST['product']); $count1++) {
                 if (!empty($_POST['product'][$count1]) && !empty($_POST['quantity'][$count1])) {

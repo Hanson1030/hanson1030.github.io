@@ -71,11 +71,11 @@ include 'config/navbar.php';
             // write update query
             // in this case, it seemed like we have so many fields to pass and
             // it is better to label them and not use question marks
-
+           
             $query_OD = "UPDATE order_details
             SET product_id=:product_id, quantity=:quantity 
             WHERE order_id = :order_id";
-
+            
             $stmt_OD = $con->prepare($query_OD);
             //$username = $_POST['username'];
             $product_id = $_POST['product_id'];
