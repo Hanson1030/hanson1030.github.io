@@ -19,7 +19,7 @@ include 'config/navbar.php';
                 $username = $_POST['username'];
                 $email = $_POST['email'];
                 $password = md5($_POST['password']);
-                $confirm_password = $_POST['confirm_password'];
+                $confirm_password = md5($_POST['confirm_password']);
                 $first_name = $_POST['first_name'];
                 $last_name = $_POST['last_name'];
                 //$gender = $_POST['gender'];
@@ -102,7 +102,9 @@ include 'config/navbar.php';
                         $date_of_birthErr = "Date of Birth is required";
                     } 
 
-                } elseif (!preg_match("/[a-zA-Z]/", $password) || !preg_match("/[0-9]/", $password) || !preg_match("/[a-zA-Z0-9]{8,}/", $password)) {
+                } 
+
+                if (!preg_match("/[a-zA-Z]/", $_POST['password']) || !preg_match("/[0-9]/", $_POST['password']) || !preg_match("/[a-zA-Z0-9]{8,}/", $_POST['password'])) {
                     $flag = 1;
                     $message = "Password must at least 8 character and must contain number and alphabets.";
                 } elseif ($password !== $confirm_password) {
@@ -119,6 +121,7 @@ include 'config/navbar.php';
                 if ($flag == 0) {
                     if ($stmt->execute()) {
                         echo "<div class='alert alert-success'>Record was saved.</div>";
+                        echo $cust_age;
                     } else {
                         echo "Unable to save record.";
                     }

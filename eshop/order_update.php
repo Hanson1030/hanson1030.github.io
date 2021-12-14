@@ -67,27 +67,51 @@ include 'config/navbar.php';
     // check if form was submitted
     if ($_POST) {
 
+        $flag = 0;
+        $product_flag = 0;
+        $fail_flag = 0;
+        $message = '';
+
+        for ($count1 = 0; $count1 < count($_POST['product']); $count1++) {
+            if (!empty($_POST['product'][$count1]) && !empty($_POST['quantity'][$count1])) {
+                $product_flag++;
+            }
+            if (empty($_POST['product'][$count1]) || empty($_POST['quantity'][$count1])) {
+                $fail_flag++;
+            }
+        }
+        if ($product_flag < 1) {
+            $flag = 1;
+            $message = 'Please select the at least one prouct and the associated quantity';
+        } elseif ($fail_flag > 0) {
+            $flag = 1;
+            $message = 'Please enter prouct and the associated quantity';
+        } elseif (count($_POST['product']) !== count(array_unique($_POST['product']))) {
+            $flag = 1;
+            $message = 'Duplicate product is not allowed.';
+        }
+
+
         try {
-            // write update query
-            // in this case, it seemed like we have so many fields to pass and
-            // it is better to label them and not use question marks
-           
-            $query_OD = "UPDATE order_details
-            SET product_id=:product_id, quantity=:quantity 
-            WHERE order_id = :order_id";
-            
-            $stmt_OD = $con->prepare($query_OD);
-            //$username = $_POST['username'];
-            $product_id = $_POST['product_id'];
-            $quantity = $_POST['quantity'];
+            $query_del = "DELETE FROM order_details WHERE order_id = ?";
+            $stmt_del = $con->prepare($query_del);
+            $stmt_del->bindParam(1, $id);
 
-            $stmt_OD->bindParam(':product_id', $product_id);
-            $stmt_OD->bindParam(':quantity', $quantity);
-            $stmt_OD->bindParam(':order_id', $id);
-
-            if ($stmt3->execute()) {
-                if ($stmt2->execute()) {
+            if ($flag == 0) {
+                if ($stmt_del->execute()) {
+                    for ($product_ins = 0; $product_ins < count($_POST['product']); $product_ins++) {
+                        $query_ins = 'INSERT INTO order_details SET order_id=:order_id, product_id=:product_id, quantity=:quantity';
+                        $stmt_ins = $con->prepare($query_ins);
+                        $stmt_ins->bindParam(':order_id', $id);
+                        $stmt_ins->bindParam(':product_id', $_POST['product'][$product_ins]);
+                        $stmt_ins->bindParam(':quantity', $_POST['quantity'][$product_ins]);
+                        if (!empty($_POST['product'][$product_ins]) && !empty($_POST['quantity'][$product_ins])) {
+                            $stmt_ins->execute();
+                        }
+                    }
                     echo "<div class='alert alert-success'>Record was saved.</div>";
+                } else {
+                    echo "<div class='alert alert-danger'>Unable to save record.</div>";
                 }
             } else {
                 echo "<div class='alert alert-danger'>";
@@ -113,37 +137,87 @@ include 'config/navbar.php';
         <table class='table table-hover table-responsive table-bordered'>
             <tr>
                 <th>Product Name</th>
-                <th>Product Name</th>
+                <th>Quantity</th>
             </tr>
 
             <?php
             if ($num > 0) {
 
-                // creating new table row per record
+                $arrayPost_product = array('');
+                if ($_POST) {
+                    if (count($_POST['product']) !== 1) {
+                        for ($y = 0; $y <= count($_POST['product']); $y++) {
+                            if (empty($_POST['product'][$y])  && empty($_POST['quantity'][$y])) {
+
+                                unset($_POST['product'][$y]);
+                                unset($_POST['quantity'][$y]);
+                            }
+
+                            if (count($_POST['product']) != count(array_unique($_POST['product']))) {
+
+                                unset($_POST['product'][$y]);
+                                unset($_POST['quantity'][$y]);
+                            }
+                        }
+                    }
+                    $arrayPost_product = $_POST['product'];
+                }
+
 
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     extract($row);
+                    echo "<tr class='productRow'>";
+                    echo '<td><select class="w-100 fs-4 rounded" name="product[]">';
+
+                    $product_list = $_POST ? $_POST['product'] : ' ';
+
+                    for ($product_count = 0; $product_count < count($product_arrName); $product_count++) {
+                        $selected_product = $product_arrID[$product_count] == $row['product_id'] || $product_arrID[$product_count] == $product_list[$product_count] ? 'selected' : ' ';
+                        $after_post = $product_arrID[$product_count] == $_POST['product_id'] ? 'selected' : ' ';
+                        $posted_product = $_POST ?  $after_post : $selected_product;
+                        echo  "<option value='" . $product_arrID[$product_count] . "' $selected_product>" . $product_arrName[$product_count] . "</option>";
+                    }
+                    echo "</select>";
+                    echo '</td>';
+                    echo "<td>";
+                    echo '<select class="w-100 fs-4 rounded" name="quantity[]" >';
+                    $quantity_list = $_POST ? $_POST['quantity'] : ' ';
+                    for ($quantity = 1; $quantity <= 5; $quantity++) {
+                        $selected_quantity = $row['quantity'] == $quantity || $quantity == $quantity_list[$quantity] ? 'selected' : '';
+                        echo "<option value='$quantity' $selected_quantity>$quantity</option>";
+                    }
+                    echo "</select>";
+                    echo "</td>";
+                    echo "</tr>";
+                    /* 
+                    extract($row);
                     echo "<tr>";
-                    echo "<td><select class='form-control' name='product_id'>";
+                    echo "<td><select class='form-control' name='product[]'>";
                     for ($product_count = 0; $product_count < count($product_arrName); $product_count++) {
                         $product_selected = $product_arrName[$product_count] == $name ? 'selected' : '';
                         echo "<option value='" . $product_arrID[$product_count] . "'$product_selected>" . $product_arrName[$product_count] . "</option>";
                     }
                     echo "</select></td>";
-                    echo "<td><select class='form-select' name='quantity'>";
+                    echo "<td><select class='form-select' name='quantity[]'>";
                     for ($quantity = 1; $quantity <= 5; $quantity++) {
                         $quantity_selected = $row['quantity'] == $quantity ? 'selected' : '';
                         echo "<option value='$quantity'$quantity_selected>$quantity</option>";
                     }
                     echo "</select></td>";
-                    echo "</tr>";
+                    echo "</tr>"; 
+                    */
                 }
-                echo "</table>";
-                
             }
             ?>
             <tr>
-                <td></td>
+                <td>
+                    <div class="d-flex justify-content-center flex-column flex-lg-row">
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-primary add_one btn mb-3 mx-2">Add More Product</button>
+                            <button type="button" class="btn btn-danger delete_one btn mb-3 mx-2">Delete Last Product</button>
+                        </div>
+                    </div>
+                </td>
                 <td>
                     <input type='submit' value='Save Changes' class='btn btn-primary' />
                     <a href='order_read.php' class='btn btn-danger'>Back to read Order</a>

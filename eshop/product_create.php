@@ -44,49 +44,31 @@ include 'config/navbar.php';
                         $flag = 1;
                         $message = "Please fill in every field.";
                         $nameErr = "Name is required";
-                    } else {
-                        $name = trim(htmlspecialchars($_POST["name"]));
-                    }
+                    } 
 
                     if (empty($_POST["description"])) {
                         $flag = 1;
                         $message = "Please fill in every field.";
-                        $descriptionErr = "Email is required";
-                    } else {
-                        $description = trim(htmlspecialchars($_POST["description"]));
-                    }
+                        $descriptionErr = "description is required";
+                    } 
 
                     if (empty($_POST["price"])) {
                         $flag = 1;
                         $message = "Please fill in every field.";
-                        $priceErr = "Password is required";
-                    } else {
-                        $price = trim(htmlspecialchars($_POST["price"]));
-                    }
-
-                    if (empty($_POST["promo_price"])) {
-                        $flag = 1;
-                        $message = "Please fill in every field.";
-                        $promo_priceErr = "Confirm Password is required";
-                    } else {
-                        $promo_price = trim(htmlspecialchars($_POST["promo_price"]));
-                    }
+                        $priceErr = "price is required";
+                    } 
 
                     if (empty($_POST["manu_date"])) {
                         $flag = 1;
                         $message = "Please fill in every field.";
                         $manu_dateErr = "First Name is required";
-                    } else {
-                        $manu_date = trim(htmlspecialchars($_POST["manu_date"]));
-                    }
+                    } 
 
                     if (empty($_POST["exp_date"])) {
                         $flag = 1;
                         $message = "Please fill in every field.";
                         $exp_dateErr = "Last Name is required";
-                    } else {
-                        $exp_date = trim(htmlspecialchars($_POST["exp_date"]));
-                    }
+                    } 
                 } elseif (!is_numeric($price) || !is_numeric($promo_price)) {
                     $flag = 1;
                     $message = "Price must be numerical.";
