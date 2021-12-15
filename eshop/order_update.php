@@ -174,8 +174,12 @@ include 'config/navbar.php';
                     for ($product_count = 0; $product_count < count($product_arrName); $product_count++) {
                         $selected_product = $product_arrID[$product_count] == $row['product_id'] || $product_arrID[$product_count] == $product_list[$product_count] ? 'selected' : ' ';
                         $after_post = $product_arrID[$product_count] == $_POST['product_id'] ? 'selected' : ' ';
-                        $posted_product = $_POST ?  $after_post : $selected_product;
-                        echo  "<option value='" . $product_arrID[$product_count] . "' $selected_product>" . $product_arrName[$product_count] . "</option>";
+                        $posted_product = $_POST[$product_count] ?  $after_post : $selected_product;
+                        if ($_POST) {
+                            echo  "<option value='" . $product_arrID[$product_count] . "' $selected_product>" . $product_arrName[$product_count] . "</option>";
+                        } else {
+                            echo  "<option value='" . $product_arrID[$product_count] . "' $selected_product>" . $product_arrName[$product_count] . "</option>";
+                        }
                     }
                     echo "</select>";
                     echo '</td>';
