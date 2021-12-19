@@ -107,6 +107,7 @@ include 'config/navbar.php';
                         $stmt_ins->bindParam(':quantity', $_POST['quantity'][$product_ins]);
                         if (!empty($_POST['product'][$product_ins]) && !empty($_POST['quantity'][$product_ins])) {
                             $stmt_ins->execute();
+                            //header("Location:order_read_one.php");
                         }
                     }
                     echo "<div class='alert alert-success'>Record was saved.</div>";
@@ -193,23 +194,6 @@ include 'config/navbar.php';
                     echo "</select>";
                     echo "</td>";
                     echo "</tr>";
-                    /* 
-                    extract($row);
-                    echo "<tr>";
-                    echo "<td><select class='form-control' name='product[]'>";
-                    for ($product_count = 0; $product_count < count($product_arrName); $product_count++) {
-                        $product_selected = $product_arrName[$product_count] == $name ? 'selected' : '';
-                        echo "<option value='" . $product_arrID[$product_count] . "'$product_selected>" . $product_arrName[$product_count] . "</option>";
-                    }
-                    echo "</select></td>";
-                    echo "<td><select class='form-select' name='quantity[]'>";
-                    for ($quantity = 1; $quantity <= 5; $quantity++) {
-                        $quantity_selected = $row['quantity'] == $quantity ? 'selected' : '';
-                        echo "<option value='$quantity'$quantity_selected>$quantity</option>";
-                    }
-                    echo "</select></td>";
-                    echo "</tr>"; 
-                    */
                 }
             }
             ?>
@@ -232,6 +216,30 @@ include 'config/navbar.php';
 
 </div>
 <!-- end .container -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener('click', function(event) {
+        if (event.target.matches('.add_one')) {
+            var element = document.querySelector('.productRow');
+            var clone = element.cloneNode(true);
+            element.after(clone);
+        }
+        if (event.target.matches('.delete_one')) {
+            var total = document.querySelectorAll('.productRow').length;
+            if (total > 1) {
+                var element = document.querySelector('.productRow');
+                element.remove(element);
+            }
+        }
+    }, false);
+
+    function incrementValue() {
+        var value = parseInt(document.getElementById('number').value, 10);
+        value = isNaN(value) ? 0 : value;
+        value++;
+        document.getElementById('number').value = value;
+    }
+</script>
 </body>
 
 </html>

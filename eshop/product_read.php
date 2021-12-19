@@ -21,111 +21,87 @@ include 'config/navbar.php';
     $stmt_allProd->execute();
     $table = $stmt_allProd->fetchAll();
 
-    $table_content = '';
-    foreach ($table as $row) {
-
-        //set a variable for table content
-        $table_content = $table_content . "<tr>"
-            . "<td>" . $row['product_id'] . "</td>"
-            . "<td>" . $row['name'] . "</td>"
-            . "<td>" . $row['description'] . "</td>"
-            . "<td>" . $row['category_name'] . "</td>"
-            . "<td>" . $row['price'] . "</td>"
-
-            . "<td>"
-            //read one record
-            . "<a href='product_read_one.php?id={$row['product_id']}' class='btn btn-info'>Read</a>"
-
-            //edit record
-            . "<a href='product_update.php?id={$row['product_id']}' class='btn btn-primary'>Edit</a>"
-
-            //delete record
-            . "<a href='#' onclick='delete_product({$row['product_id']});'  class='btn btn-danger'>Delete</a>"
-
-            . "</td>"
-
-            . "</tr>";
-    }
-
-    if (isset($_POST['search'])) {
+    $flag = 0;
+    $message = '';
+    if (isset($_POST['filter'])) {
 
         $category_option = $_POST['category'];
-        $table_content = '';
 
-        if ($category_option != "select_category") {
-            $query_seletedCat = "SELECT categories.category_name, products.product_id, products.name, products.description, products.price
-            FROM categories
-            INNER JOIN products   
-            ON products.category_id = categories.category_id 
-            WHERE category_name 
-            LIKE :category_name 
+        if ($category_option != "show_all") {
+            $query_selectedCat = "SELECT product_id, name, description, price
+            FROM products
+            WHERE category_id = :category_id
             ORDER BY product_id DESC";
-            $stmt_seletedCat = $con->prepare($query_seletedCat);
-            $stmt_seletedCat->execute(array(':category_name' => $category_option));
-            $table = $stmt_seletedCat->fetchAll();
 
-            foreach ($table as $row) {
-
-                //set a variable for table content
-                $table_content = $table_content . "<tr>"
-                    . "<td>" . $row['product_id'] . "</td>"
-                    . "<td>" . $row['name'] . "</td>"
-                    . "<td>" . $row['description'] . "</td>"
-                    . "<td>" . $row['category_name'] . "</td>"
-                    . "<td>" . $row['price'] . "</td>"
-
-                    . "<td>"
-                    //read one record
-                    . "<a href='product_read_one.php?id={$row['product_id']}' class='btn btn-info'>Read</a>"
-
-                    //edit record
-                    . "<a href='product_update.php?id={$row['product_id']}' class='btn btn-primary'>Edit</a>"
-
-                    //delete record
-                    . "<a href='#' onclick='delete_product({$row['product_id']});'  class='btn btn-danger'>Delete</a>"
-
-                    . "</td>"
-
-                    . "</tr>";
-            }
-        }
-
-        if ($category_option == "select_category") {
-
-            $query_seletedCat = "SELECT categories.category_name, products.product_id, products.name, products.description, products.price
+            $stmt_selectedCat = $con->prepare($query_selectedCat);
+            $stmt_selectedCat->bindParam(':category_id', $category_option);
+        } else {
+            $query_selectedCat = "SELECT categories.category_name, products.product_id, products.name, products.description, products.price
             FROM categories
             INNER JOIN products 
             ON products.category_id = categories.category_id 
             ORDER BY product_id DESC";
 
-            $stmt_seletedCat = $con->prepare($query_seletedCat);
-            $stmt_seletedCat->execute();
-            $table = $stmt_seletedCat->fetchAll();
+            $stmt_selectedCat = $con->prepare($query_selectedCat);
+        }
+        $stmt_selectedCat->execute();
+        $num = $stmt_selectedCat->rowCount();
+        $table = $stmt_selectedCat->fetchAll();
+    } elseif (isset($_POST['search'])) {
 
-            foreach ($table as $row) {
+        if (empty($_POST['search_field'])) {
+            echo "<div class='alert alert-danger mt-4'>Nothing was searched.</div>";
+        }
 
-                //set a variable for table content
-                $table_content = $table_content . "<tr>"
-                    . "<td>" . $row['product_id'] . "</td>"
-                    . "<td>" . $row['name'] . "</td>"
-                    . "<td>" . $row['description'] . "</td>"
-                    . "<td>" . $row['category_name'] . "</td>"
-                    . "<td>" . $row['price'] . "</td>"
+        $query_search = "SELECT products.product_id, products.name, products.description, products.price, categories.category_name
+        FROM products
+        INNER JOIN categories
+        ON products.category_id = categories.category_id
+        WHERE products.name LIKE :name
+        ORDER BY product_id ";
 
-                    . "<td>"
-                    //read one record
-                    . "<a href='product_read_one.php?id={$row['product_id']}' class='btn btn-info'>Read</a>"
+        $search_field = "%" . $_POST['search_field'] . "%";
+        $stmt_search = $con->prepare($query_search);
+        $stmt_search->bindParam(':name', $search_field);
+        $stmt_search->execute();
+        $num = $stmt_search->rowCount();
+        $table = $stmt_search->fetchAll();
+    }
 
-                    //edit record
-                    . "<a href='product_update.php?id={$row['product_id']}' class='btn btn-primary'>Edit</a>"
 
-                    //delete record
-                    . "<a href='#' onclick='delete_product({$row['product_id']});'  class='btn btn-danger'>Delete</a>"
+    if (isset($_POST['filter']) || !isset($_POST['filter']) || $category_option == "show_all" || isset($_POST['search']) || !isset($_POST['search'])) {
+        $category_option = $_POST ? $_POST['category'] : ' ';
+        $table_content = '';
+        foreach ($table as $row) {
 
-                    . "</td>"
+            $category_header = $category_option == "show_all" || !isset($_POST['filter']) ? "<td>" . $row['category_name'] . "</td>" : ' ';
 
-                    . "</tr>";
-            }
+            //set a variable for table content
+            $table_content = $table_content . "<tr>"
+                . "<td>" . $row['product_id'] . "</td>"
+                . "<td>" . $row['name'] . "</td>"
+                . "<td>" . $row['description'] . "</td>"
+                . $category_header
+                . "<td class='text-end'>" . $row['price'] . "</td>"
+                . "<td>"
+                //read one record
+                . "<a href='product_read_one.php?id={$row['product_id']}' class='btn btn-info'>Read</a>"
+
+                //edit record
+                . "<a href='product_update.php?id={$row['product_id']}' class='btn btn-primary'>Edit</a>"
+
+                //delete record
+                . "<a href='#' onclick='delete_product({$row['product_id']});'  class='btn btn-danger'>Delete</a>"
+                . "</td>"
+                . "</tr>";
+        }
+    }
+    if ($_POST) {
+        if ($num <= 0) {
+            echo "<div class='alert alert-danger mt-4'>No records found.</div>";
+            echo "<div class='d-flex justify-content-center m-3'>";
+            echo "<a href='product_read.php' class='btn btn-warning'>Back to Product Read</a>";
+            echo "</div>";
         }
     }
     ?>
@@ -142,38 +118,47 @@ include 'config/navbar.php';
         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
             <div class="row d-flex justify-content-center m-3">
                 <select class="fs-4 rounded col-4" name="category">
-                    <option value="select_category">-----SELECT Category-----</option>
+                    <option value="show_all">Show All</option>
 
                     <?php
                     $category_list = $_POST ? $_POST['category'] : ' ';
                     while ($row = $stmt_category->fetch(PDO::FETCH_ASSOC)) {
                         extract($row);
-                        $selected_category = $row['category_name'] == $category_list ? 'selected' : '';
-                        echo "<option class='bg-white' value='$category_name' $selected_category>$category_name</option>";
+                        $selected_category = $row['category_id'] == $category_list ? 'selected' : '';
+                        echo "<option class='bg-white' value='$category_id' $selected_category>$category_name</option>";
                     }
                     ?>
 
                 </select>
-                <input type="submit" value="Search" name="search" class="btn-sm btn btn-success col-1 mx-2 fs-5" />
+                <input type="submit" value="Go" name="filter" class="btn-sm btn btn-success col-1 mx-2 fs-5" />
             </div>
 
-            <table class='table table-hover table-responsive table-bordered'>
+            <div class="row d-flex justify-content-center m-3">
+                <input type="text" placeholder="Search..." name="search_field" value="<?php $search_field ?>" class="fs-4 rounded col-4" />
+                <input type="submit" value="Search" name="search" class="btn-sm btn btn-success col-1 mx-2 fs-5">
+            </div>
+        </form>
 
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Action</th>
-                </tr>
+        <table class='table table-hover table-responsive table-bordered'>
 
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
                 <?php
-                //check if more than 0 record found
-                echo $table_content;
+                echo $_POST && $category_option == "show_all" || !isset($_POST['filter']) ? "<th>Category</th>" : '';
                 ?>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
 
-            </table>
+            <?php
+            //check if more than 0 record found
+            echo $table_content;
+            ?>
+
+        </table>
+
     </div>
 
 
