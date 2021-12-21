@@ -75,7 +75,7 @@ include 'config/navbar.php';
             echo "<tr>";
             echo "<th>Name</th>";
             echo "<th>Quantity</th>";
-            echo "<th>Price</th>";
+            echo "<th>Unit Price</th>";
             echo "<th>Total</th>";
             echo "</tr>";
 

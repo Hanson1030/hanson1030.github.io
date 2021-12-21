@@ -107,7 +107,7 @@ include 'config/navbar.php';
                         $stmt_ins->bindParam(':quantity', $_POST['quantity'][$product_ins]);
                         if (!empty($_POST['product'][$product_ins]) && !empty($_POST['quantity'][$product_ins])) {
                             $stmt_ins->execute();
-                            header("Location:order_read_one.php?id=".$id);
+                            header("Location:order_read_one.php?id=" . $id);
                         }
                     }
                     echo "<div class='alert alert-success'>Record was saved.</div>";
@@ -135,10 +135,11 @@ include 'config/navbar.php';
     echo "Customer Name : $first_name  $last_name <br>";
     ?>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post">
-        <table class='table table-hover table-responsive table-bordered'>
+        <table id="order_table" class='table table-hover table-responsive table-bordered'>
             <tr>
                 <th>Product Name</th>
                 <th>Quantity</th>
+                <th></th>
             </tr>
 
             <?php
@@ -168,7 +169,7 @@ include 'config/navbar.php';
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     extract($row);
                     echo "<tr class='productRow'>";
-                    echo '<td><select class="w-100 fs-4 rounded" name="product[]">';
+                    echo '<td class="col-6"><select class="w-100 fs-4 rounded my-2" name="product[]">';
 
                     $product_list = $_POST ? $_POST['product'] : ' ';
 
@@ -184,8 +185,8 @@ include 'config/navbar.php';
                     }
                     echo "</select>";
                     echo '</td>';
-                    echo "<td>";
-                    echo '<select class="w-100 fs-4 rounded" name="quantity[]" >';
+                    echo "<td class='col-6'>";
+                    echo '<select class="w-100 fs-4 rounded my-2" name="quantity[]" >';
                     $quantity_list = $_POST ? $_POST['quantity'] : ' ';
                     for ($quantity = 1; $quantity <= 5; $quantity++) {
                         $selected_quantity = $row['quantity'] == $quantity || $quantity == $quantity_list[$quantity] ? 'selected' : '';
@@ -193,6 +194,11 @@ include 'config/navbar.php';
                     }
                     echo "</select>";
                     echo "</td>";
+
+                    echo "<td>";
+                    echo "<button type='button' class='btn btn-danger my-2' onclick='deleteMe(this)'>Remove</button>";
+                    echo "</td>";
+
                     echo "</tr>";
                 }
             }
@@ -206,9 +212,13 @@ include 'config/navbar.php';
                         </div>
                     </div>
                 </td>
-                <td>
-                    <input type='submit' value='Save Changes' class='btn btn-primary' />
-                    <a href='order_read.php' class='btn btn-danger'>Back to read Order</a>
+                <td colspan="2">
+                    <div class="d-flex justify-content-center flex-column flex-lg-row">
+                        <div class="d-flex justify-content-center">
+                            <input type='submit' value='Save Changes' class='btn btn-primary mx-2' />
+                            <a href='order_read.php' class='btn btn-danger'>Back to read Order</a>
+                        </div>
+                    </div>
                 </td>
             </tr>
         </table>
@@ -232,6 +242,18 @@ include 'config/navbar.php';
             }
         }
     }, false);
+
+    function deleteMe(row) {
+        var table = document.getElementById('order_table')
+        var allrows = table.getElementsByTagName('tr');
+        if (allrows.length == 1) {
+            alert("You are not allowed to delete.");
+        } else {
+            if (confirm("Confirm to delete?")) {
+                row.parentNode.parentNode.remove();
+            }
+        }
+    }
 
     function incrementValue() {
         var value = parseInt(document.getElementById('number').value, 10);
