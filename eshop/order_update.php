@@ -107,7 +107,7 @@ include 'config/navbar.php';
                         $stmt_ins->bindParam(':quantity', $_POST['quantity'][$product_ins]);
                         if (!empty($_POST['product'][$product_ins]) && !empty($_POST['quantity'][$product_ins])) {
                             $stmt_ins->execute();
-                            //header("Location:order_read_one.php");
+                            header("Location:order_read_one.php?id=".$id);
                         }
                     }
                     echo "<div class='alert alert-success'>Record was saved.</div>";

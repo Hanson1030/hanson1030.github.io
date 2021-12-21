@@ -44,6 +44,7 @@ include 'config/navbar.php';
 
             $stmt_selectedCat = $con->prepare($query_selectedCat);
         }
+        
         $stmt_selectedCat->execute();
         $num = $stmt_selectedCat->rowCount();
         $table = $stmt_selectedCat->fetchAll();

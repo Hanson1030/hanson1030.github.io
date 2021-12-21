@@ -47,6 +47,7 @@ include 'config/navbar.php';
         $stmt_selectedCat->execute();
         $num = $stmt_selectedCat->rowCount();
         $table = $stmt_selectedCat->fetchAll();
+
     } elseif (isset($_POST['search'])) {
 
         if (empty($_POST['search_field'])) {
@@ -96,6 +97,7 @@ include 'config/navbar.php';
                 . "</tr>";
         }
     }
+    
     if ($_POST) {
         if ($num <= 0) {
             echo "<div class='alert alert-danger mt-4'>No records found.</div>";
