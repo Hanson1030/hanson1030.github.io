@@ -1,5 +1,6 @@
 <?php
 include 'config/navbar.php';
+include 'config/session.php';
 ?>
 <!-- container -->
 <div class="container">
@@ -18,7 +19,7 @@ include 'config/navbar.php';
 
     if ($_POST) {
         // include database connection
-        
+
         try {
             // insert query
             $query = "INSERT INTO products SET name=:name, description=:description, category_id=:category_id, price=:price, promotion_price=:promo_price, manufacture_date=:manu_date, expired_date=:exp_date ,created=:created";
@@ -48,6 +49,7 @@ include 'config/navbar.php';
             $message = "";
 
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
                 if (empty($_POST["name"])) {
                     $flag = 1;
                     $message = "Please fill in every field.";
@@ -60,7 +62,7 @@ include 'config/navbar.php';
                     $descriptionErr = "Description is required";
                 }
 
-                if ($_POST["category_id"] == " ") {
+                if ($_POST["category_id"] == ' ') {
                     $flag = 1;
                     $message = "Please fill in every field.";
                     $categoryErr = "Category is required";
@@ -75,18 +77,20 @@ include 'config/navbar.php';
                 if (empty($_POST["manu_date"])) {
                     $flag = 1;
                     $message = "Please fill in every field.";
-                    $manu_dateErr = "First Name is required";
+                    $manu_dateErr = "Manufacture date is required";
                 }
-            } elseif (!is_numeric($price) || !is_numeric($promo_price)) {
+            }
+
+            if (!is_numeric($price) || !is_numeric($promo_price)) {
                 $flag = 1;
                 $message = "Price must be numerical.";
             } elseif ($price < 0 || $promo_price < 0) {
                 $flag = 1;
                 $message = "Price cannot be negative.";
-            } elseif ($promo_price > $price) {
+            } elseif ($promo_price >= $price) {
                 $flag = 1;
-                $message = "Error: Promo Price cannot bigger than Normal Price";
-            } elseif ($manu_date > $exp_date) {
+                $message = "Error: Promo Price must lesser than Normal Price";
+            } elseif ($manu_date >= $exp_date) {
                 $flag = 1;
                 $message = "Error: Expired date must be after Manufacture date";
             }
@@ -112,13 +116,15 @@ include 'config/navbar.php';
 
     ?>
 
+    <?php $posted_name = $_POST ? $_POST['name'] : ' '; ?>
+
     <!-- html form here where the product information will be entered -->
     <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
         <table class='table table-hover table-responsive table-bordered'>
             <tr>
                 <td>Name</td>
                 <td>
-                    <input type='text' name='name' class='form-control' />
+                    <input type='text' name='name' class='form-control' value="<?php echo $posted_name ?>" />
                     <span>
                         <?php if (isset($nameErr)) echo "<div class='text-danger'>*$nameErr</div>  "; ?>
                     </span>
@@ -127,7 +133,7 @@ include 'config/navbar.php';
             <tr>
                 <td>Description</td>
                 <td>
-                    <textarea name='description' class='form-control'></textarea>
+                    <textarea name='description' class='form-control'><?php echo $_POST ? $_POST['description'] : ' '; ?></textarea>
                     <span>
                         <?php if (isset($descriptionErr)) echo "<div class='text-danger'>*$descriptionErr</div>  "; ?>
                     </span>
@@ -157,7 +163,7 @@ include 'config/navbar.php';
             <tr>
                 <td>Price</td>
                 <td>
-                    <input type='text' name='price' class='form-control' />
+                    <input type='text' name='price' class='form-control' value="<?php echo $_POST ? $_POST['price'] : ' '; ?>" />
                     <span>
                         <?php if (isset($priceErr)) echo "<div class='text-danger'>*$priceErr</div>  "; ?>
                     </span>
@@ -166,12 +172,12 @@ include 'config/navbar.php';
             <tr>
                 <td>Promotion Price</td>
                 <td>
-                    <input type='text' name='promo_price' class='form-control' />
+                    <input type='text' name='promo_price' class='form-control' value="<?php echo $_POST ? $_POST['promo_price'] : ' '; ?>" />
                 </td>
             </tr>
             <tr>
                 <td>Manufacture Date</td>
-                <td><input type='date' name='manu_date' class='form-control' />
+                <td><input type='date' name='manu_date' class='form-control' value="<?php echo $_POST ? $_POST['manu_date'] : ' '; ?>" />
                     <span>
                         <?php if (isset($manu_dateErr)) echo "<div class='text-danger'>*$manu_dateErr</div>  "; ?>
                     </span>
@@ -180,7 +186,7 @@ include 'config/navbar.php';
             <tr>
                 <td>Expired Date</td>
                 <td>
-                    <input type="date" name='exp_date' class='form-control' />
+                    <input type="date" name='exp_date' class='form-control' value="<?php echo $_POST ? $_POST['exp_date'] : ' '; ?>" />
                 </td>
             </tr>
             <tr>

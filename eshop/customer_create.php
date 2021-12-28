@@ -1,6 +1,13 @@
-<?php
-include 'config/navbar.php';
-?>
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>PDO - Create a Record - PHP CRUD Tutorial</title>
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+
+<body>
     <!-- container -->
     <div class="container">
         <div class="page-header">
@@ -8,6 +15,8 @@ include 'config/navbar.php';
         </div>
 
         <?php
+
+
         if ($_POST) {
             // include database connection
             include 'config/database.php';
@@ -70,14 +79,6 @@ include 'config/navbar.php';
                         $passwordErr = "Password is required";
                     }
 
-                    /*
-                    if (empty($_POST["confirm_password"])) {
-                        $flag = 1;
-                        $message = "Please fill in every field.";
-                        $confirm_passwordErr = "Confirm Password is required";
-                    }
-                    */
-
                     if (empty($_POST["first_name"])) {
                         $flag = 1;
                         $message = "Please fill in every field.";
@@ -100,9 +101,8 @@ include 'config/navbar.php';
                         $flag = 1;
                         $message = "Please fill in every field.";
                         $date_of_birthErr = "Date of Birth is required";
-                    } 
-
-                } 
+                    }
+                }
 
                 if (!preg_match("/[a-zA-Z]/", $_POST['password']) || !preg_match("/[0-9]/", $_POST['password']) || !preg_match("/[a-zA-Z0-9]{8,}/", $_POST['password'])) {
                     $flag = 1;
@@ -119,16 +119,46 @@ include 'config/navbar.php';
                 } 
 
                 if ($flag == 0) {
-                    if ($stmt->execute()) {
-                        echo "<div class='alert alert-success'>Record was saved.</div>";
-                        echo $cust_age;
+
+                    $select_query = "SELECT username FROM customers";
+                    $select_stmt = $con->prepare($select_query);
+                    $select_stmt->execute();
+                    $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if (filter_var("$username", FILTER_VALIDATE_EMAIL)) {
+                        $select_query = 'SELECT username, email FROM customers WHERE email=?';
                     } else {
-                        echo "Unable to save record.";
+                        $select_query = 'SELECT username, email FROM customers WHERE username=?';
                     }
-                } else {
+                    $select_stmt = $con->prepare($select_query);
+                    $select_stmt->bindParam(1, $username);
+                    $select_stmt->execute();
+                    $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if ($_POST['username'] == $row['username']) {
+                        $flag = 1;
+                        $message = "This username has been registered.";
+                    }
+
+                    // if ($stmt->execute()) {
+                    //     header('Location:index.php');
+                    //     echo "<div class='alert alert-success'>Record was saved.</div>";
+                    // } else {
+                    //     echo "Unable to save record.";
+                    // }
+                } 
+                
+                if ($flag !== 0){
                     echo "<div class='alert alert-danger'>";
                     echo $message;
                     echo "</div>";
+                } else {
+                    if ($stmt->execute()) {
+                        header('Location:index.php');
+                        echo "<div class='alert alert-success'>Record was saved.</div>";
+                    } else {
+                        echo "Unable to save record.";
+                    }
                 }
             }
             // show error
@@ -146,7 +176,7 @@ include 'config/navbar.php';
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td>Username</td>
-                    <td><input type='text' name='username' class='form-control' />
+                    <td><input type='text' name='username' class='form-control' value="<?php echo $_POST ? $_POST['username'] : ' '; ?>" />
                         <span>
                             <?php if (isset($usernameErr)) echo "<div class='text-danger'>*$usernameErr</div>  "; ?>
                         </span>
@@ -154,7 +184,7 @@ include 'config/navbar.php';
                 </tr>
                 <tr>
                     <td>Email</td>
-                    <td><input type='email' name='email' class='form-control' />
+                    <td><input type='email' name='email' class='form-control' value="<?php echo $_POST ? $_POST['email'] : ' '; ?>" />
                         <span>
                             <?php if (isset($emailErr)) echo "<div class='text-danger'>*$emailErr</div>  "; ?>
                         </span>
@@ -178,7 +208,7 @@ include 'config/navbar.php';
                 </tr>
                 <tr>
                     <td>First Name</td>
-                    <td><input type="text" name='first_name' class='form-control' />
+                    <td><input type="text" name='first_name' class='form-control' value="<?php echo $_POST ? $_POST['first_name'] : ' '; ?>" />
                         <span>
                             <?php if (isset($first_nameErr)) echo "<div class='text-danger'>*$first_nameErr</div>  "; ?>
                         </span>
@@ -186,7 +216,7 @@ include 'config/navbar.php';
                 </tr>
                 <tr>
                     <td>Last Name</td>
-                    <td><input type="text" name='last_name' class='form-control' />
+                    <td><input type="text" name='last_name' class='form-control' value="<?php echo $_POST ? $_POST['last_name'] : ' '; ?>" />
                         <span>
                             <?php if (isset($last_nameErr)) echo "<div class='text-danger'>*$last_nameErr</div>  "; ?>
                         </span>
@@ -196,11 +226,15 @@ include 'config/navbar.php';
                     <td>Gender</td>
                     <td>
                         <div class="form-check form-check-inline">
-                            <input type="radio" id="male" name='gender' value="Male" class="form-check-input">
+                            <input type="radio" id="male" name='gender' value="Male" class="form-check-input" <?php if ($_POST) {
+                                                                                                                    echo $_POST['gender'] == 'Male' ? 'checked' : '';
+                                                                                                                } ?>>
                             <label class="form-check-label" for="male">Male</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" id="female" name='gender' value="Female" class="form-check-input">
+                            <input type="radio" id="female" name='gender' value="Female" class="form-check-input" <?php if ($_POST) {
+                                                                                                                        echo $_POST['gender'] == 'Female' ? 'checked' : '';
+                                                                                                                    } ?>>
                             <label class="form-check-label" for="female">Female</label>
                         </div>
                         <span>
@@ -210,7 +244,7 @@ include 'config/navbar.php';
                 </tr>
                 <tr>
                     <td>Date of birth</td>
-                    <td><input type='date' name='date_of_birth' class='form-control' />
+                    <td><input type='date' name='date_of_birth' class='form-control' value="<?php echo $_POST ? $_POST['date_of_birth'] : ' '; ?>" />
                         <span>
                             <?php if (isset($date_of_birthErr)) echo "<div class='text-danger'>*$date_of_birthErr</div>  "; ?>
                         </span>
@@ -219,8 +253,8 @@ include 'config/navbar.php';
                 <tr>
                     <td></td>
                     <td>
-                        <input type='submit' value='Save' class='btn btn-primary' />
-                        <a href="product_read.php" class='btn btn-danger'>Back to read products</a>
+                        <input type='submit' value='Sign Up' class='btn btn-primary' />
+                        <a href="index.php" class='btn btn-danger'>Back to Login Page</a>
                     </td>
                 </tr>
             </table>

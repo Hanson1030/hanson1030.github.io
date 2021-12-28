@@ -1,5 +1,6 @@
 <?php
 include 'config/navbar.php';
+include 'config/session.php';
 ?>
 <!-- container -->
 <div class="container">
@@ -47,7 +48,6 @@ include 'config/navbar.php';
         $stmt_selectedCat->execute();
         $num = $stmt_selectedCat->rowCount();
         $table = $stmt_selectedCat->fetchAll();
-
     } elseif (isset($_POST['search'])) {
 
         if (empty($_POST['search_field'])) {
@@ -97,7 +97,7 @@ include 'config/navbar.php';
                 . "</tr>";
         }
     }
-    
+
     if ($_POST) {
         if ($num <= 0) {
             echo "<div class='alert alert-danger mt-4'>No records found.</div>";
@@ -165,8 +165,6 @@ include 'config/navbar.php';
 
 
 </div> <!-- end .container -->
-
-<!-- confirm delete record will be here -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 </body>

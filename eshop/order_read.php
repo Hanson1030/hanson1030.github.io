@@ -1,5 +1,6 @@
 <?php
 include 'config/navbar.php';
+include 'config/session.php';
 ?>
     <!-- container -->
     <div class="container">

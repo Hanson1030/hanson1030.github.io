@@ -1,5 +1,6 @@
 <?php
 include 'config/navbar.php';
+include 'config/session.php';
 ?>
     <!-- container -->
     <div class="container">
@@ -21,8 +22,7 @@ include 'config/navbar.php';
         // this is how to get number of rows returned
         $num = $stmt->rowCount();
 
-        // link to create record form
-        echo "<a href='customer_create.php' class='btn btn-primary m-b-1em'>Create New Product</a>";
+        
 
         //check if more than 0 record found
         if ($num > 0) {

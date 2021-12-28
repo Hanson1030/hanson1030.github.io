@@ -75,6 +75,7 @@ session_start();
 
       <div class="container w-50 w-md-25">
         <h2>Login</h2>
+
         <?php
         if (isset($flag) && $flag == 1) {
           echo "<div class='alert alert-danger'>$message</div>";
@@ -86,7 +87,11 @@ session_start();
         if (isset($_GET['msg']) && $_GET['msg'] == 'loginerr') {
           echo "<div class='alert alert-danger'>Unable to access. Please Login.</div>";
         }
+        if (isset($_GET['msg']) && $_GET['msg'] == 'createsuccess') {
+          echo "<div class='alert alert-success'>Account Created Successfully. Please Log In.</div>";
+        }
         ?>
+        
         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
           <div class="form-group">
             <label>Username</label>

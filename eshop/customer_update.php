@@ -1,5 +1,6 @@
 <?php
 include 'config/navbar.php';
+include 'config/session.php';
 ?>
     <!-- container -->
     <div class="container">
@@ -160,10 +161,6 @@ include 'config/navbar.php';
         <!--we have our html form here where new record information can be updated-->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post">
             <table class='table table-hover table-responsive table-bordered'>
-                <tr>
-                    <td>Current Password</td>
-                    <td><input type='text' name='current_pass' value="<?php echo htmlspecialchars($password, ENT_QUOTES);  ?>" class='form-control' readonly /></td>
-                </tr>
                 <tr>
                     <td>Username</td>
                     <td><input type='text' name='username' value="<?php echo htmlspecialchars($username, ENT_QUOTES);  ?>" class='form-control' readonly /></td>

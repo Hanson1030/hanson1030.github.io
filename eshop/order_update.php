@@ -1,5 +1,6 @@
 <?php
 include 'config/navbar.php';
+include 'config/session.php';
 ?>
 <!-- container -->
 <div class="container">
@@ -113,7 +114,7 @@ include 'config/navbar.php';
                     echo "<div class='alert alert-success'>Record was saved.</div>";
                 } else {
                     echo "<div class='alert alert-danger'>Unable to save record.</div>";
-                }
+                } 
             } else {
                 echo "<div class='alert alert-danger'>";
                 echo $message;
@@ -169,7 +170,9 @@ include 'config/navbar.php';
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     extract($row);
                     echo "<tr class='productRow'>";
-                    echo '<td class="col-6"><select class="w-100 fs-4 rounded my-2" name="product[]">';
+                    echo "<td class='col-6'>";
+                    echo "<select class='w-100 fs-4 rounded my-2' name='product[]''>";
+                    echo "<option value=''>--Select--</option>";
 
                     $product_list = $_POST ? $_POST['product'] : ' ';
 
@@ -187,6 +190,7 @@ include 'config/navbar.php';
                     echo '</td>';
                     echo "<td class='col-6'>";
                     echo '<select class="w-100 fs-4 rounded my-2" name="quantity[]" >';
+                    echo  "<option value=''>Please Select Your Quantity</option>";
                     $quantity_list = $_POST ? $_POST['quantity'] : ' ';
                     for ($quantity = 1; $quantity <= 5; $quantity++) {
                         $selected_quantity = $row['quantity'] == $quantity || $quantity == $quantity_list[$quantity] ? 'selected' : '';

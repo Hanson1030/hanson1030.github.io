@@ -30,7 +30,6 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false">Customer</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
                             <li><a class="dropdown-item" href="customer_read.php">Read Customer</a></li>
-                            <li><a class="dropdown-item" href="customer_create.php">Create Customer</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

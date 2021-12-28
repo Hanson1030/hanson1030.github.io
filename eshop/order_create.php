@@ -1,5 +1,6 @@
 <?php
 include 'config/navbar.php';
+include 'config/session.php';
 ?>
 <!-- container -->
 <div class="container">
@@ -79,6 +80,7 @@ include 'config/navbar.php';
                         $stmt->bindParam(':quantity', $_POST['quantity'][$count]);
                         if (!empty($_POST['product'][$count]) && !empty($_POST['quantity'][$count])) {
                             $stmt->execute();
+                            header("Location:order_read_one.php?id=" . $last_id);
                         }
                     }
                     echo "<div class='alert alert-success'>Record was saved.Last inserted ID is: $last_id</div>";
