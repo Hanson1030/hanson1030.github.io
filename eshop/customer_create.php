@@ -22,7 +22,8 @@
             include 'config/database.php';
             try {
                 // insert query
-                $query = "INSERT INTO customers SET username=:username, email=:email, password=:password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth";
+                $query = "INSERT INTO customers 
+                SET username=:username, email=:email, password=:password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, customer_img=:customer_img";
                 // prepare query for execution
                 $stmt = $con->prepare($query);
                 $username = $_POST['username'];
@@ -31,11 +32,9 @@
                 $confirm_password = md5($_POST['confirm_password']);
                 $first_name = $_POST['first_name'];
                 $last_name = $_POST['last_name'];
-                //$gender = $_POST['gender'];
                 $date_of_birth = $_POST['date_of_birth'];
-                //$reg_date = $_POST['reg_date'];
-                //$acc_status = $_POST['acc_status'];
-                // bind the parameters
+                $customer_img = basename($_FILES['cus_img']['name']);
+
                 $stmt->bindParam(':username', $username);
                 $stmt->bindParam(':email', $email);
                 $stmt->bindParam(':password', $password);
@@ -43,21 +42,57 @@
                 $stmt->bindParam(':last_name', $last_name);
                 $stmt->bindParam(':gender', $_POST['gender']);
                 $stmt->bindParam(':date_of_birth', $date_of_birth);
-                //$reg_date = date('Y-m-d H:i:s'); // get the current date and time
-                //$stmt->bindParam(':reg_date', $reg_date);
-                //$stmt->bindParam(':acc_status', $acc_status);
-                //$created = date('Y-m-d H:i:s'); // get the current date and time
-                //$stmt->bindParam(':created', $created);
-
-                // Execute the query
-                // echo $password . "\n";
-                // $check = !preg_match( "/[a-z]/", $password) && !preg_match( "/[A-Z]/", $password) || !preg_match( "/[0-9]/", $password);
-                // echo $check;
-
+                $stmt->bindParam(':customer_img', $customer_img);
+                
                 $flag = 0;
                 $message = "";
                 $cur_date = date('Y');
                 $cust_age = ((int)$cur_date - (int)$date_of_birth);
+
+                if (!empty($_FILES['cus_img']['name'])) {
+                    $target_dir = "cus_img/";
+                    $target_file = $target_dir . basename($_FILES["cus_img"]["name"]);
+                    $isUploadOK = TRUE;
+                    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                    $check = getimagesize($_FILES["cus_img"]["tmp_name"]);
+                    if ($check !== false) {
+                        echo "File is an image - " . $check["mime"] . ".";
+                        $isUploadOK = TRUE;
+                    } else {
+                        $flag = 1;
+                        $message .= "File is not an image.<br>";
+                        $isUploadOK = FALSE;
+                    }
+
+                    if ($_FILES["cus_img"]["size"] > 500000) {
+                        $flag = 1;
+                        $message .= "Sorry, your file is too large.<br>";
+                        $isUploadOK = FALSE;
+                    }
+
+                    // Allow certain file formats
+                    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "PNG") {
+                        $flag = 1;
+                        $message .= "Sorry, only JPG, JPEG, PNG & GIF files are allowed.<br>";
+                        $isUploadOK = FALSE;
+                    }
+
+                    // Check if $uploadOk is set to 0 by an error
+                    if ($isUploadOK == FALSE) {
+                        $flag = 1;
+                        $message .= "Sorry, your file was not uploaded."; // if everything is ok, try to upload file
+                    } else {
+                        if (move_uploaded_file($_FILES["cus_img"]["tmp_name"], $target_file)) {
+                            echo "The file " . basename($_FILES["cus_img"]["name"]) . " has been uploaded.";
+                        } else {
+                            $flag = 1;
+                            $message .= "Sorry, there was an error uploading your file.<br>";
+                        }
+                    }
+                } else {
+
+                    $customer_img = "";
+                }
 
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -116,7 +151,7 @@
                 } elseif (!preg_match("/[a-zA-Z0-9]{6,}/", $username)) {
                     $flag = 1;
                     $message = "Username must be at least 6 characters";
-                } 
+                }
 
                 if ($flag == 0) {
 
@@ -139,22 +174,15 @@
                         $flag = 1;
                         $message = "This username has been registered.";
                     }
+                }
 
-                    // if ($stmt->execute()) {
-                    //     header('Location:index.php');
-                    //     echo "<div class='alert alert-success'>Record was saved.</div>";
-                    // } else {
-                    //     echo "Unable to save record.";
-                    // }
-                } 
-                
-                if ($flag !== 0){
+                if ($flag !== 0) {
                     echo "<div class='alert alert-danger'>";
                     echo $message;
                     echo "</div>";
                 } else {
                     if ($stmt->execute()) {
-                        header('Location:index.php');
+                        header('Location:index.php?msg=createsuccess');
                         echo "<div class='alert alert-success'>Record was saved.</div>";
                     } else {
                         echo "Unable to save record.";
@@ -172,8 +200,13 @@
         ?>
 
         <!-- html form here where the customer information will be entered -->
-        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
             <table class='table table-hover table-responsive table-bordered'>
+                <tr>
+                    <td>Profile Picture (optional):</td>
+                    <td> <input type="file" name="cus_img" id="fileToUpload">
+                    </td>
+                </tr>
                 <tr>
                     <td>Username</td>
                     <td><input type='text' name='username' class='form-control' value="<?php echo $_POST ? $_POST['username'] : ' '; ?>" />
