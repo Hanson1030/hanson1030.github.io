@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Exercise2</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#btn1").click(function () {
+                var mark = $("#mark").val();
+
+                if (mark >= 85 && mark <= 100) {
+                    $("#grade").text("A+");
+                    $("#grade_point").text("4.00");
+                    $("#remarks").text("Outstanding");
+                }
+
+                if (mark >= 80 && mark <= 84) {
+                    $("#grade").text("A");
+                    $("#grade_point").text("4.00");
+                    $("#remarks").text("Excellent");
+                }
+
+                if (mark >= 75 && mark <= 79) {
+                    $("#grade").text("A-");
+                    $("#grade_point").text("3.67");
+                    $("#remarks").text("Good");
+                }
+
+                if (mark >= 70 && mark <= 74) {
+                    $("#grade").text("B+");
+                    $("#grade_point").text("3.33");
+                    $("#remarks").text("Good");
+                }
+
+                if (mark >= 65 && mark <= 69) {
+                    $("#grade").text("B");
+                    $("#grade_point").text("3.00");
+                    $("#remarks").text("Satisfactory");
+                }
+
+                if (mark >= 60 && mark <= 64) {
+                    $("#grade").text("B-");
+                    $("#grade_point").text("2.67");
+                    $("#remarks").text("Satisfactory");
+                }
+
+                if (mark >= 55 && mark <= 59) {
+                    $("#grade").text("C+");
+                    $("#grade_point").text("2.67");
+                    $("#remarks").text("Satisfactory");
+                }
+
+                if (mark >= 50 && mark <= 54) {
+                    $("#grade").text("C");
+                    $("#grade_point").text("2.00");
+                    $("#remarks").text("Satisfactory");
+                }
+
+                if (mark >= 45 && mark <= 49) {
+                    $("#grade").css("color", "red");
+                    $("#grade").text("D+");
+                    $("#grade_point").css("color", "red");
+                    $("#grade_point").text("1.67");
+                    $("#remarks").css("color", "red");
+                    $("#remarks").text("Satisfactory");
+                }
+
+                if (mark >= 40 && mark <= 44) {
+                    $("#grade").css("color", "red");
+                    $("#grade").text("D");
+                    $("#grade_point").css("color", "red");
+                    $("#grade_point").text("1.33");
+                    $("#remarks").css("color", "red");
+                    $("#remarks").text("Satisfactory");
+                }
+
+                if (mark >= 30 && mark <= 39) {
+                    $("#grade").css("color", "red");
+                    $("#grade").text("E");
+                    $("#grade_point").css("color", "red");
+                    $("#grade_point").text("1.00");
+                    $("#remarks").css("color", "red");
+                    $("#remarks").text("Satisfactory");
+                }
+
+                if (mark >= 0 && mark <= 29) {
+                    $("#grade").css("color", "red");
+                    $("#grade").text("F");
+                    $("#grade_point").css("color", "red");
+                    $("#grade_point").text("0.00");
+                    $("#remarks").css("color", "red");
+                    $("#remarks").text("Satisfactory");
+                }
+            });
+
+
+        });
+    </script>
+</head>
+
+<body>
+
+    <div>
+        <p>Insert your mark:
+            <input id="mark" type="text">
+            <button id="btn1" type="submit">Submit</button>
+            <p>
+                Grade:
+                <b id="grade"></b>
+            </p>
+            <p>
+                Grade Points:
+                <b id="grade_point"></b>
+            </p>
+            <p>
+                Remarks:
+                <b id="remarks"></b>
+            </p>
+        </p>
+    </div>
+
+</body>
+
+</html>

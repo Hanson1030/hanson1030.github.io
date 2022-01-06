@@ -108,7 +108,7 @@ include 'config/navbar.php';
                         $stmt_ins->bindParam(':quantity', $_POST['quantity'][$product_ins]);
                         if (!empty($_POST['product'][$product_ins]) && !empty($_POST['quantity'][$product_ins])) {
                             $stmt_ins->execute();
-                            header("Location:order_read_one.php?id=" . $id);
+                            echo "<script>location.replace('order_read_one.php?id=".$id."&msg=orderUpdate_success')</script>";
                         }
                     }
                     echo "<div class='alert alert-success'>Record was saved.</div>";
@@ -220,7 +220,7 @@ include 'config/navbar.php';
                     <div class="d-flex justify-content-center flex-column flex-lg-row">
                         <div class="d-flex justify-content-center">
                             <input type='submit' value='Save Changes' class='btn btn-primary mx-2' />
-                            <a href='order_read.php' class='btn btn-danger'>Back to read Order</a>
+                            <a href='order_read.php' class='btn btn-danger'>Back to Order list</a>
                         </div>
                     </div>
                 </td>

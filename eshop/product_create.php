@@ -46,6 +46,7 @@ include 'config/navbar.php';
             $stmt->bindParam(':product_img', $product_img);
             $created = date('Y-m-d H:i:s'); // get the current date and time
             $stmt->bindParam(':created', $created);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
             //Error Statement
@@ -53,7 +54,7 @@ include 'config/navbar.php';
             $message = "";
 
             if (!empty($_FILES['prod_img']['name'])) {
-                $target_dir = "prod_img/";
+                $target_dir = "prod_img/".$row['product_id'];
                 $target_file = $target_dir . basename($_FILES["prod_img"]["name"]);
                 $isUploadOK = TRUE;
                 $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));

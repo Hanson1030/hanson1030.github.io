@@ -63,7 +63,6 @@ include 'config/navbar.php';
             } else {
                 echo '<td><img src="cus_img/' . $customer_img . '"width="200px"></td>';
             }
-
             ?>
         </tr>
         <tr>

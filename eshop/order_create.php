@@ -80,7 +80,8 @@ include 'config/navbar.php';
                         $stmt->bindParam(':quantity', $_POST['quantity'][$count]);
                         if (!empty($_POST['product'][$count]) && !empty($_POST['quantity'][$count])) {
                             $stmt->execute();
-                            header("Location:order_read_one.php?id=" . $last_id);
+                            //echo ("Location:order_read_one.php?id=" . $last_id);
+                            echo "<script>location.replace('order_read_one.php?id=".$last_id."&msg=orderCreate_success')</script>";
                         }
                     }
                     echo "<div class='alert alert-success'>Record was saved.Last inserted ID is: $last_id</div>";
@@ -195,7 +196,7 @@ include 'config/navbar.php';
                 </td>
                 <td>
                     <input type='submit' value='Save' class='btn btn-primary' />
-                    <a href='order_read.php' class='btn btn-danger'>Back to read Order</a>
+                    <a href='order_read.php' class='btn btn-danger'>Back to Order list</a>
                 </td>
             </tr>
         </table>

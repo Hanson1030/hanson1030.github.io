@@ -284,21 +284,21 @@ include 'config/navbar.php';
             </tr>
             <tr>
                 <td>Old Password</td>
-                <td><input type='text' name='old_password' class='form-control' /></td>
+                <td><input type='password' name='old_password' class='form-control' /></td>
             </tr>
             <tr>
                 <td>New Password</td>
-                <td><input type='text' name='new_password' class='form-control' /></td>
+                <td><input type='password' name='new_password' class='form-control' /></td>
             </tr>
             <tr>
                 <td>Confirm New Password</td>
-                <td><input type='text' name='confirm_new_password' class='form-control' /></td>
+                <td><input type='password' name='confirm_new_password' class='form-control' /></td>
             </tr>
             <tr>
                 <td></td>
                 <td>
                     <input type='submit' value='Save Changes' class='btn btn-primary' />
-                    <a href='home.php' class='btn btn-danger'>Back to Home Page</a>
+                    <a href='customer_read.php' class='btn btn-danger'>Back to Customer List</a>
                 </td>
             </tr>
         </table>
@@ -306,6 +306,8 @@ include 'config/navbar.php';
 
 </div>
 <!-- end .container -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
 </body>
 
 </html>

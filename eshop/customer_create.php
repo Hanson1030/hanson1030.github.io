@@ -1,3 +1,11 @@
+<?php
+
+session_start();
+if(isset($_SESSION['username'])) {
+    include 'config/navbar.php';
+}
+?>
+
 <!DOCTYPE HTML>
 <html>
 
@@ -43,7 +51,7 @@
                 $stmt->bindParam(':gender', $_POST['gender']);
                 $stmt->bindParam(':date_of_birth', $date_of_birth);
                 $stmt->bindParam(':customer_img', $customer_img);
-                
+
                 $flag = 0;
                 $message = "";
                 $cur_date = date('Y');
@@ -56,7 +64,6 @@
                     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
                     $check = getimagesize($_FILES["cus_img"]["tmp_name"]);
                     if ($check !== false) {
-                        echo "File is an image - " . $check["mime"] . ".";
                         $isUploadOK = TRUE;
                     } else {
                         $flag = 1;
@@ -209,7 +216,7 @@
                 </tr>
                 <tr>
                     <td>Username</td>
-                    <td><input type='text' name='username' class='form-control' value="<?php echo $_POST ? $_POST['username'] : ' '; ?>" />
+                    <td><input type='text' name='username' class='form-control' value="<?php echo $_POST ? $_POST['username'] : ''; ?>" />
                         <span>
                             <?php if (isset($usernameErr)) echo "<div class='text-danger'>*$usernameErr</div>  "; ?>
                         </span>
@@ -217,7 +224,7 @@
                 </tr>
                 <tr>
                     <td>Email</td>
-                    <td><input type='email' name='email' class='form-control' value="<?php echo $_POST ? $_POST['email'] : ' '; ?>" />
+                    <td><input type='email' name='email' class='form-control' value="<?php echo $_POST ? $_POST['email'] : ''; ?>" />
                         <span>
                             <?php if (isset($emailErr)) echo "<div class='text-danger'>*$emailErr</div>  "; ?>
                         </span>
@@ -241,7 +248,7 @@
                 </tr>
                 <tr>
                     <td>First Name</td>
-                    <td><input type="text" name='first_name' class='form-control' value="<?php echo $_POST ? $_POST['first_name'] : ' '; ?>" />
+                    <td><input type="text" name='first_name' class='form-control' value="<?php echo $_POST ? $_POST['first_name'] : ''; ?>" />
                         <span>
                             <?php if (isset($first_nameErr)) echo "<div class='text-danger'>*$first_nameErr</div>  "; ?>
                         </span>
@@ -249,7 +256,7 @@
                 </tr>
                 <tr>
                     <td>Last Name</td>
-                    <td><input type="text" name='last_name' class='form-control' value="<?php echo $_POST ? $_POST['last_name'] : ' '; ?>" />
+                    <td><input type="text" name='last_name' class='form-control' value="<?php echo $_POST ? $_POST['last_name'] : ''; ?>" />
                         <span>
                             <?php if (isset($last_nameErr)) echo "<div class='text-danger'>*$last_nameErr</div>  "; ?>
                         </span>
@@ -287,7 +294,13 @@
                     <td></td>
                     <td>
                         <input type='submit' value='Sign Up' class='btn btn-primary' />
-                        <a href="index.php" class='btn btn-danger'>Back to Login Page</a>
+                        <?php
+                        if(isset($_SESSION['username'])){
+                            echo "<a href='customer_read.php' class='btn btn-danger'>Back to Read Customer</a>";
+                        } else {
+                            echo "<a href='index.php' class='btn btn-danger'>Back to Login Page</a>";
+                        }
+                        ?>
                     </td>
                 </tr>
             </table>

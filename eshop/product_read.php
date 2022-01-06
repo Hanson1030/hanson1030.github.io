@@ -8,11 +8,20 @@ include 'config/navbar.php';
     <?php
     include 'config/database.php';
 
+    //delete record
+    $action = isset($_GET['action']) ? $_GET['action'] : "";
+
+    // if it was redirected from delete.php
+    if ($action == 'deleted') {
+        echo "<div class='alert alert-success'>Record was deleted.</div>";
+    }
+
+
     $query_category = "SELECT * FROM categories ORDER BY category_id ASC";
     $stmt_category = $con->prepare($query_category);
     $stmt_category->execute();
 
-    $query_allProd = "SELECT categories.category_name, products.product_id, products.name, products.description, products.price
+    $query_allProd = "SELECT categories.category_name, products.product_id, products.name, products.description, products.price, products.product_img
     FROM categories
     INNER JOIN products 
     ON products.category_id = categories.category_id 
@@ -73,23 +82,36 @@ include 'config/navbar.php';
     if (isset($_POST['filter']) || !isset($_POST['filter']) || $category_option == "show_all" || isset($_POST['search']) || !isset($_POST['search'])) {
         $category_option = $_POST ? $_POST['category'] : ' ';
         $table_content = '';
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         foreach ($table as $row) {
 
             $category_header = $category_option == "show_all" || !isset($_POST['filter']) ? "<td>" . $row['category_name'] . "</td>" : ' ';
+            
+
+            if ($row['product_img'] == '') {
+                $yoyo = "<td><img src='prod_img/nopic.png' style='object-fit: cover;height:100px;width:100px;'><br>";
+            } else {
+                $yoyo = "<td><img src='prod_img/" . $row['product_img'] . "'style='object-fit: cover;height:100px;width:100px;'></td>";
+            }
+
+
+
 
             //set a variable for table content
-            $table_content = $table_content . "<tr>"
+            $table_content = $table_content . "<tr class='text-center'>"
+                . $yoyo
                 . "<td>" . $row['product_id'] . "</td>"
                 . "<td>" . $row['name'] . "</td>"
                 . "<td>" . $row['description'] . "</td>"
                 . $category_header
                 . "<td class='text-end'>" . $row['price'] . "</td>"
+
                 . "<td>"
                 //read one record
                 . "<a href='product_read_one.php?id={$row['product_id']}' class='btn btn-info'>Read</a>"
 
                 //edit record
-                . "<a href='product_update.php?id={$row['product_id']}' class='btn btn-primary'>Edit</a>"
+                . "<a href='product_update.php?id={$row['product_id']}' class='btn btn-primary mx-2'>Edit</a>"
 
                 //delete record
                 . "<a href='#' onclick='delete_product({$row['product_id']});'  class='btn btn-danger'>Delete</a>"
@@ -143,7 +165,8 @@ include 'config/navbar.php';
 
         <table class='table table-hover table-responsive table-bordered'>
 
-            <tr>
+            <tr class="text-center">
+                <th>Product Image</th>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Description</th>
@@ -165,6 +188,19 @@ include 'config/navbar.php';
 
 
 </div> <!-- end .container -->
+
+<script type='text/javascript'>
+    // confirm record deletion
+    function delete_product(id) {
+
+        if (confirm('Are you sure?')) {
+            // if user clicked ok,
+            // pass the id to delete.php and execute the delete query
+            window.location = 'product_delete.php?id=' + id;
+        }
+    }
+</script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 </body>

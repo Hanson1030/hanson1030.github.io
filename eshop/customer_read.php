@@ -2,83 +2,91 @@
 include 'config/session.php';
 include 'config/navbar.php';
 ?>
-    <!-- container -->
-    <div class="container">
-        <div class="page-header">
-            <h1>Read Customers</h1>
-        </div>
+<!-- container -->
+<div class="container">
+    <div class="page-header">
+        <h1>Read Customers</h1>
+    </div>
 
-        <?php
-        // include database connection
-        include 'config/database.php';
+    <?php
+    // include database connection
+    include 'config/database.php';
 
-        // delete message prompt will be here
+    // delete message prompt will be here
 
-        // select all data
-        $query = "SELECT username, email, first_name, last_name, registration_date FROM customers ORDER BY registration_date DESC";
-        $stmt = $con->prepare($query);
-        $stmt->execute();
+    // select all data
+    $query = "SELECT username, email, first_name, last_name, registration_date, customer_img FROM customers ORDER BY registration_date DESC";
+    $stmt = $con->prepare($query);
+    $stmt->execute();
 
-        // this is how to get number of rows returned
-        $num = $stmt->rowCount();
+    // this is how to get number of rows returned
+    $num = $stmt->rowCount();
 
-        
 
-        //check if more than 0 record found
-        if ($num > 0) {
 
-            echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
+    //check if more than 0 record found
+    if ($num > 0) {
 
-            //creating our table heading
-            echo "<tr>";
-            echo "<th>Username </th>";
-            echo "<th>Email</th>";
-            echo "<th>First Name</th>";
-            echo "<th>Last Name</th>";
-            echo "<th>Registration Date & Time</th>";
-            echo "<th>Action</th>";
-            echo "</tr>";
+        echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
 
-            // retrieve our table contents
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                // extract row
-                // this will make $row['firstname'] to just $firstname only
-                extract($row);
-                // creating new table row per record
-                echo "<tr>";
-                echo "<td>{$username}</td>";
-                echo "<td>{$email}</td>";
-                echo "<td>{$first_name}</td>";
-                echo "<td>{$last_name}</td>";
-                echo "<td>{$registration_date}</td>";
-                echo "<td>";
-                // read one record
-                echo "<a href='customer_read_one.php?id={$username}' class='btn btn-info m-r-1em'>Read</a>";
+        //creating our table heading
+        echo "<tr class='text-center'>";
+        echo "<th>Profile Image</th>";
+        echo "<th>Username </th>";
+        echo "<th>Email</th>";
+        echo "<th>First Name</th>";
+        echo "<th>Last Name</th>";
+        echo "<th>Registration Date & Time</th>";
+        echo "<th>Action</th>";
+        echo "</tr>";
 
-                // we will use this links on next part of this post
-                echo "<a href='customer_update.php?id={$username}' class='btn btn-primary m-r-1em'>Edit</a>";
+        // retrieve our table contents
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // extract row
+            // this will make $row['firstname'] to just $firstname only
+            extract($row);
+            // creating new table row per record
+            echo "<tr class='text-center'>";
 
-                // we will use this links on next part of this post
-                echo "<a href='#' onclick='delete_customer({$username});'  class='btn btn-danger'>Delete</a>";
-                echo "</td>";
-                echo "</tr>";
+            if ($customer_img == '') {
+                echo "<td><img src='cus_img/noimg.png' style='object-fit: cover;height:100px;width:100px;'><br>";
+            } else {
+                echo "<td><img src='cus_img/" . $customer_img . "'style='object-fit: cover;height:100px;width:100px;'></td>";
             }
 
+            echo "<td>{$username}</td>";
+            echo "<td>{$email}</td>";
+            echo "<td>{$first_name}</td>";
+            echo "<td>{$last_name}</td>";
+            echo "<td>{$registration_date}</td>";
+            echo "<td>";
+            // read one record
+            echo "<a href='customer_read_one.php?id={$username}' class='btn btn-info m-r-1em'>Read</a>";
 
+            // we will use this links on next part of this post
+            echo "<a href='customer_update.php?id={$username}' class='btn btn-primary m-r-1em mx-2'>Edit</a>";
 
-            // end table
-            echo "</table>";
-        } else {
-            echo "<div class='alert alert-danger'>No records found.</div>";
+            // we will use this links on next part of this post
+            echo "<a href='#' onclick='delete_customer({$username});'  class='btn btn-danger'>Delete</a>";
+            echo "</td>";
+            echo "</tr>";
         }
-        ?>
 
 
-    </div> <!-- end .container -->
 
-    <!-- confirm delete record will be here -->
+        // end table
+        echo "</table>";
+    } else {
+        echo "<div class='alert alert-danger'>No records found.</div>";
+    }
+    ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+</div> <!-- end .container -->
+
+<!-- confirm delete record will be here -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 </body>
 
 </html>
