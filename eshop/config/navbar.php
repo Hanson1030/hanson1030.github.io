@@ -71,7 +71,6 @@ if ($customer_list > 0) {
                 </ul>
             </div>
 
-
             <div>
                 <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
                     <ul class="navbar-nav">
