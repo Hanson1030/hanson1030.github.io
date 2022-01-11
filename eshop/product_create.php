@@ -66,7 +66,6 @@ include 'config/navbar.php';
             $stmt->bindParam(':created', $created);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
             //Error Statement
             $flag = 0;
             $message = "";

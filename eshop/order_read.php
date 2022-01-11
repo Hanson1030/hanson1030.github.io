@@ -92,7 +92,6 @@ include 'config/navbar.php';
     }
     ?>
 
-
 </div> <!-- end .container -->
 
 <script type='text/javascript'>

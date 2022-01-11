@@ -117,6 +117,7 @@ include 'config/navbar.php';
         }
 
         ?>
+        
     </div>
 </div>
 <!-- end .container -->

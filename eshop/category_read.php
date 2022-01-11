@@ -96,7 +96,6 @@ include 'config/navbar.php';
     }
     ?>
 
-
 </div> <!-- end .container -->
 
 <!-- confirm delete record will be here -->

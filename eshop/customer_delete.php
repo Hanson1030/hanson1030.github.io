@@ -32,6 +32,7 @@ try {
         }
     }
 }
+
 // show error
 catch (PDOException $exception) {
     die('ERROR: ' . $exception->getMessage());

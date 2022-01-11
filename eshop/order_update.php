@@ -203,7 +203,6 @@
                         $arrayPost_product = $_POST['product'];
                     }
 
-
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         extract($row);
                         echo "<tr class='productRow'>";

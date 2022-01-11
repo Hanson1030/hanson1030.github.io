@@ -213,8 +213,6 @@ if (isset($_SESSION['username'])) {
             }
         }
 
-
-
         ?>
 
         <!-- html form here where the customer information will be entered -->

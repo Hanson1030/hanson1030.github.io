@@ -1,6 +1,7 @@
 <!--ID : 2050093-BSE -->
 <!--Name : Mak Hon Sang -->
 <!--Topic : Logout Page-->
+
 <?php
 session_start();
 

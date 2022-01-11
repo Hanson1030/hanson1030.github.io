@@ -33,7 +33,6 @@
             echo "<div class='alert alert-success my-3'>Record was deleted.</div>";
         }
 
-
         $query_category = "SELECT * FROM categories ORDER BY category_id ASC";
         $stmt_category = $con->prepare($query_category);
         $stmt_category->execute();

@@ -94,8 +94,6 @@ include 'config/navbar.php';
             echo "</tr>";
         }
 
-
-
         // end table
         echo "</table>";
     } else {

@@ -180,7 +180,6 @@ include 'config/navbar.php';
                 $message = "Customer must be age of 18 or above.";
             }
 
-
             if (!empty($old_password) || !empty($new_password) || !empty($confirm_new_password)) {
 
                 $old_password = md5($_POST['old_password']);
@@ -211,7 +210,6 @@ include 'config/navbar.php';
                 }
             }
 
-
             if ($flag == 0) {
                 if ($stmt->execute()) {
                     echo "<script>location.replace('customer_read_one.php?id=".$id."&msg=cus_updateSuccess')</script>";
@@ -230,7 +228,6 @@ include 'config/navbar.php';
             die('ERROR: ' . $exception->getMessage());
         }
     } ?>
-
 
     <!--we have our html form here where new record information can be updated-->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post" enctype="multipart/form-data">

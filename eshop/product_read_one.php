@@ -79,8 +79,6 @@
         }
         ?>
 
-
-
         <!--we have our html table here where the record will be displayed-->
         <table class='table table-hover table-responsive table-bordered'>
             <tr>

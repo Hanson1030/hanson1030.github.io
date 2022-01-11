@@ -23,6 +23,7 @@ try {
 
     header('Location: order_read.php?action=deleted');
 }
+
 // show error
 catch (PDOException $exception) {
     die('ERROR: ' . $exception->getMessage());
