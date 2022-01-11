@@ -1,3 +1,6 @@
+<!--ID : 2050093-BSE -->
+<!--Name : Mak Hon Sang -->
+<!--Topic : Category Delete Page-->
 <?php
 // include database connection
 include 'config/database.php';

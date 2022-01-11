@@ -1,3 +1,17 @@
+<!--ID : 2050093-BSE -->
+<!--Name : Mak Hon Sang -->
+<!--Topic : Customer Update Page-->
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Update Customer</title>
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+
+<body>
+
 <?php
 include 'config/session.php';
 include 'config/navbar.php';
@@ -86,6 +100,8 @@ include 'config/navbar.php';
 
             $flag = 0;
             $message = ' ';
+            $cur_date = date('Y');
+            $cust_age = ((int)$cur_date - (int)$date_of_birth);
 
             if (!empty($_FILES['cus_img']['name'])) {
                 $target_dir = "cus_img/";
@@ -132,6 +148,13 @@ include 'config/navbar.php';
                 $customer_img = $row['customer_img'];
             }
 
+            if (isset($_POST['delete_cus_img'])) {
+                $target_dir = "cus_img/";
+                unlink($target_dir . $row['customer_img']);
+                $target_file = $target_dir . basename($_FILES["cus_img"]["name"]);
+                $customer_img = '';
+            }
+
             if (empty($old_password) && empty($new_password) && empty($confirm_new_password)) {
                 $flag = 0;
                 $unchange_new_password = $row['password'];
@@ -152,6 +175,9 @@ include 'config/navbar.php';
                 $flag = 1;
                 $message = "Please fill in every field.";
                 $last_nameErr = "Last Name is required";
+            } elseif ($cust_age < 18) {
+                $flag = 1;
+                $message = "Customer must be age of 18 or above.";
             }
 
 
@@ -188,7 +214,7 @@ include 'config/navbar.php';
 
             if ($flag == 0) {
                 if ($stmt->execute()) {
-                    echo "<script>location.replace('customer_read_one.php?id=".$id."')</script>";
+                    echo "<script>location.replace('customer_read_one.php?id=".$id."&msg=cus_updateSuccess')</script>";
                     echo "<div class='alert alert-success'>Record was saved.</div>";
                 } else {
                     echo "Unable to save record.";
@@ -214,11 +240,20 @@ include 'config/navbar.php';
 
                 <?php
                 if ($customer_img == '') {
-                    echo '<td>No image<br>';
+                    echo '<td class="text-center"><img src="cus_img/noimg.png"><br>';
                 } else {
-                    echo '<td><img src="cus_img/' . $customer_img . '" width="200px"><br>';
+                    echo '<td class="text-center"><img src="cus_img/' . $customer_img . '" width="200px"><br>';
+                    echo  '<input type="submit" class="btn btn-danger text-center my-2" name="delete_cus_img" value="Delete Photo" /><br>';
                 }
-                echo ' <input type="file" name="cus_img" id="fileToUpload" /></td>';
+
+                if ($customer_img == '') {
+                    echo ' <b>Insert Profile Image</b> :';
+                } else {
+                    echo ' <b>Change Profile Image</b> :';
+                }
+
+                echo ' <input type="file" name="cus_img" id="fileToUpload" class="my-2 ms-3"/><br>';
+                echo  '<input type="submit" class="btn btn-success text-center my-2" value="Save Photo" /></td>';
                 ?>
 
             </tr>
@@ -307,6 +342,7 @@ include 'config/navbar.php';
 </div>
 <!-- end .container -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
 
 </body>
 

@@ -1,3 +1,17 @@
+<!--ID : 2050093-BSE -->
+<!--Name : Mak Hon Sang -->
+<!--Topic : Category Update Page-->
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Update Category</title>
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+
+<body>
+
 <?php
 include 'config/session.php';
 include 'config/navbar.php';
@@ -5,7 +19,7 @@ include 'config/navbar.php';
 
 <div class="container">
     <div class="page-header">
-        <h1>Update Product</h1>
+        <h1>Update Category</h1>
     </div>
     
     <!-- PHP read record by ID will be here →
@@ -73,7 +87,7 @@ include 'config/navbar.php';
                 // Execute the query
 
                 if ($stmt->execute()) {
-                    echo "<script>location.replace('category_read_one.php?id=$id')</script>";
+                    echo "<script>location.replace('category_read_one.php?id=".$id."&msg=cat_updateSuccess')</script>";
                     echo "<div class='alert alert-success'>Record was saved.</div>";
                 } else {
                     $message = 'Unable to save record.';
@@ -106,7 +120,7 @@ include 'config/navbar.php';
                 <td></td>
                 <td>
                     <input type='submit' value='Save Changes' class='btn btn-primary' />
-                    <a href='category_read.php' class='btn btn-danger'>Back to read products</a>
+                    <a href='category_read.php' class='btn btn-danger'>Back to Category List</a>
                 </td>
             </tr>
         </table>
@@ -115,6 +129,8 @@ include 'config/navbar.php';
 
 </div>
 <!-- end .container -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
 </body>
 
 </html>

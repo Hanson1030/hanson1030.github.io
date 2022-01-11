@@ -1,3 +1,17 @@
+<!--ID : 2050093-BSE -->
+<!--Name : Mak Hon Sang -->
+<!--Topic : Product Create Page-->
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Create New Product</title>
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+
+<body>
+
 <?php
 include 'config/session.php';
 include 'config/navbar.php';
@@ -17,6 +31,10 @@ include 'config/navbar.php';
     $query_category = "SELECT * FROM categories ORDER BY category_id";
     $stmt_category = $con->prepare($query_category);
     $stmt_category->execute();
+
+    $query_product = "SELECT * FROM products";
+    $stmt_product = $con->prepare($query_product);
+    $stmt_product->execute();
 
     if ($_POST) {
         // include database connection
@@ -110,7 +128,7 @@ include 'config/navbar.php';
                     $descriptionErr = "Description is required";
                 }
 
-                if ($_POST["category_id"] == ' ') {
+                if ($_POST["category_id"] == '') {
                     $flag = 1;
                     $message = "Please fill in every field.";
                     $categoryErr = "Category is required";
@@ -126,6 +144,14 @@ include 'config/navbar.php';
                     $flag = 1;
                     $message = "Please fill in every field.";
                     $manu_dateErr = "Manufacture date is required";
+                }
+
+                if (empty($_POST["promo_price"])) {
+                    $promo_price = 0;
+                }
+
+                if (empty($_POST["exp_date"])) {
+                    $exp_date = '0000-00-00';
                 }
             }
 
@@ -154,7 +180,8 @@ include 'config/navbar.php';
 
             if ($flag == 0) {
                 if ($stmt->execute()) {
-                    echo "<script>location.replace('product_read_one.php?id=".$id."')</script>";
+                    $product_id = $con->lastInsertId();
+                    echo "<script>location.replace('product_read_one.php?id=".$product_id."&msg=prod_createSuccess')</script>";
                     echo "<div class='alert alert-success'>Record was saved.</div>";
                 } else {
                     echo "Unable to save record.";
@@ -185,7 +212,7 @@ include 'config/navbar.php';
                 </td>
             </tr>
             <tr>
-                <td>Name</td>
+                <td>Name<span class="text-danger">*</span></td>
                 <td>
                     <input type='text' name='name' class='form-control' value="<?php echo $posted_name ?>" />
                     <span>
@@ -194,7 +221,7 @@ include 'config/navbar.php';
                 </td>
             </tr>
             <tr>
-                <td>Description</td>
+                <td>Description<span class="text-danger">*</span></td>
                 <td>
                     <textarea name='description' class='form-control'><?php echo $_POST ? $_POST['description'] : ''; ?></textarea>
                     <span>
@@ -203,10 +230,10 @@ include 'config/navbar.php';
                 </td>
             </tr>
             <tr>
-                <td>Category</td>
+                <td>Category<span class="text-danger">*</span></td>
                 <td>
-                    <select class="fs-4 rounded col-4" name="category_id">
-                        <option value=" ">-----SELECT Category-----</option>
+                    <select class="fs-3 rounded col-4" name="category_id">
+                        <option value=" " class="text-center">--SELECT Category--</option>
 
                         <?php
                         $category_list = $_POST ? $_POST['category_id'] : ' ';
@@ -224,7 +251,7 @@ include 'config/navbar.php';
                 </td>
             </tr>
             <tr>
-                <td>Price</td>
+                <td>Price<span class="text-danger">*</span></td>
                 <td>
                     <input type='text' name='price' class='form-control' value="<?php echo $_POST ? $_POST['price'] : ''; ?>" />
                     <span>
@@ -239,7 +266,7 @@ include 'config/navbar.php';
                 </td>
             </tr>
             <tr>
-                <td>Manufacture Date</td>
+                <td>Manufacture Date<span class="text-danger">*</span></td>
                 <td><input type='date' name='manu_date' class='form-control' value="<?php echo $_POST ? $_POST['manu_date'] : ''; ?>" />
                     <span>
                         <?php if (isset($manu_dateErr)) echo "<div class='text-danger'>*$manu_dateErr</div>  "; ?>
@@ -256,7 +283,7 @@ include 'config/navbar.php';
                 <td></td>
                 <td>
                     <input type='submit' value='Save' class='btn btn-primary' />
-                    <a href="product_read.php" class='btn btn-danger'>Back to read products</a>
+                    <a href="product_read.php" class='btn btn-danger'>Back to Product List</a>
                 </td>
             </tr>
         </table>

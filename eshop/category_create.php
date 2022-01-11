@@ -1,3 +1,17 @@
+<!--ID : 2050093-BSE -->
+<!--Name : Mak Hon Sang -->
+<!--Topic : Category Create Page-->
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Create Category</title>
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+
+<body>
+
 <?php
 include 'config/session.php';
 include 'config/navbar.php';
@@ -16,15 +30,18 @@ include 'config/navbar.php';
             include 'config/database.php';
             try {
                 // insert query
-                $query = "INSERT INTO categories SET category_name=:category_name, description=:description";
+                $query = "INSERT INTO categories SET category_id=:category_id, category_name=:category_name, description=:description";
                 // prepare query for execution
                 $stmt = $con->prepare($query);
                 $cat_name = $_POST['cat_name'];
                 $cat_description = $_POST['cat_description'];
 
                 // bind the parameters
+                $stmt->bindParam(':category_id', $category_id);
                 $stmt->bindParam(':category_name', $cat_name);
                 $stmt->bindParam(':description', $cat_description);
+
+               
 
                 // Execute the query
 
@@ -44,7 +61,8 @@ include 'config/navbar.php';
                 if ($flag == 0) {
 
                     if ($stmt->execute()) {
-                        echo "<script>location.replace('category_read.php')</script>";
+                        $category_id = $con->lastInsertId();
+                        echo "<script>location.replace('category_read_one.php?id=".$category_id."&msg=cat_createSuccess')</script>";
                         echo "<div class='alert alert-success'>Record was saved.</div>";
                     } else {
                         $message = 'Unable to save record.';

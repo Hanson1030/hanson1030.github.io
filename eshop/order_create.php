@@ -1,3 +1,17 @@
+<!--ID : 2050093-BSE -->
+<!--Name : Mak Hon Sang -->
+<!--Topic : Order Create Page-->
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Order Create</title>
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+
+<body>
+
 <?php
 include 'config/session.php';
 include 'config/navbar.php';
@@ -115,13 +129,10 @@ include 'config/navbar.php';
                 $customer_list = $_POST ? $_POST['cus_username'] : ' ';
                 while ($row = $cu->fetch(PDO::FETCH_ASSOC)) {
                     extract($row);
-                    //$selected_username = $username == $_POST['cus_username'] ? 'selected' : '';
                     $selected_username = $row['username'] == $customer_list ? 'selected' : '';
                     echo "<option class='bg-white' value='" . $username . "' $selected_username>" . $username . "</option>";
                 }
-                //if ($row['username'] == $_POST['cus_username']) {
-                //$selected = 'selected';
-                //}
+               
 
                 echo "</td>";
                 ?>
@@ -135,18 +146,11 @@ include 'config/navbar.php';
             <?php
             $quantity = 1;
 
-            //$post_product = $_POST ? count($_POST['product']) : 1;
             $arrayPost_product = array('');
             if ($_POST) {
-                if (count($_POST['product']) !== 1) {
-                    for ($y = 0; $y <= count($_POST['product']); $y++) {
+                for ($y = 0; $y <= count($_POST['product']); $y++) {
+                    if (count($_POST['product']) !== 1) {
                         if (empty($_POST['product'][$y])  && empty($_POST['quantity'][$y])) {
-
-                            unset($_POST['product'][$y]);
-                            unset($_POST['quantity'][$y]);
-                        }
-
-                        if (count($_POST['product']) != count(array_unique($_POST['product']))) {
 
                             unset($_POST['product'][$y]);
                             unset($_POST['quantity'][$y]);
@@ -155,11 +159,7 @@ include 'config/navbar.php';
                 }
                 $arrayPost_product = $_POST['product'];
             }
-            //echo '<pre>';
-            //var_dump($_POST);
-            //echo '<pre>';
-
-            //for ($product_row = 0; $product_row < $post_product; $product_row++) {
+            
             foreach ($arrayPost_product as $product_row => $product_ID) {
                 echo "<tr class='productRow'>";
                 echo '<td><select class="w-100 fs-4 rounded" name="product[]">';
@@ -195,7 +195,7 @@ include 'config/navbar.php';
                     </div>
                 </td>
                 <td>
-                    <input type='submit' value='Save' class='btn btn-primary' />
+                    <input type='submit' value='Create Order' class='btn btn-primary' />
                     <a href='order_read.php' class='btn btn-danger'>Back to Order list</a>
                 </td>
             </tr>
@@ -223,12 +223,6 @@ include 'config/navbar.php';
         }
     }, false);
 
-    function incrementValue() {
-        var value = parseInt(document.getElementById('number').value, 10);
-        value = isNaN(value) ? 0 : value;
-        value++;
-        document.getElementById('number').value = value;
-    }
 </script>
 </body>
 

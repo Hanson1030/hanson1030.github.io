@@ -1,7 +1,10 @@
+<!--ID : 2050093-BSE -->
+<!--Name : Mak Hon Sang -->
+<!--Topic : Customer Create Page-->
 <?php
 
 session_start();
-if(isset($_SESSION['username'])) {
+if (isset($_SESSION['username'])) {
     include 'config/navbar.php';
 }
 ?>
@@ -10,7 +13,7 @@ if(isset($_SESSION['username'])) {
 <html>
 
 <head>
-    <title>PDO - Create a Record - PHP CRUD Tutorial</title>
+    <title>Create Customer</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 </head>
@@ -105,48 +108,51 @@ if(isset($_SESSION['username'])) {
 
                     if (empty($_POST["username"])) {
                         $flag = 1;
-                        $message = "Please fill in every field.";
                         $usernameErr = "Name is required";
                     }
 
                     if (empty($_POST["email"])) {
                         $flag = 1;
-                        $message = "Please fill in every field.";
                         $emailErr = "Email is required";
                     }
 
                     if (empty($_POST["password"])) {
                         $flag = 1;
-                        $message = "Please fill in every field.";
                         $passwordErr = "Password is required";
+                    }
+
+                    if (empty($_POST["confirm_password"])) {
+                        $flag = 1;
+                        $confirm_passwordErr = "Confirm Password is required";
                     }
 
                     if (empty($_POST["first_name"])) {
                         $flag = 1;
-                        $message = "Please fill in every field.";
                         $first_nameErr = "First Name is required";
                     }
 
                     if (empty($_POST["last_name"])) {
                         $flag = 1;
-                        $message = "Please fill in every field.";
                         $last_nameErr = "Last Name is required";
                     }
 
                     if (empty($_POST["gender"])) {
                         $flag = 1;
-                        $message = "Please fill in every field.";
                         $genderErr = "Gender is required";
                     }
 
                     if (empty($_POST["date_of_birth"])) {
                         $flag = 1;
-                        $message = "Please fill in every field.";
                         $date_of_birthErr = "Date of Birth is required";
                     }
                 }
-
-                if (!preg_match("/[a-zA-Z]/", $_POST['password']) || !preg_match("/[0-9]/", $_POST['password']) || !preg_match("/[a-zA-Z0-9]{8,}/", $_POST['password'])) {
+                if (empty($_POST["username"]) || empty($_POST["email"]) || empty($_POST["password"]) || empty($_POST["confirm_password"]) || empty($_POST["first_name"]) || empty($_POST["last_name"]) || empty($_POST["gender"]) || empty($_POST["date_of_birth"])) {
+                    $flag = 1;
+                    $message = "Please fill in everyaaa field";
+                } elseif (!preg_match("/[a-zA-Z0-9]{6,}/", $username)) {
+                    $flag = 1;
+                    $message = "Username must be at least 6 characters";
+                } elseif (!preg_match("/[a-zA-Z]/", $_POST['password']) || !preg_match("/[0-9]/", $_POST['password']) || !preg_match("/[a-zA-Z0-9]{8,}/", $_POST['password'])) {
                     $flag = 1;
                     $message = "Password must at least 8 character and must contain number and alphabets.";
                 } elseif ($password !== $confirm_password) {
@@ -155,32 +161,34 @@ if(isset($_SESSION['username'])) {
                 } elseif ($cust_age < 18) {
                     $flag = 1;
                     $message = "Customer must be age of 18 or above.";
-                } elseif (!preg_match("/[a-zA-Z0-9]{6,}/", $username)) {
-                    $flag = 1;
-                    $message = "Username must be at least 6 characters";
                 }
 
                 if ($flag == 0) {
-
-                    $select_query = "SELECT username FROM customers";
-                    $select_stmt = $con->prepare($select_query);
-                    $select_stmt->execute();
-                    $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
-
-                    if (filter_var("$username", FILTER_VALIDATE_EMAIL)) {
-                        $select_query = 'SELECT username, email FROM customers WHERE email=?';
-                    } else {
-                        $select_query = 'SELECT username, email FROM customers WHERE username=?';
+                    
+                    $select_query_username = 'SELECT username, email FROM customers WHERE username=?';
+                    $select_stmt_username = $con->prepare($select_query_username);
+                    $select_stmt_username->bindParam(1, $username);
+                    $select_stmt_username->execute();
+                    $row_username = $select_stmt_username->fetch(PDO::FETCH_ASSOC);
+                    if ($row_username) {
+                        if ($_POST['username'] == $row_username['username']) {
+                            $flag = 1;
+                            $message = "This username has been registered.";
+                        }
                     }
-                    $select_stmt = $con->prepare($select_query);
-                    $select_stmt->bindParam(1, $username);
-                    $select_stmt->execute();
-                    $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
 
-                    if ($_POST['username'] == $row['username']) {
-                        $flag = 1;
-                        $message = "This username has been registered.";
+                    $select_query_email = 'SELECT username, email FROM customers WHERE email=?';
+                    $select_stmt_email = $con->prepare($select_query_email);
+                    $select_stmt_email->bindParam(1, $email);
+                    $select_stmt_email->execute();
+                    $row_email = $select_stmt_email->fetch(PDO::FETCH_ASSOC);
+                    if ($row_email) {
+                        if ($_POST['email'] == $row_email['email']) {
+                            $flag = 1;
+                            $message = "This email has been registered.";
+                        }
                     }
+                    
                 }
 
                 if ($flag !== 0) {
@@ -189,8 +197,11 @@ if(isset($_SESSION['username'])) {
                     echo "</div>";
                 } else {
                     if ($stmt->execute()) {
-                        header('Location:index.php?msg=createsuccess');
-                        echo "<div class='alert alert-success'>Record was saved.</div>";
+                        if (isset($_SESSION['username'])) {
+                            echo "<script>location.replace('customer_read_one.php?id=".$username."&msg=cus_createSuccess')</script>";
+                        } else {
+                            echo "<script>location.replace('index.php?msg=success')</script>";
+                        }
                     } else {
                         echo "Unable to save record.";
                     }
@@ -215,7 +226,7 @@ if(isset($_SESSION['username'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Username</td>
+                    <td>Username<span class="text-danger">*</span></td>
                     <td><input type='text' name='username' class='form-control' value="<?php echo $_POST ? $_POST['username'] : ''; ?>" />
                         <span>
                             <?php if (isset($usernameErr)) echo "<div class='text-danger'>*$usernameErr</div>  "; ?>
@@ -223,7 +234,7 @@ if(isset($_SESSION['username'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Email</td>
+                    <td>Email<span class="text-danger">*</span></td>
                     <td><input type='email' name='email' class='form-control' value="<?php echo $_POST ? $_POST['email'] : ''; ?>" />
                         <span>
                             <?php if (isset($emailErr)) echo "<div class='text-danger'>*$emailErr</div>  "; ?>
@@ -231,7 +242,7 @@ if(isset($_SESSION['username'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Password</td>
+                    <td>Password<span class="text-danger">*</span></td>
                     <td><input type="password" name='password' class='form-control' />
                         <span>
                             <?php if (isset($passwordErr)) echo "<div class='text-danger'>*$passwordErr</div>  "; ?>
@@ -239,7 +250,7 @@ if(isset($_SESSION['username'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Confirm Password</td>
+                    <td>Confirm Password<span class="text-danger">*</span></td>
                     <td><input type="password" name='confirm_password' class='form-control' />
                         <span>
                             <?php if (isset($confirm_passwordErr)) echo "<div class='text-danger'>*$confirm_passwordErr</div>  "; ?>
@@ -247,7 +258,7 @@ if(isset($_SESSION['username'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>First Name</td>
+                    <td>First Name<span class="text-danger">*</span></td>
                     <td><input type="text" name='first_name' class='form-control' value="<?php echo $_POST ? $_POST['first_name'] : ''; ?>" />
                         <span>
                             <?php if (isset($first_nameErr)) echo "<div class='text-danger'>*$first_nameErr</div>  "; ?>
@@ -255,7 +266,7 @@ if(isset($_SESSION['username'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Last Name</td>
+                    <td>Last Name<span class="text-danger">*</span></td>
                     <td><input type="text" name='last_name' class='form-control' value="<?php echo $_POST ? $_POST['last_name'] : ''; ?>" />
                         <span>
                             <?php if (isset($last_nameErr)) echo "<div class='text-danger'>*$last_nameErr</div>  "; ?>
@@ -263,7 +274,7 @@ if(isset($_SESSION['username'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Gender</td>
+                    <td>Gender<span class="text-danger">*</span></td>
                     <td>
                         <div class="form-check form-check-inline">
                             <input type="radio" id="male" name='gender' value="Male" class="form-check-input" <?php if ($_POST) {
@@ -283,7 +294,7 @@ if(isset($_SESSION['username'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Date of birth</td>
+                    <td>Date of birth<span class="text-danger">*</span></td>
                     <td><input type='date' name='date_of_birth' class='form-control' value="<?php echo $_POST ? $_POST['date_of_birth'] : ' '; ?>" />
                         <span>
                             <?php if (isset($date_of_birthErr)) echo "<div class='text-danger'>*$date_of_birthErr</div>  "; ?>
@@ -295,7 +306,7 @@ if(isset($_SESSION['username'])) {
                     <td>
                         <input type='submit' value='Sign Up' class='btn btn-primary' />
                         <?php
-                        if(isset($_SESSION['username'])){
+                        if (isset($_SESSION['username'])) {
                             echo "<a href='customer_read.php' class='btn btn-danger'>Back to Read Customer</a>";
                         } else {
                             echo "<a href='index.php' class='btn btn-danger'>Back to Login Page</a>";

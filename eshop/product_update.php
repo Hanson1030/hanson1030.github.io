@@ -1,7 +1,21 @@
-<?php
-include 'config/session.php';
-include 'config/navbar.php';
-?>
+<!--ID : 2050093-BSE -->
+<!--Name : Mak Hon Sang -->
+<!--Topic : Product Update Page-->
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Update Product</title>
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <?php
+    include 'config/session.php';
+    include 'config/navbar.php';
+    ?>
     <!-- container -->
     <div class="container">
         <div class="page-header">
@@ -110,7 +124,7 @@ include 'config/navbar.php';
                     }
 
 
-                    if ($_FILES["prod_img"]["size"] > 5000000) {
+                    if ($_FILES["prod_img"]["size"] > 500000) {
                         $flag = 1;
                         $message .= "Sorry, your file is too large.<br>";
                         $isUploadOK = FALSE;
@@ -138,34 +152,50 @@ include 'config/navbar.php';
                     $product_img = $row['product_img'];
                 }
 
+                if (isset($_POST['delete_prod_img'])) {
+                    $target_dir = "prod_img/";
+                    unlink($target_dir . $row['product_img']);
+                    $target_file = $target_dir . basename($_FILES["prod_img"]["name"]);
+                    $product_img = '';
+                }
+
                 if (empty($name)) {
                     $flag = 1;
                     $message = "Please fill in every field.";
                     $nameErr = "Name is required";
-                } elseif (empty($description)) {
+                }
+
+                if (empty($description)) {
                     $flag = 1;
                     $message = "Please fill in every field.";
                     $descriptionErr = "First Name is required";
-                } elseif (empty($category)) {
+                }
+
+                if (empty($category)) {
                     $flag = 1;
                     $message = "Please fill in every field.";
-                    $categoryErr = "Last Name is required";
-                } elseif (empty($price)) {
+                    $categoryErr = "Category is required";
+                }
+
+                if (empty($price)) {
                     $flag = 1;
                     $message = "Please fill in every field.";
                     $priceErr = "Last Name is required";
-                } elseif (empty($promo_price)) {
-                    $flag = 1;
-                    $message = "Please fill in every field.";
-                    $promo_priceErr = "Last Name is required";
-                } elseif (empty($manu_date)) {
+                }
+
+                if (empty($manu_date)) {
                     $flag = 1;
                     $message = "Please fill in every field.";
                     $manu_dateErr = "Last Name is required";
                 }
+
+                if (empty($exp_date)) {
+                    $exp_date = '0000-00-00';
+                }
+
                 if ($flag == 0) {
                     if ($stmt->execute()) {
-                        echo "<script>location.replace('product_read_one.php?id=".$id."')</script>";
+                        echo "<script>location.replace('product_read_one.php?id=" . $id . "&msg=prod_updateSuccess')</script>";
                         echo "<div class='alert alert-success'>Record was saved.</div>";
                     } else {
                         echo "Unable to save record.";
@@ -180,24 +210,34 @@ include 'config/navbar.php';
             catch (PDOException $exception) {
                 die('ERROR: ' . $exception->getMessage());
             }
-        } ?>
+        }
+
+
+        ?>
 
 
         <!--we have our html form here where new record information can be updated-->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post" enctype="multipart/form-data">
             <table class='table table-hover table-responsive table-bordered'>
-            <tr>
+                <tr>
                     <td>Image</td>
 
                     <?php
                     if ($product_img == '') {
-                        echo '<td><img src="prod_img/nopic.png" width="200px"></td>';
+                        echo '<td class="text-center"><img src="prod_img/nopic.png" width="200px"><br>';
                     } else {
-                        echo '<td><img src="prod_img/' . $product_img . '"width="200px"><br>';
+                        echo '<td class="text-center"><img src="prod_img/' . $product_img . '" style="object-fit: contain;" width="200px" id="product_img"><br>';
+                        echo  '<input type="submit" class="btn btn-danger text-center my-2" name="delete_prod_img" value="Delete Photo" /><br>';
                     }
-                    echo ' <input type="file" name="prod_img" id="fileToUpload" /></td>';
-                    ?>
 
+                    if ($product_img == '') {
+                        echo ' <b>Insert Product Image</b> :';
+                    } else {
+                        echo ' <b>Change Product Image</b> :';
+                    }
+                    echo  '<input type="file" name="prod_img" id="fileToUpload" class="my-2 ms-3"/><br>';
+                    echo  '<input type="submit" class="btn btn-success text-center my-2" value="Save Photo" /></td>';
+                    ?>
                 </tr>
                 <tr>
                     <td>Name</td>
@@ -224,7 +264,7 @@ include 'config/navbar.php';
                         echo  '<option selected></option>';
 
                         while ($row = $stmt_category->fetch(PDO::FETCH_ASSOC)) {
-                            
+
                             if ($_POST) {
                                 $selected = $row['category_id'] == $_POST['category'] ? 'selected' : '';
                             } else {
@@ -235,6 +275,9 @@ include 'config/navbar.php';
                         }
                         echo "</select>";
                         ?>
+                        <span>
+                            <?php if (isset($categoryErr)) echo "<div class='text-danger'>*$categoryErr</div>  "; ?>
+                        </span>
                     </td>
                 </tr>
                 <tr>
@@ -247,31 +290,25 @@ include 'config/navbar.php';
                 </tr>
                 <tr>
                     <td>Promotion Price</td>
-                    <td><input type='text' name='promo_price' value="<?php echo htmlspecialchars($promo_price, ENT_QUOTES);  ?>" class='form-control' />
-                        <span>
-                            <?php if (isset($priceErr)) echo "<div class='text-danger'>*$promo_priceErr</div>  "; ?>
-                        </span>
-                    </td>
+                    <td><input type='text' name='promo_price' value="<?php echo htmlspecialchars($promo_price, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>Manufacture date</td>
-                    <td><input type='text' name='manu_date' value="<?php echo htmlspecialchars($manu_date, ENT_QUOTES);  ?>" class='form-control' />
+                    <td><input type='date' name='manu_date' value="<?php echo htmlspecialchars($manu_date, ENT_QUOTES);  ?>" class='form-control' />
                         <span>
-                            <?php if (isset($priceErr)) echo "<div class='text-danger'>*$manu_dateErr</div>  "; ?>
+                            <?php if (isset($manu_dateErr)) echo "<div class='text-danger'>*$manu_dateErr</div>  "; ?>
                         </span>
                     </td>
                 </tr>
                 <tr>
                     <td>Expired date</td>
-                    <td><input type='text' name='exp_date' value="<?php echo htmlspecialchars($exp_date, ENT_QUOTES);  ?>" class='form-control' />
-                        
-                    </td>
+                    <td><input type='date' name='exp_date' value="<?php echo htmlspecialchars($exp_date, ENT_QUOTES);  ?>" class='form-control'></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>
                         <input type='submit' value='Save Changes' class='btn btn-primary' />
-                        <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
+                        <a href='product_read.php' class='btn btn-danger'>Back to Product List</a>
                     </td>
                 </tr>
             </table>
@@ -280,6 +317,15 @@ include 'config/navbar.php';
     </div>
     <!-- end .container -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script>
+        function deleteMe() {
+            //var allrows = document.querySelectorAll('.product_img');
+
+            var myobj = document.getElementById("product_img");
+            myobj.remove();
+
+        }
+    </script>
 </body>
 
 </html>

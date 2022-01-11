@@ -1,3 +1,16 @@
+<!--ID : 2050093-BSE -->
+<!--Name : Mak Hon Sang -->
+<!--Topic : Order Read Page-->
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Order List</title>
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+
+<body>
 <?php
 include 'config/session.php';
 include 'config/navbar.php';
@@ -5,7 +18,7 @@ include 'config/navbar.php';
 <!-- container -->
 <div class="container">
     <div class="page-header">
-        <h1>Read Order</h1>
+        <h1>Order List</h1>
     </div>
 
     <?php
@@ -28,12 +41,14 @@ include 'config/navbar.php';
     $num = $stmt->rowCount();
 
     // link to create record form
-    //echo "<a href='customer_create.php' class='btn btn-primary m-b-1em'>Create New Order</a>";
+    echo "<div class='text-center'>";
+    echo "<a href='order_create.php' class='btn btn-primary m-b-1em my-3'>Create New Order</a>";
+    echo "</div>";
 
     //check if more than 0 record found
     if ($num > 0) {
 
-        echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
+        echo "<table class='table table-hover table-responsive table-bordered text-center'>"; //start table
 
         //creating our table heading
         echo "<tr>";
